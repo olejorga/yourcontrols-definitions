@@ -1,0 +1,3612 @@
+# AIRCRAFT: iniBuilds A300-600R(F) v1.0.2
+# CREATOR: olejorga
+# CREDIT: https://github.com/theegg52/yourcontrols-aircraft-configs/releases/tag/A310 (theegg52)
+# CHANGES: Added missing and renamed entries in order to support the A300 instead of the A310.
+
+include:
+  - definitions/modules/physics.yaml
+  - definitions/modules/radios.yaml
+  - definitions/modules/service.yaml
+  - definitions/modules/slew.yaml
+  # - definitions/modules/transponder.yaml
+
+shared:
+  # ---------------------------------------------------------------------------- #
+  #                                   OVERHEAD                                   #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: var
+    var_name: L:INI_IRS1_STATE
+  -
+    type: var
+    var_name: L:INI_IRS_MODE_KNOB
+  -
+    type: var
+    var_name: L:INI_IRS_SYS_KNOB
+  - 
+    type: var
+    var_name: L:INI_GNDCTL
+  -
+    type: var
+    var_name: L:INI_SPEEDBRAKE7
+  -
+    type: var
+    var_name: L:INI_SPEEDBRAKE6
+  -
+    type: var
+    var_name: L:INI_SPEEDBRAKE5
+  -
+    type: var
+    var_name: L:INI_SPEEDBRAKE4_1
+  -
+    type: var
+    var_name: L:INI_SPEEDBRAKE3_2
+  -
+    type: var
+    var_name: L:INI_PITCH_FEEL1
+  -
+    type: var
+    var_name: L:INI_PITCH_FEEL2
+  -
+    type: var
+    var_name: L:INI_RUDDER_TRAVEL1
+  -
+    type: var
+    var_name: L:INI_RUDDER_TRAVEL2
+  -
+    type: var
+    var_name: L:__GUARD_SERVO_B_STATE
+  -
+    type: var
+    var_name: L:INI_SERVO_BLUE_OFF_LIGHT
+  -
+    type: var
+    var_name: L:__GUARD_SERVO_G_STATE
+  -
+    type: var
+    var_name: L:INI_SERVO_GREEN_OFF_LIGHT
+  -
+    type: var
+    var_name: L:__GUARD_SERVO_Y_STATE
+  -
+    type: var
+    var_name: L:INI_SERVO_YELLOW_OFF_LIGHT
+  -
+    type: var
+    var_name: L:INI_HYD_PTU_BLUE_STATUS
+  -
+    type: var
+    var_name: L:INI_HYD_ELEC_STATUS
+  -
+    type: var
+    var_name: L:INI_HYD_PTU_YELLOW_STATUS
+  -
+    type: var
+    var_name: L:INI_HYD_ENG1_SWITCH_POS
+  -
+    type: var
+    var_name: L:INI_HYD_ENG1_A_SWITCH_POS
+  -
+    type: var
+    var_name: L:INI_HYD_ENG2_B_SWITCH_POS
+  -
+    type: var
+    var_name: L:INI_HYD_ENG2_SWITCH_POS
+  -
+    type: var
+    var_name: L:INI_STORM_LIGHT_SWITCH
+  -
+    type: var
+    var_name: L:INI_DOME_LIGHT_SWITCH
+  -
+    type: var
+    var_name: L:INI_DOME_LIGHT_BRT_SWITCH
+  -
+    type: var
+    var_name: L:INI_SEATBELTS_SWITCH
+  -
+    type: var
+    var_name: L:INI_NO_SMOKING_SWITCH
+  -
+    type: var
+    var_name: L:INI_ELEC_IND_AC_SELECTOR
+  -
+    type: var
+    var_name: L:INI_ELEC_IND_DC_SELECTOR
+  -
+    type: var
+    var_name: L:INI_ENG1_SQUIB_TEST
+  -
+    type: var
+    var_name: L:INI_ENGINE1_AGENT1_DISCH
+  -
+    type: var
+    var_name: L:INI_ENG1_LOOP_A_STATE
+  -
+    type: var
+    var_name: L:INI_ENGINE1_LOOP_TEST_SWITCH
+  -
+    type: var
+    var_name: L:INI_ENG1_LOOP_B_STATE
+  -
+    type: var
+    var_name: L:INI_ENGINE1_AGENT2_DISCH
+  -
+    type: var
+    var_name: L:INI_ENG1_FIRE_LATCH
+  -
+    type: var
+    var_name: L:INI_FIRE_HANDLE_ENG1
+  -
+    type: var
+    var_name: L:INI_ELEC_LAND_RECOVERY
+  -
+    type: var
+    var_name: L:__GUARD_BAT_OVRD_STATE
+  -
+    type: var
+    var_name: L:INI_ELEC_BATTERY_OVERRIDE
+  -
+    type: var
+    var_name: L:__GUARD_STBY_GEN_STATE
+  -
+    type: var
+    var_name: L:INI_ELEC_STANDBY_GEN
+  -
+    type: var
+    var_name: L:INI_BAT1_ON
+  -
+    type: var
+    var_name: L:INI_BAT2_ON
+  -
+    type: var
+    var_name: L:INI_BAT3_ON
+  -
+    type: var
+    var_name: L:__GUARD_OVR_SUP_1_STATE
+  -
+    type: var
+    var_name: L:INI_ELEC_OVERRIDE_SUPPLY1
+  -
+    type: var
+    var_name: L:__GUARD_OVR_SUP_2_STATE
+  -
+    type: var
+    var_name: L:INI_ELEC_OVERRIDE_SUPPLY2
+  -
+    type: var
+    var_name: L:INI_ENG1_GEN_ON
+  -
+    type: var
+    var_name: L:INI_APU_GEN_ON
+  -
+    type: ToggleSwitch
+    var_name: L:__EXT_PWRISPRESSED
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_EXTERNAL_POWER
+  -
+    type: var
+    var_name: L:INI_ENG2_GEN_ON
+  -
+    type: var
+    var_name: L:__IDG1_COVER_STATE
+  -
+    type: var
+    var_name: L:INI_IDG1_BUTTON
+  -
+    type: var
+    var_name: L:INI_GALLEY_SHED
+  -
+    type: var
+    var_name: L:__IDG2_COVER_STATE
+  -
+    type: var
+    var_name: L:INI_IDG2_BUTTON
+  -
+    type: var
+    var_name: L:INI_PITCH_TRIM1
+  -
+    type: var
+    var_name: L:INI_PITCH_TRIM2
+  -
+    type: var
+    var_name: L:INI_YAW_DAMPER1
+  -
+    type: var
+    var_name: L:INI_YAW_DAMPER2
+  -
+    type: var
+    var_name: L:INI_AUTOTHROTTLE_MASTER_SWITCH1
+  -
+    type: var
+    var_name: L:__GUARD_ENG_TRIM_STATE
+  -
+    type: var
+    var_name: L:INI_ENG_TRIM
+  -
+    type: var
+    var_name: L:INI_AUTOTHROTTLE_MASTER_SWITCH2
+  -
+    type: var
+    var_name: L:INI_ENG1_ANTI_ICE
+  -
+    type: var
+    var_name: L:INI_ENG2_ANTI_ICE
+  -
+    type: var
+    var_name: L:INI_WING_ANTI_ICE
+  -
+    type: var
+    var_name: L:INI_POTENTIOMETER_24
+  -
+    type: var
+    var_name: L:INI_BEACON_LIGHT_SWITCH
+  -
+    type: var
+    var_name: L:INI_RWY_TURNOFF_L_SWITCH
+  -
+    type: var
+    var_name: L:INI_RWY_TURNOFF_R_SWITCH
+  -
+    type: var
+    var_name: L:INI_NAV_LOGO_LIGHT_SWITCH
+  -
+    type: var
+    var_name: L:INI_TAXI_LIGHTS_SWITCH
+  -
+    type: var
+    var_name: L:INI_LANDING_LIGHT_L_SWITCH
+  -
+    type: var
+    var_name: L:INI_LANDING_LIGHT_R_SWITCH
+  -
+    type: var
+    var_name: L:INI_WING_LIGHT_SWITCH
+  -
+    type: var
+    var_name: L:INI_IRS3_STATE
+  -
+    type: var
+    var_name: L:INI_CVRD_TEST
+  -
+    type: var
+    var_name: L:INI_APU_SQUIB_TEST
+  -
+    type: var
+    var_name: L:INI_APU_AGENT1_DISCH
+  -
+    type: var
+    var_name: L:INI_APU_LOOP_A_STATE
+  -
+    type: var
+    var_name: L:INI_APU_LOOP_TEST_SWITCH
+  -
+    type: var
+    var_name: L:INI_APU_LOOP_B_STATE
+  -
+    type: var
+    var_name: L:INI_APU_FIRE_LATCH
+  -
+    type: var
+    var_name: L:INI_FIRE_HANDLE_APU
+  -
+    type: var
+    var_name: L:INI_POTENTIOMETER_18
+  -
+    type: var
+    var_name: L:INI_XFEED_TRANSFER_ON
+  -
+    type: var
+    var_name: L:__GUARD_FUEL_IS0_1_STATE
+  -
+    type: var
+    var_name: L:INI_ISOLATION_VALVE_OUTER_TANK_LEFT
+  -
+    type: var
+    var_name: L:__GUARD_FUEL_IS0_2_STATE
+  -
+    type: var
+    var_name: L:INI_ISOLATION_VALVE_INNER_TANK_LEFT
+  -
+    type: var
+    var_name: L:__GUARD_FUEL_IS0_3_STATE
+  -
+    type: var
+    var_name: L:INI_ISOLATION_VALVE_INNER_TANK_RIGHT
+  -
+    type: var
+    var_name: L:__GUARD_FUEL_IS0_4_STATE
+  -
+    type: var
+    var_name: L:INI_ISOLATION_VALVE_OUTER_TANK_RIGHT
+  -
+    type: var
+    var_name: L:INI_OUTER_TANK1_LEFT
+  -
+    type: var
+    var_name: L:INI_OUTER_TANK2_LEFT
+  -
+    type: var
+    var_name: L:INI_OUTER_TANK1_RIGHT
+  -
+    type: var
+    var_name: L:INI_OUTER_TANK2_RIGHT
+  -
+    type: var
+    var_name: L:INI_INNER_TANK1_LEFT
+  -
+    type: var
+    var_name: L:INI_INNER_TANK2_LEFT
+  -
+    type: var
+    var_name: L:INI_INNER_TANK1_RIGHT
+  -
+    type: var
+    var_name: L:INI_INNER_TANK2_RIGHT
+  -
+    type: var
+    var_name: L:INI_CENTER_TANK1
+  -
+    type: var
+    var_name: L:INI_CENTER_TANK2
+  -
+    type: var
+    var_name: L:INI_ACT_TANK
+  -
+    type: var
+    var_name: L:INI_TRIM_TANK_MODE
+  -
+    type: var
+    var_name: L:INI_TRIM_TANK1
+  -
+    type: var
+    var_name: L:INI_TRIM_TANK2
+  -
+    type: var
+    var_name: L:__GUARD_TRMTK_ISO_STATE
+  -
+    type: var
+    var_name: L:INI_TRIM_TANK_ISOL_VALVE
+  -
+    type: var
+    var_name: L:INI_ENG1_STARTER
+  -
+    type: var
+    var_name: L:INI_ENG_IGNITION_SWITCH
+  -
+    type: var
+    var_name: L:INI_ENG2_STARTER
+  -
+    type: var
+    var_name: L:INI_APU_START_BUTTON
+  -
+    type: var
+    var_name: L:INI_APU_MASTER_SWITCH
+  -
+    type: var
+    var_name: L:INI_APU_FUEL_OVRD
+  -
+    type: var
+    var_name: L:OVH_CPT_WIPER
+  -
+    type: var
+    var_name: L:OVH_FO_WIPER
+  -
+    type: var
+    var_name: L:INI_COCKPIT_DOOR_STATE
+  -
+    type: var
+    var_name: L:INI_VENT_OUTBOARD_VALVE
+  -
+    type: var
+    var_name: L:INI_VENT_GND_OVRD
+  -
+    type: var
+    var_name: L:INI_VENT_GND_CTL
+  -
+    type: var
+    var_name: L:INI_VENT_EXTRACT_VALVE
+  -
+    type: var
+    var_name: L:INI_CARGO_VALVE
+  -
+    type: var
+    var_name: L:INI_VENT_GND_OVRD
+  -
+    type: var
+    var_name: L:INI_ENG2_SQUIB_TEST
+  -
+    type: var
+    var_name: L:INI_ENGINE2_AGENT1_DISCH
+  -
+    type: var
+    var_name: L:INI_ENG2_LOOP_A_STATE
+  -
+    type: var
+    var_name: L:INI_ENGINE2_LOOP_TEST_SWITCH
+  -
+    type: var
+    var_name: L:INI_ENG2_LOOP_B_STATE
+  -
+    type: var
+    var_name: L:INI_ENGINE2_AGENT2_DISCH
+  -
+    type: var
+    var_name: L:INI_ENG2_FIRE_LATCH
+  -
+    type: var
+    var_name: L:INI_FIRE_HANDLE_ENG2
+  -
+    type: var
+    var_name: L:INI_OXYGEN_LOW_PRESSURE_SUPPLY
+  -
+    type: var
+    var_name: L:INI_PROBE_HEAT_CAPT
+  -
+    type: var
+    var_name: L:INI_PROBE_HEAT_STANDBY
+  -
+    type: var
+    var_name: L:INI_PROBE_HEAT_COPILOT
+  -
+    type: var
+    var_name: L:INI_WINDOW_HEAT1
+  -
+    type: var
+    var_name: L:INI_WINDOW_HEAT2
+  -
+    type: var
+    var_name: L:INI_WINDOW_HEAT3
+  -
+    type: var
+    var_name: L:INI_WINDOW_HEAT4
+  -
+    type: var
+    var_name: L:__GUARD_PRESS_OUTFLOW_FWD_STATE
+  -
+    type: var
+    var_name: L:INI_CABIN_OUTFLOW_FORWARD_BUTTON
+  -
+    type: var
+    var_name: L:__GUARD_PRESS_OUTFLOW_AFT_STATE
+  -
+    type: var
+    var_name: L:INI_CABIN_OUTFLOW_AFTER_BUTTON
+  -
+    type: var
+    var_name: L:INI_MAN_VS_CONTROL_SWITCH
+  -
+    type: var
+    var_name: L:INI_CABIN_MAN_PRESS
+  -
+    type: var
+    var_name: L:INI_CABIN_AUTO_PRESS_ACTUAL
+  -
+    type: var
+    var_name: L:INI_CABIN_SYS1_REGULATOR
+  -
+    type: var
+    var_name: L:INI_CABIN_SYS2_REGULATOR
+  -
+    type: var
+    var_name: L:INI_CABIN_SYS1
+  -
+    type: var
+    var_name: L:INI_CABIN_SYS2
+  -
+    type: var
+    var_name: L:INI_IRS2_STATE
+  -
+    type: var
+    var_name: L:INI_PACK1_MAN_SWITCH
+  -
+    type: var
+    var_name: L:INI_BLEED_PACK1_MODE
+  -
+    type: var
+    var_name: L:INI_BLEED_PACK2_MODE
+  -
+    type: var
+    var_name: L:INI_PACK2_MAN_SWITCH
+  -
+    type: var
+    var_name: L:INI_ISOLATION_VALVE_LEFT
+  -
+    type: var
+    var_name: L:INI_ISOLATION_VALVE_RIGHT
+  -
+    type: var
+    var_name: L:INI_AIRCOND_LVL_6
+  -
+    type: var
+    var_name: L:INI_AIRCOND_LVL_5
+  -
+    type: var
+    var_name: L:INI_AIRCOND_LVL_4
+  -
+    type: var
+    var_name: L:INI_PRESSURE_SELECTOR_INDICATOR_ACTUAL
+  -
+    type: var
+    var_name: L:INI_AIRCOND_LVL_3
+  -
+    type: var
+    var_name: L:INI_HOT_AIR_SUPPLY_ON
+  -
+    type: var
+    var_name: L:INI_AIRCOND_LVL_2
+  -
+    type: var
+    var_name: L:INI_AIRCOND_LVL_1
+  -
+    type: var
+    var_name: L:INI_PACK1_BUTTON
+  -
+    type: var
+    var_name: L:INI_PACK1_BUTTON
+  -
+    type: var
+    var_name: L:__GUARD_RAM_AIR_STATE
+  -
+    type: var
+    var_name: L:INI_RAM_AIR_ON
+  -
+    type: var
+    var_name: L:INI_PACK2_BUTTON
+  -
+    type: var
+    var_name: L:INI_ECON_FLOW_SELECTED
+  -
+    type: var
+    var_name: L:INI_MAX_COOL
+  -
+    type: var
+    var_name: L:INI_XBLEED
+  -
+    type: var
+    var_name: L:INI_ENG1_BLEED
+  -
+    type: var
+    var_name: L:INI_XBLEED_MODE
+  -
+    type: var
+    var_name: L:INI_ENG2_BLEED
+  -
+    type: var
+    var_name: L:INI_BLEED_ENG1_HP_VALVE
+  -
+    type: var
+    var_name: L:INI_BLEED_ENG2_HP_VALVE
+  -
+    type: var
+    var_name: L:INI_APU_BLEED
+  -
+    type: var
+    var_name: L:INI_EMER_EXIT_SWITCH
+  -
+    type: var
+    var_name: L:INI_ANNLT_SWITCH
+  -
+    type: var
+    var_name: L:INI_STBY_COMPASS_LIGHT_SWITCH
+
+  # ---------------------------------------------------------------------------- #
+  #                                 CAPTAIN SIDE                                 #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: var
+    var_name: L:INI_CPT_SUN_VISOR_STATE
+  -
+    type: var
+    var_name: L:INI_FO_SUN_VISOR_STATE
+  -
+    type: var
+    var_name: L:INI_TAKEOFF_TOGGLE
+  -
+    type: var
+    var_name: L:INI_AUTOLAND_LIGHT_TEST
+  -
+    type: var
+    var_name: L:INI_STOP_RUDDER_INPUT_TEST_BUTTON
+  -
+    type: var
+    var_name: L:LIGHTING_POTENTIOMETER_60
+  -
+    type: NumSet
+    var_name: A:LIGHT POTENTIOMETER:60
+    var_units: Percent
+    var_type: f64
+    event_name: LIGHT_POTENTIOMETER_SET
+    event_param: 60
+    index_reversed: true
+  -
+    type: var
+    var_name: L:LIGHTING_POTENTIOMETER_61
+  -
+    type: NumSet
+    var_name: A:LIGHT POTENTIOMETER:61
+    var_units: Percent
+    var_type: f64
+    event_name: LIGHT_POTENTIOMETER_SET
+    event_param: 61
+    index_reversed: true
+  -
+    type: var
+    var_name: L:LIGHTING_POTENTIOMETER_12
+  -
+    type: NumSet
+    var_name: A:LIGHT POTENTIOMETER:12
+    var_units: Percent
+    var_type: f64
+    event_name: LIGHT_POTENTIOMETER_SET
+    event_param: 12
+    index_reversed: true
+  -
+    type: var
+    var_name: L:INI_FDIR_SWITCH_CAPT
+  -
+    type: var
+    var_name: L:INI_FPV_ON
+  -
+    type: var
+    var_name: L:INI_EFIS_SELECTED_NAV_CAPT
+  -
+    type: var
+    var_name: L:INI_DH_SELECTED
+  -
+    type: var
+    var_name: L:INI_FPA_SELECTED
+  -
+    type: var
+    var_name: L:INI_MINIMUMS_PILOT
+  -
+    type: var
+    var_name: L:INI_FPA_SET
+  -
+    type: var
+    var_name: L:INI_MAP_MODE_CAPT_SWITCH
+  -
+    type: var
+    var_name: L:INI_MAP_RANGE_CAPT_SWITCH
+  -
+    type: var
+    var_name: L:INI_SHOW_CONSTRAINTS
+  -
+    type: var
+    var_name: L:INI_SHOW_FIXES
+  -
+    type: var
+    var_name: L:INI_SHOW_VORS
+  -
+    type: var
+    var_name: L:INI_SHOW_NDBS
+  -
+    type: var
+    var_name: L:INI_SHOW_AIRPORTS
+  -
+    type: var
+    var_name: L:__CPT_AP_DISCOISPRESSED
+  -
+    type: var
+    var_name: L:INI_CPT_SEAT_BKFWD_ANIM
+  # -
+  #   type: LocalVarProxy
+  #   var_name: L:__CPT_AP_DISCOISPRESSED
+  #   target: L:INI_AP_DISCONNECT_BUTTON
+
+  # ---------------------------------------------------------------------------- #
+  #                                   FCU PANEL                                  #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: var
+    var_name: L:INI_AIRSPEED_IS_MACH
+  -
+    type: var
+    var_name: L:INI_AIRSPEED_DIAL
+  -
+    type: var
+    var_name: L:INI_AT_ON
+  -
+    type: var
+    var_name: L:INI_PRESET_SETTING
+  -
+    type: var
+    var_name: L:INI_PRESET_SPEED
+  -
+    type: var
+    var_name: L:INI_PRESET_LIGHT
+  -
+    type: var
+    var_name: L:INI_FCU_SELECTED_SPEED_BUTTON
+  -
+    type: var
+    var_name: L:INI_ALTITUDE_DIAL
+  -
+    type: var
+    var_name: L:INI_FCU_ALTITUDE_PUSH_COMMAND
+  -
+    type: var
+    var_name: L:INI_FCU_ALTITUDE_PULL_COMMAND
+  -
+    type: var
+    var_name: L:INI_HEADING_DIAL
+  -
+    type: var
+    var_name: L:INI_BANK_MODE
+  -
+    type: var
+    var_name: L:INI_PITCH_MODE
+  -
+    type: var
+    var_name: L:INI_PITCH_MODE_ARM
+  -
+    type: var
+    var_name: L:INI_ROLL_MODE
+  -
+    type: var
+    var_name: L:INI_ROLL_MODE_ARM
+  -
+    type: var
+    var_name: L:INI_VVI_DIAL
+  -
+    type: var
+    var_name: L:AP6_BUTTON
+  -
+    type: var
+    var_name: L:AP7_BUTTON
+  -
+    type: var
+    var_name: L:AP9_BUTTON
+  -
+    type: var
+    var_name: L:INI_AP1_BUTTON
+  -
+    type: var
+    var_name: L:INI_AP2_BUTTON
+  -
+    type: var
+    var_name: L:INI_CWS_COMMAND
+
+  # ---------------------------------------------------------------------------- #
+  #                              FIRST OFFICER SIDE                              #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: var
+    var_name: L:INI_FO_DH_SELECTED
+  -
+    type: var
+    var_name: L:INI_FO_FPA_SELECTED
+  -
+    type: var
+    var_name: L:INI_MINIMUMS_FO
+  -
+    type: var
+    var_name: L:INI_FPA_SET_FO
+  -
+    type: var
+    var_name: L:INI_MAP_MODE_FO_SWITCH
+  -
+    type: var
+    var_name: L:INI_MAP_RANGE_FO_SWITCH
+  -
+    type: var
+    var_name: L:INI_SHOW_CONSTRAINTS2
+  -
+    type: var
+    var_name: L:INI_SHOW_FIXES2
+  -
+    type: var
+    var_name: L:INI_SHOW_VORS2
+  -
+    type: var
+    var_name: L:INI_SHOW_NDBS2
+  -
+    type: var
+    var_name: L:INI_SHOW_AIRPORTS2
+  -
+    type: var
+    var_name: L:INI_FDIR_SWITCH_FO
+  -
+    type: var
+    var_name: L:INI_FPV2_ON
+  -
+    type: var
+    var_name: L:INI_EFIS_SELECTED_NAV_FO
+  -
+    type: var
+    var_name: L:LIGHTING_POTENTIOMETER_62
+  -
+    type: NumSet
+    var_name: A:LIGHT POTENTIOMETER:62
+    var_units: Percent
+    var_type: f64
+    event_name: LIGHT_POTENTIOMETER_SET
+    event_param: 62
+    index_reversed: true
+  -
+    type: var
+    var_name: L:LIGHTING_POTENTIOMETER_63
+  -
+    type: NumSet
+    var_name: A:LIGHT POTENTIOMETER:63
+    var_units: Percent
+    var_type: f64
+    event_name: LIGHT_POTENTIOMETER_SET
+    event_param: 63
+    index_reversed: true
+  -
+    type: var
+    var_name: L:LIGHTING_POTENTIOMETER_13
+  -
+    type: NumSet
+    var_name: A:LIGHT POTENTIOMETER:13
+    var_units: Percent
+    var_type: f64
+    event_name: LIGHT_POTENTIOMETER_SET
+    event_param: 13
+    index_reversed: true
+  -
+    type: var
+    var_name: L:INI_POTENTIOMETER_16
+  -
+    type: var
+    var_name: L:INI_POTENTIOMETER_26
+  -
+    type: var
+    var_name: L:INI_POTENTIOMETER_25
+  -
+    type: var
+    var_name: L:INI_CAPT_ATT_HDG_COMMAND
+  -
+    type: var
+    var_name: L:INI_CAPT_SWITCH_ADC_INST_FO1
+  -
+    type: var
+    var_name: L:INI_CAPT_SWITCH_FD_FO1
+  -
+    type: var
+    var_name: L:INI_CAPT_SGU_COMMAND
+  -
+    type: var
+    var_name: L:INI_CAPT_SWITCH_EFIS_SGU_FO3
+  -
+    type: var
+    var_name: L:INI_PFD_ND_XFR
+  -
+    type: var
+    var_name: L:INI_TERR_MODE
+  -
+    type: var
+    var_name: L:INI_GPWS_FLAP_SWITCH
+  -
+    type: var
+    var_name: L:INI_TERR_ON_CAPT
+  -
+    type: var
+    var_name: L:INI_MASTER_WARNING_ACTIVE
+  -
+    type: var
+    var_name: L:INI_MASTER_CAUTION_ACTIVE
+  -
+    type: var
+    var_name: L:INI_GPWS_PUSH
+  -
+    type: var
+    var_name: L:INI_CPT_ALTIMETER_BUG
+  - 
+    type: NumSet
+    var_name: A:KOHLSMAN SETTING MB:1
+    var_units: Millibars scaler 16
+    var_type: f64
+    event_name: KOHLSMAN_SET
+    cancel_h_events: true
+    event_param: 1
+  -
+    type: var
+    var_name: L:INI_CPT_ALTIMETER_PULL_COMMAND
+  -
+    type: var
+    var_name: L:INI_CPT_ALTIMETER_STD_COMMAND
+  -
+    type: var
+    var_name: L:INI_CHRONO_GMT_STATUS
+  -
+    type: var
+    var_name: L:INI_CHRONO_STATE
+  -
+    type: var
+    var_name: L:INI_CHRONO_START_BUTTON
+  -
+    type: var
+    var_name: L:INI_CHRONO_ET_STATUS
+  - 
+    type: NumSet
+    var_name: A:KOHLSMAN SETTING MB:3
+    var_units: Millibars scaler 16
+    var_type: f64
+    event_name: KOHLSMAN_SET
+    cancel_h_events: true
+    event_param: 3
+  -
+    type: var
+    var_name: L:INI_STANDBY_HORIZON_CAGED
+  -
+    type: var
+    var_name: L:INI_BRAKE_SYSTEM
+  -
+    type: var
+    var_name: L:INI_ABRK_HI_COMMAND
+  -
+    type: var
+    var_name: L:INI_ABRK_MED_COMMAND
+  -
+    type: var
+    var_name: L:INI_ABRK_LOW_COMMAND
+  -
+    type: var
+    var_name: L:INI_LANDING_ELEVATION
+  -
+    type: var
+    var_name: L:INI_TRP_TOGA_BUTTON
+  -
+    type: var
+    var_name: L:INI_TRP_MCT_BUTTON
+  -
+    type: var
+    var_name: L:INI_TRP_CL_BUTTON
+  -
+    type: var
+    var_name: L:INI_TRP_CR_BUTTON
+  -
+    type: var
+    var_name: L:INI_TRP_AUTO_BUTTON
+  -
+    type: var
+    var_name: L:INI_TRP_MODE
+  -
+    type: var
+    var_name: L:INI_FLEX_TEMPERATURE
+  -
+    type: var
+    var_name: L:INI_GEAR_HANDLE_STATUS
+  -
+    type: var
+    var_name: L:INI_LDG_GEAR_WARNING_TEST
+  -
+    type: var
+    var_name: L:INI_BRAKE_POSITION_DETECTION_SYSTEM
+  -
+    type: var
+    var_name: L:INI_BRAKE_FAN_ON
+  -
+    type: var
+    var_name: L:INI_TERR_ON_FO
+  - 
+    type: NumSet
+    var_name: A:KOHLSMAN SETTING MB:2
+    var_units: Millibars scaler 16
+    var_type: f64
+    event_name: KOHLSMAN_SET
+    cancel_h_events: true
+    event_param: 2
+  -
+    type: var
+    var_name: L:INI_FO_ALTIMETER_PULL_COMMAND
+  -
+    type: var
+    var_name: L:INI_FO_ALTIMETER_STD_COMMAND
+  -
+    type: var
+    var_name: L:INI_FO_ALTIMETER_BUG
+  -
+    type: var
+    var_name: L:INI_CHRONO_GMT_STATUS_FO
+  -
+    type: var
+    var_name: L:INI_CHRONO_STATE_FO
+  -
+    type: var
+    var_name: L:INI_CHRONO_START_BUTTON_FO
+  -
+    type: var
+    var_name: L:INI_CHRONO_ET_STATUS_FO
+  -
+    type: var
+    var_name: L:INI_FO_ATT_HDG_COMMAND
+  -
+    type: var
+    var_name: L:INI_FO_SWITCH_ADC_INST_FO1
+  -
+    type: var
+    var_name: L:INI_FO_SWITCH_FD_FO1
+  -
+    type: var
+    var_name: L:INI_FO_SGU_COMMAND
+  -
+    type: var
+    var_name: L:INI_FO_SWITCH_EFIS_SGU_FO3
+  -
+    type: var
+    var_name: L:INI_FO_PFD_ND_XFR
+  -
+    type: var
+    var_name: L:INI_POTENTIOMETER_27
+  -
+    type: var
+    var_name: L:INI_POTENTIOMETER_17
+  -
+    type: var
+    var_name: L:__FO_AP_DISCOISPRESSED
+  -
+    type: var
+    var_name: L:INI_FO_SEAT_BKFWD_ANIM
+  # -
+  #   type: LocalVarProxy
+  #   var_name: L:__FO_AP_DISCOISPRESSED
+  #   target: L:INI_AP_DISCONNECT_BUTTON
+
+  # ---------------------------------------------------------------------------- #
+  #                                    MCDU 1                                    #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_0_KEY
+    target: L:INI_MCDU1_0
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_1_KEY
+    target: L:INI_MCDU1_1
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_2_KEY
+    target: L:INI_MCDU1_2
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_3_KEY
+    target: L:INI_MCDU1_3
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_4_KEY
+    target: L:INI_MCDU1_4
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_5_KEY
+    target: L:INI_MCDU1_5
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_6_KEY
+    target: L:INI_MCDU1_6
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_7_KEY
+    target: L:INI_MCDU1_7
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_8_KEY
+    target: L:INI_MCDU1_8
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_9_KEY
+    target: L:INI_MCDU1_9
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_A_KEY
+    target: L:INI_MCDU1_A
+  -
+    type: var
+    var_name: L:INI_MCDU1_AIRPORT
+  -
+    type: var
+    var_name: L:INI_MCDU1_ATC
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_B_KEY
+    target: L:INI_MCDU1_B
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_C_KEY
+    target: L:INI_MCDU1_C
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_CLR_KEY
+    target: L:INI_MCDU1_CLR
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_D_KEY
+    target: L:INI_MCDU1_D
+  -
+    type: var
+    var_name: L:INI_MCDU1_DATA
+  -
+    type: var
+    var_name: L:INI_MCDU1_DECIMAL
+  -
+    type: var
+    var_name: L:INI_MCDU1_DIR
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_DIR_TO_KEY
+    target: L:INI_MCDU1_DIR_TO
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_DOT_KEY
+    target: L:INI_MCDU1_DOT
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_DOWN_KEY
+    target: L:INI_MCDU1_DOWN
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_E_KEY
+    target: L:INI_MCDU1_E
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_ENGOUT_KEY
+    target: L:INI_MCDU1_ENGOUT
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_F_KEY
+    target: L:INI_MCDU1_F
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_FPLAN_KEY
+    target: L:INI_MCDU1_FPLAN
+  -
+    type: var
+    var_name: L:INI_MCDU1_FUEL
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_FUEL_PRED_KEY
+    target: L:INI_MCDU1_FUEL_PRED
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_G_KEY
+    target: L:INI_MCDU1_G
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_H_KEY
+    target: L:INI_MCDU1_H
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_I_KEY
+    target: L:INI_MCDU1_I
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_INIT_KEY
+    target: L:INI_MCDU1_INIT
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_J_KEY
+    target: L:INI_MCDU1_J
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_K_KEY
+    target: L:INI_MCDU1_K
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_L_KEY
+    target: L:INI_MCDU1_L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK1L_KEY
+    target: L:INI_MCDU1_LSK1L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK1R_KEY
+    target: L:INI_MCDU1_LSK1R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK2L_KEY
+    target: L:INI_MCDU1_LSK2L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK2R_KEY
+    target: L:INI_MCDU1_LSK2R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK3L_KEY
+    target: L:INI_MCDU1_LSK3L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK3R_KEY
+    target: L:INI_MCDU1_LSK3R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK4L_KEY
+    target: L:INI_MCDU1_LSK4L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK4R_KEY
+    target: L:INI_MCDU1_LSK4R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK5L_KEY
+    target: L:INI_MCDU1_LSK5L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK5R_KEY
+    target: L:INI_MCDU1_LSK5R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK6L_KEY
+    target: L:INI_MCDU1_LSK6L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_LSK6R_KEY
+    target: L:INI_MCDU1_LSK6R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_M_KEY
+    target: L:INI_MCDU1_M
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_MENU_KEY
+    target: L:INI_MCDU1_MENU
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_MINUS_KEY
+    target: L:INI_MCDU1_MINUS
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_MODE_KEY
+    target: L:INI_MCDU1_MODE
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_N_KEY
+    target: L:INI_MCDU1_N
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_NEXT_KEY
+    target: L:INI_MCDU1_NEXT
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_O_KEY
+    target: L:INI_MCDU1_O
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_P_KEY
+    target: L:INI_MCDU1_P
+  -
+    type: var
+    var_name: L:INI_MCDU1_PERF
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_PLUS_KEY
+    target: L:INI_MCDU1_PLUS
+  -
+    type: var
+    var_name: L:INI_MCDU1_PREV
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_PROG_KEY
+    target: L:INI_MCDU1_PROG
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_Q_KEY
+    target: L:INI_MCDU1_Q
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_R_KEY
+    target: L:INI_MCDU1_R
+  -
+    type: var
+    var_name: L:INI_MCDU1_RADNAV
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_REF_KEY
+    target: L:INI_MCDU1_REF
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_S_KEY
+    target: L:INI_MCDU1_S
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_SEC_KEY
+    target: L:INI_MCDU1_SEC
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_SEC_PLAN_KEY
+    target: L:INI_MCDU1_SEC_PLAN
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_SLASH_KEY
+    target: L:INI_MCDU1_SLASH
+  -
+    type: var
+    var_name: L:INI_MCDU1_SPACE
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_T_KEY
+    target: L:INI_MCDU1_T
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_TACT_MODE_KEY
+    target: L:INI_MCDU1_TACT_MODE
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_TO_APPR_KEY
+    target: L:INI_MCDU1_TO_APPR
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_U_KEY
+    target: L:INI_MCDU1_U
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_UARROW_KEY
+    target: L:INI_MCDU1_UARROW
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_V_KEY
+    target: L:INI_MCDU1_V
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_W_KEY
+    target: L:INI_MCDU1_W
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_X_KEY
+    target: L:INI_MCDU1_X
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_Y_KEY
+    target: L:INI_MCDU1_Y
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU1_Z_KEY
+    target: L:INI_MCDU1_Z
+
+  # ---------------------------------------------------------------------------- #
+  #                           RADIO NAVIGATION SECTION                           #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: var
+    var_name: L:INI_VOR1_FREQUENCY_MHZ
+  -
+    type: var
+    var_name: L:INI_VOR1_FREQUENCY_KHZ
+  -
+    type: NumSet
+    var_name: A:NAV OBS:1
+    var_units: Degrees
+    var_type: i32
+    event_name: VOR1_SET
+    cancel_h_events: true
+    use_calculator: true
+  -
+    type: var
+    var_name: L:INI_ILS_FREQUENCY_MHZ
+  -
+    type: var
+    var_name: L:INI_ILS_FREQUENCY_KHZ
+  -
+    type: var
+    var_name: L:INI_ILS_COURSE
+  -
+    type: var
+    var_name: L:INI_VOR2_FREQUENCY_MHZ
+  -
+    type: var
+    var_name: L:INI_VOR2_FREQUENCY_KHZ
+  -
+    type: NumSet
+    var_name: A:NAV OBS:2
+    var_units: Degrees
+    var_type: i32
+    event_name: VOR2_SET
+    cancel_h_events: true
+    use_calculator: true
+  -
+    type: var
+    var_name: L:INI_GPWS_LANDING_SWITCH
+
+  # ---------------------------------------------------------------------------- #
+  #                                    MCDU 2                                    #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_0_KEY
+    target: L:INI_MCDU2_0
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_1_KEY
+    target: L:INI_MCDU2_1
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_2_KEY
+    target: L:INI_MCDU2_2
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_3_KEY
+    target: L:INI_MCDU2_3
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_4_KEY
+    target: L:INI_MCDU2_4
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_5_KEY
+    target: L:INI_MCDU2_5
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_6_KEY
+    target: L:INI_MCDU2_6
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_7_KEY
+    target: L:INI_MCDU2_7
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_8_KEY
+    target: L:INI_MCDU2_8
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_9_KEY
+    target: L:INI_MCDU2_9
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_A_KEY
+    target: L:INI_MCDU2_A
+  -
+    type: var
+    var_name: L:INI_MCDU2_AIRPORT
+  -
+    type: var
+    var_name: L:INI_MCDU2_ATC
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_B_KEY
+    target: L:INI_MCDU2_B
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_C_KEY
+    target: L:INI_MCDU2_C
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_CLR_KEY
+    target: L:INI_MCDU2_CLR
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_D_KEY
+    target: L:INI_MCDU2_D
+  -
+    type: var
+    var_name: L:INI_MCDU2_DATA
+  -
+    type: var
+    var_name: L:INI_MCDU2_DECIMAL
+  -
+    type: var
+    var_name: L:INI_MCDU2_DIR
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_DIR_TO_KEY
+    target: L:INI_MCDU2_DIR_TO
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_DOT_KEY
+    target: L:INI_MCDU2_DOT
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_DOWN_KEY
+    target: L:INI_MCDU2_DOWN
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_E_KEY
+    target: L:INI_MCDU2_E
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_ENGOUT_KEY
+    target: L:INI_MCDU2_ENGOUT
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_F_KEY
+    target: L:INI_MCDU2_F
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_FPLAN_KEY
+    target: L:INI_MCDU2_FPLAN
+  -
+    type: var
+    var_name: L:INI_MCDU2_FUEL
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_FUEL_PRED_KEY
+    target: L:INI_MCDU2_FUEL_PRED
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_G_KEY
+    target: L:INI_MCDU2_G
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_H_KEY
+    target: L:INI_MCDU2_H
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_I_KEY
+    target: L:INI_MCDU2_I
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_INIT_KEY
+    target: L:INI_MCDU2_INIT
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_J_KEY
+    target: L:INI_MCDU2_J
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_K_KEY
+    target: L:INI_MCDU2_K
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_L_KEY
+    target: L:INI_MCDU2_L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK1L_KEY
+    target: L:INI_MCDU2_LSK1L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK1R_KEY
+    target: L:INI_MCDU2_LSK1R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK2L_KEY
+    target: L:INI_MCDU2_LSK2L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK2R_KEY
+    target: L:INI_MCDU2_LSK2R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK3L_KEY
+    target: L:INI_MCDU2_LSK3L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK3R_KEY
+    target: L:INI_MCDU2_LSK3R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK4L_KEY
+    target: L:INI_MCDU2_LSK4L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK4R_KEY
+    target: L:INI_MCDU2_LSK4R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK5L_KEY
+    target: L:INI_MCDU2_LSK5L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK5R_KEY
+    target: L:INI_MCDU2_LSK5R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK6L_KEY
+    target: L:INI_MCDU2_LSK6L
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_LSK6R_KEY
+    target: L:INI_MCDU2_LSK6R
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_M_KEY
+    target: L:INI_MCDU2_M
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_MENU_KEY
+    target: L:INI_MCDU2_MENU
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_MINUS_KEY
+    target: L:INI_MCDU2_MINUS
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_MODE_KEY
+    target: L:INI_MCDU2_MODE
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_N_KEY
+    target: L:INI_MCDU2_N
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_NEXT_KEY
+    target: L:INI_MCDU2_NEXT
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_O_KEY
+    target: L:INI_MCDU2_O
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_P_KEY
+    target: L:INI_MCDU2_P
+  -
+    type: var
+    var_name: L:INI_MCDU2_PERF
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_PLUS_KEY
+    target: L:INI_MCDU2_PLUS
+  -
+    type: var
+    var_name: L:INI_MCDU2_PREV
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_PROG_KEY
+    target: L:INI_MCDU2_PROG
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_Q_KEY
+    target: L:INI_MCDU2_Q
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_R_KEY
+    target: L:INI_MCDU2_R
+  -
+    type: var
+    var_name: L:INI_MCDU2_RADNAV
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_REF_KEY
+    target: L:INI_MCDU2_REF
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_S_KEY
+    target: L:INI_MCDU2_S
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_SEC_KEY
+    target: L:INI_MCDU2_SEC
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_SEC_PLAN_KEY
+    target: L:INI_MCDU2_SEC_PLAN
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_SLASH_KEY
+    target: L:INI_MCDU2_SLASH
+  -
+    type: var
+    var_name: L:INI_MCDU2_SPACE
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_T_KEY
+    target: L:INI_MCDU2_T
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_TACT_MODE_KEY
+    target: L:INI_MCDU2_TACT_MODE
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_TO_APPR_KEY
+    target: L:INI_MCDU2_TO_APPR
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_U_KEY
+    target: L:INI_MCDU2_U
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_UARROW_KEY
+    target: L:INI_MCDU2_UARROW
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_V_KEY
+    target: L:INI_MCDU2_V
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_W_KEY
+    target: L:INI_MCDU2_W
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_X_KEY
+    target: L:INI_MCDU2_X
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_Y_KEY
+    target: L:INI_MCDU2_Y
+  -
+    type: LocalVarProxy
+    var_name: L:INI_MCDU2_Z_KEY
+    target: L:INI_MCDU2_Z
+
+  # ---------------------------------------------------------------------------- #
+  #                               THROTTLE QUADRANT                              #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: var
+    var_name: L:ELEV_TRIM_RATIO
+  - 
+    type: NumIncrement
+    var_name: L:INI_SPOILERS_ARMED
+    var_units: number
+    var_type: f64
+    up_event_name: SPOILERS_ARM_ON
+    down_event_name: SPOILERS_ARM_OFF
+    increment_by: 1
+    is_user_event: true
+  - 
+    type: NumSet
+    var_name: A:SPOILERS HANDLE POSITION
+    var_units: Position 16k
+    var_type: i32
+    event_name: SPOILERS_SET
+    multiply_by: 5
+    is_user_event: true
+  -
+    type: var
+    var_name: L:INI_ACCU_PRESS_BUTTON
+  - 
+    type: NumSet
+    var_name: A:BRAKE PARKING POSITION
+    var_units: Bool
+    var_type: i32
+    event_name: PARKING_BRAKE_SET
+  -
+    type: var
+    var_name: L:INI_MIXTURE_RATIO1_HANDLE  
+  -
+    type: var
+    var_name: L:INI_MIXTURE_RATIO2_HANDLE
+  -
+    type: var
+    var_name: L:INI_PUSH_EWD_NORM_CANCEL
+  -
+    type: var
+    var_name: L:__EMER_GAURD_STATE
+  -
+    type: var
+    var_name: L:INI_PUSH_EWD_EMER_CANCEL
+  -
+    type: var
+    var_name: L:INI_TAKEOFF_CONFIG_PRESSED
+  - 
+    type: NumIncrement
+    var_name: L:INI_FLAPS_HANDLE_INDEX
+    var_units: number
+    var_type: f64
+    up_event_name: FLAPS_INCR
+    down_event_name: FLAPS_DECR
+    increment_by: 1
+    is_user_event: true
+
+  # ---------------------------------------------------------------------------- #
+  #                                   PEDESTAL                                   #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: var
+    var_name: L:INI_CPT_VHF_TRANSFER_SWITCH
+  -
+    type: var
+    var_name: L:INI_CPT_VHF_SQL_SWITCH
+  -
+    type: var
+    var_name: L:XMLVAR_COM_PANEL1_Transmit_Channel
+  -
+    type: var
+    var_name: L:XMLVAR_COM_1_VHF_L_Switch_Down
+  -
+    type: var
+    var_name: L:XMLVAR_COM_1_Volume_VHF_L
+  -
+    type: var
+    var_name: L:XMLVAR_COM_1_VHF_C_Switch_Down
+  -
+    type: var
+    var_name: L:XMLVAR_COM_1_Volume_VHF_C
+  -
+    type: var
+    var_name: L:XMLVAR_COM_1_VHF_R_Switch_Down
+  -
+    type: var
+    var_name: L:XMLVAR_COM_1_Volume_VHF_R
+  -
+    type: var
+    var_name: L:INI_VHF1_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_VHF2_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_VHF3_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_HF1_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_HF2_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_INT_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_PA_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_ADF1_FREQUENCY
+  -
+    type: var
+    var_name: L:INI_ADF1_TRANSFER_SWITCH
+  -
+    type: var
+    var_name: L:INI_ADF1_TONE_SWITCH
+  -
+    type: var
+    var_name: L:INI_ADF1_ANT_SWITCH
+  -
+    type: var
+    var_name: L:INI_ADF1_STBY_FREQUENCY
+  -
+    type: var
+    var_name: L:INI_TCAS_MODE
+  -
+    type: var
+    var_name: L:INI_TCAS_RANGE
+  -
+    type: var
+    var_name: L:INI_TCAS_ALT_SYSTEM
+  -
+    type: var
+    var_name: L:INI_TCAS_MODE_PEDESTAL
+  -
+    type: var
+    var_name: L:INI_TCAS_XPDR
+  -
+    type: var
+    var_name: L:INI_TCAS_TEST_ACTIVE
+  -
+    type: customcalculator
+    get: (L:__TCAS_IDENTISPRESSED)
+    set: 1 (>K:XPNDR_IDENT_TOGGLE)
+    condition:
+      equals:
+        F64: 1.0
+  - type: var
+    var_name: A:TRANSPONDER CODE:1
+    var_units: Number
+    var_type: i32
+  -
+    type: var
+    var_name: L:LIGHTING_POTENTIOMETER_64
+  -
+    type: NumSet
+    var_name: A:LIGHT POTENTIOMETER:64
+    var_units: Percent
+    var_type: f64
+    event_name: LIGHT_POTENTIOMETER_SET
+    event_param: 64
+    index_reversed: true
+  -
+    type: var
+    var_name: L:INI_SGU1
+  -
+    type: var
+    var_name: L:INI_SGU2
+  -
+    type: var
+    var_name: L:LIGHTING_POTENTIOMETER_65
+  -
+    type: NumSet
+    var_name: A:LIGHT POTENTIOMETER:65
+    var_units: Percent
+    var_type: f64
+    event_name: LIGHT_POTENTIOMETER_SET
+    event_param: 65
+    index_reversed: true
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_CLRISPRESSED
+    target: L:PUSH_EWD_CLR
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_STSISPRESSED
+    target: L:PUSH_EWD_STS
+  -
+    type: var
+    var_name: L:PUSH_EWD_RCL
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_ENGISPRESSED
+    target: L:PUSH_ECAM_ENG
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_BLEEDISPRESSED
+    target: L:PUSH_ECAM_BLEED
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_APUISPRESSED
+    target: L:PUSH_ECAM_APU
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_HYDISPRESSED
+    target: L:PUSH_ECAM_HYD
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_CONDISPRESSED
+    target: L:PUSH_ECAM_COND
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_FCTLISPRESSED
+    target: L:PUSH_ECAM_FCTL
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_ACISPRESSED
+    target: L:PUSH_ECAM_ELEC_AC
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_PRESSISPRESSED
+    target: L:PUSH_ECAM_PRESS
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_DOORISPRESSED
+    target: L:PUSH_ECAM_DOOR
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_DCISPRESSED
+    target: L:PUSH_ECAM_ELEC_DC
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_FUELISPRESSED
+    target: L:PUSH_ECAM_FUEL
+  -
+    type: LocalVarProxy
+    var_name: L:__ECAM_WHEELISPRESSED
+    target: L:PUSH_ECAM_WHEEL
+  -
+    type: var
+    var_name: L:INI_RESET_RUDDER_TRIM_COMMAND
+  -
+    type: var
+    var_name: L:INI_CPT_VHF_SQL_SWITCH
+  -
+    type: var
+    var_name: L:INI_VHF1_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_VHF2_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_VHF3_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_HF1_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_HF2_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_INT_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_PA_CAPTAIN
+  -
+    type: var
+    var_name: L:INI_ADF1_FREQUENCY
+  -
+    type: var
+    var_name: L:INI_ADF1_TRANSFER_SWITCH
+  -
+    type: var
+    var_name: L:INI_ADF1_TONE_SWITCH
+  -
+    type: var
+    var_name: L:INI_ADF1_ANT_SWITCH
+  -
+    type: var
+    var_name: L:INI_ADF1_STBY_FREQUENCY
+  -
+    type: var
+    var_name: L:INI_FO_VHF_TRANSFER_SWITCH
+  -
+    type: var
+    var_name: L:INI_FO_VHF_SQL_SWITCH
+  -
+    type: var
+    var_name: L:XMLVAR_COM_PANEL2_Transmit_Channel
+  -
+    type: var
+    var_name: L:XMLVAR_COM_2_VHF_L_Switch_Down
+  -
+    type: var
+    var_name: L:XMLVAR_COM_2_Volume_VHF_L
+  -
+    type: var
+    var_name: L:XMLVAR_COM_2_VHF_C_Switch_Down
+  -
+    type: var
+    var_name: L:XMLVAR_COM_2_Volume_VHF_C
+  -
+    type: var
+    var_name: L:XMLVAR_COM_2_VHF_R_Switch_Down
+  -
+    type: var
+    var_name: L:XMLVAR_COM_2_Volume_VHF_R
+  -
+    type: var
+    var_name: L:INI_VHF1_FO
+  -
+    type: var
+    var_name: L:INI_VHF2_FO
+  -
+    type: var
+    var_name: L:INI_VHF3_FO
+  -
+    type: var
+    var_name: L:INI_HF1_FO
+  -
+    type: var
+    var_name: L:INI_HF2_FO
+  -
+    type: var
+    var_name: L:INI_INT_FO
+  -
+    type: var
+    var_name: L:INI_PA_FO
+  -
+    type: var
+    var_name: L:INI_ADF2_FREQUENCY
+  -
+    type: var
+    var_name: L:INI_ADF2_TRANSFER_SWITCH
+  -
+    type: var
+    var_name: L:INI_ADF2_TONE_SWITCH
+  -
+    type: var
+    var_name: L:INI_ADF2_ANT_SWITCH
+  -
+    type: var
+    var_name: L:INI_ADF2_STBY_FREQUENCY
+  -
+    type: var
+    var_name: L:INI_POTENTIOMETER_3
+  -
+    type: var
+    var_name: L:INI_POTENTIOMETER_4
+  -
+    type: var
+    var_name: L:INI_WXR_SYS
+  -
+    type: var
+    var_name: L:INI_WXR_MODE
+  -
+    type: var
+    var_name: L:INI_WXR_GAIN
+  -
+    type: var
+    var_name: L:INI_WXR_TILT
+  - 
+    type: NumSet
+    var_name: A:RUDDER TRIM PCT
+    var_units: Percent scaler 16k
+    var_type: f64
+    event_name: RUDDER_TRIM_SET_EX1
+    unreliable: true
+  # -
+    # type: NumSet
+    # var_name: A:ELEVATOR TRIM PCT
+    # var_units: Percent scaler 16k
+    # var_type: f64
+    # event_name: ELEVATOR_TRIM_SET
+    # unreliable: true
+  -
+    type: NumSet
+    var_name: A:AILERON TRIM PCT
+    var_units: Percent scaler 16k
+    var_type: f64
+    event_name: AILERON_TRIM_SET_EX1
+    unreliable: true
+
+Master:
+  # ---------------------------------------------------------------------------- #
+  #                                FLIGHT CONTROLS                               #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: NumSet
+    var_name: A:ELEVATOR POSITION
+    var_units: Position 16k
+    var_type: f64
+    event_name: AXIS_ELEVATOR_SET
+    interpolate: InvertConstant
+  -
+    type: NumSet
+    var_name: A:AILERON POSITION
+    var_units: Position 16k
+    var_type: f64
+    event_name: AXIS_AILERONS_SET
+    interpolate: InvertConstant
+  -
+    type: NumSet
+    var_name: A:RUDDER POSITION
+    var_units: Position 16k
+    var_type: f64
+    event_name: AXIS_RUDDER_SET
+    interpolate: InvertConstant
+  -
+    type: NumSet
+    var_name: A:BRAKE LEFT POSITION EX1
+    var_units: Position 32k
+    var_type: i32
+    event_name: AXIS_LEFT_BRAKE_SET
+    add_by: -16384
+    unreliable: true
+  -
+    type: NumSet
+    var_name: A:BRAKE RIGHT POSITION EX1
+    var_units: Position 32k
+    var_type: i32
+    event_name: AXIS_RIGHT_BRAKE_SET
+    add_by: -16384
+    unreliable: true
+
+  # ---------------------------------------------------------------------------- #
+  #                               THROTTLE POSITION                              #
+  # ---------------------------------------------------------------------------- #
+
+  -
+    type: var
+    var_name: L:INI_AUTOTHRUST_TLA:1
+  -
+    type: var
+    var_name: L:INI_AUTOTHRUST_TLA:2
+  -
+    type: var
+    var_name: L:INI_REVERSE1_HANDLE_PERCENT
+  -
+    type: var
+    var_name: L:INI_REVERSE2_HANDLE_PERCENT
+
+# server:
+  # ---------------------------------------------------------------------------- #
+  #                                     FUEL                                     #
+  # ---------------------------------------------------------------------------- #
+
+  # -
+  #   type: var
+  #   var_name: A:FUEL TANK LEFT AUX LEVEL
+  #   var_units: Percent
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:FUEL TANK RIGHT AUX LEVEL
+  #   var_units: Percent
+  #   var_type: f64
+  #   unreliable: true
+  #
+  # -
+  #   type: var
+  #   var_name: A:FUEL TANK CENTER LEVEL
+  #   var_units: Percent
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:FUEL TANK CENTER2 LEVEL
+  #   var_units: Percent
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:FUEL TANK CENTER3 LEVEL
+  #   var_units: Percent
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:FUEL TANK RIGHT MAIN LEVEL
+  #   var_units: Percent
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:FUEL TANK LEFT MAIN LEVEL
+  #   var_units: Percent
+  #   var_type: f64
+  #   unreliable: true
+
+  # ---------------------------------------------------------------------------- #
+  #                                    PAYLOAD                                   #
+  # ---------------------------------------------------------------------------- #
+
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:1
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:2
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:3
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:4
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:5
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:6
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:7
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:8
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:9
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:10
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:11
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:12
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:13
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:14
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:15
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:16
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:17
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:18
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:19
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:20
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:21
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:22
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:23
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:24
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:25
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:26
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:27
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:28
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:29
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:30
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:31
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:32
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+  # -
+  #   type: var
+  #   var_name: A:PAYLOAD STATION WEIGHT:33
+  #   var_units: Pounds
+  #   var_type: f64
+  #   unreliable: true
+
+ignore:
+
+  # ---------------------------------------------------------------------------- #
+  #                                      EFB                                     #
+  # ---------------------------------------------------------------------------- #
+
+  - iniEfbA300#-60946988
+  - iniEfbA300#0
+  - iniEfbA300#4
+  - iniEfbA300#1635439527
+  - iniEfbA300#1592820500
+  - iniEfbA300#-362401279
+  - iniEfbA300#1297939872
+  - iniEfbA300#556444496
+  - iniEfbA300#33119274
+  - iniEfbA300#58395407
+  - iniEfbA300#keyframe-stylesheet
+  - iniEfbA300#-824988475
+  - iniEfbA300#957245454
+  - iniEfbA300#997323095
+  - iniEfbA300#729690493
+  - iniEfbA300#765951800
+  - iniEfbA300#597645657
+  - iniEfbA300#-578820432
+  - iniEfbA300#-220726681
+  - iniEfbA300#-140837876
+  - iniEfbA300#-410892655
+  - iniEfbA300#-416950980
+  - iniEfbA300#505634935
+  - iniEfbA300#-1355131795
+  - iniEfbA300#iniEfbA300
+  - iniEfbA300#-1616946665
+  - iniEfbA300#914120474
+  - iniEfbA300#panel
+  - iniEfbA300#-1004379958
+  - iniEfbA300#InstrumentContent
+  - iniEfbA300#iniEFB
+  - iniEfbA300#timerContainer
+  - iniEfbA300#8
+  - iniEfbA300#powered-off
+  - iniEfbA300#bgimg
+  - iniEfbA300#control-box
+  - iniEfbA300#-963559744
+  - iniEfbA300#741337756
+  - iniEfbA300#-2032527517
+  - iniEfbA300#powerOff
+  - iniEfbA300#lockEfb
+  - iniEfbA300#26
+  - iniEfbA300#1934416678
+  - iniEfbA300#brightness
+  - iniEfbA300#65
+  - iniEfbA300#1934416717
+  - iniEfbA300#panelstate_0
+  - iniEfbA300#panelstate_1
+  - iniEfbA300#panelstate_2
+  - iniEfbA300#panelstate_3
+  - iniEfbA300#header-bar
+  - iniEfbA300#left-menu-bar
+  - iniEfbA300#1720895446
+  - iniEfbA300#menu-home-button
+  - iniEfbA300#right-menu-bar
+  - iniEfbA300#-1986891441
+  - iniEfbA300#819744837
+  - iniEfbA300#-1672439310
+  - iniEfbA300#13
+  - iniEfbA300#-1986891430
+  - iniEfbA300#1746869366
+  - iniEfbA300#-1672439309
+  - iniEfbA300#14
+  - iniEfbA300#1972831622
+  - iniEfbA300#charge-state
+  - iniEfbA300#1972831633
+  - iniEfbA300#control-box-button
+  - iniEfbA300#renderer
+  - iniEfbA300#-1404421308
+  - iniEfbA300#lockscreen
+  - iniEfbA300#1038474072
+  - iniEfbA300#1655703067
+  - iniEfbA300#-1612093602
+  - iniEfbA300#807247380
+  - iniEfbA300#401280927
+  - iniEfbA300#dashboard
+  - iniEfbA300#-1553848553
+  - iniEfbA300#254548825
+  - iniEfbA300#240415468
+  - iniEfbA300#-1610781006
+  - iniEfbA300#859753657
+  - iniEfbA300#209839356
+  - iniEfbA300#-1610781005
+  - iniEfbA300#1659512282
+  - iniEfbA300#1997236474
+  - iniEfbA300#-1610781004
+  - iniEfbA300#-1508305244
+  - iniEfbA300#-407999937
+  - iniEfbA300#-1610781003
+  - iniEfbA300#-439970342
+  - iniEfbA300#-1790712783
+  - iniEfbA300#-1610781002
+  - iniEfbA300#-1740164687
+  - iniEfbA300#-1245414972
+  - iniEfbA300#-1610781001
+  - iniEfbA300#-1442825266
+  - iniEfbA300#2053919301
+  - iniEfbA300#-1610781000
+  - iniEfbA300#366002355
+  - iniEfbA300#-769301051
+  - iniEfbA300#-1610780999
+  - iniEfbA300#-1404421290
+  - iniEfbA300#equip-bg
+  - iniEfbA300#equip
+  - iniEfbA300#-11153329
+  - iniEfbA300#equip-doors
+  - iniEfbA300#doors_l1
+  - iniEfbA300#65646
+  - iniEfbA300#doors_r1
+  - iniEfbA300#65647
+  - iniEfbA300#doors_l2
+  - iniEfbA300#65648
+  - iniEfbA300#doors_r2
+  - iniEfbA300#65649
+  - iniEfbA300#doors_l3
+  - iniEfbA300#65650
+  - iniEfbA300#doors_r3
+  - iniEfbA300#65651
+  - iniEfbA300#doors_l4
+  - iniEfbA300#65652
+  - iniEfbA300#doors_r4
+  - iniEfbA300#65653
+  - iniEfbA300#doors_mainCargo
+  - iniEfbA300#-1863345501
+  - iniEfbA300#doors_aftCargo
+  - iniEfbA300#-1863345500
+  - iniEfbA300#doors_fwdCargo
+  - iniEfbA300#-1863345499
+  - iniEfbA300#doors_bulkCargo
+  - iniEfbA300#-1863345498
+  - iniEfbA300#door1Larmed
+  - iniEfbA300#1827319961
+  - iniEfbA300#door1Rarmed
+  - iniEfbA300#1827319962
+  - iniEfbA300#door2Larmed
+  - iniEfbA300#1827319963
+  - iniEfbA300#door2Rarmed
+  - iniEfbA300#1827319964
+  - iniEfbA300#door3Larmed
+  - iniEfbA300#1827319965
+  - iniEfbA300#door3Rarmed
+  - iniEfbA300#1827319966
+  - iniEfbA300#door4Larmed
+  - iniEfbA300#1827319967
+  - iniEfbA300#door4Rarmed
+  - iniEfbA300#1827319968
+  - iniEfbA300#-657335961
+  - iniEfbA300#1
+  - iniEfbA300#2005094471
+  - iniEfbA300#-1276622661
+  - iniEfbA300#equip-ground
+  - iniEfbA300#-345916891
+  - iniEfbA300#-346213560
+  - iniEfbA300#1554924939
+  - iniEfbA300#chocks_holder
+  - iniEfbA300#toggleChocks
+  - iniEfbA300#-734259276
+  - iniEfbA300#2
+  - iniEfbA300#jetway_holder
+  - iniEfbA300#toggleJetway
+  - iniEfbA300#545438025
+  - iniEfbA300#3
+  - iniEfbA300#stairs_holder
+  - iniEfbA300#-61206402
+  - iniEfbA300#toggleStairsL
+  - iniEfbA300#582770874
+  - iniEfbA300#5
+  - iniEfbA300#-61206386
+  - iniEfbA300#toggleStairsR
+  - iniEfbA300#365611200
+  - iniEfbA300#6
+  - iniEfbA300#gpu_holder
+  - iniEfbA300#toggleGPU
+  - iniEfbA300#1720671011
+  - iniEfbA300#7
+  - iniEfbA300#catering_holder
+  - iniEfbA300#toggleCatering
+  - iniEfbA300#-80889326
+  - iniEfbA300#9
+  - iniEfbA300#luggage_holder
+  - iniEfbA300#toggleLuggage
+  - iniEfbA300#715664813
+  - iniEfbA300#10
+  - iniEfbA300#fuel_holder
+  - iniEfbA300#toggleFuel
+  - iniEfbA300#984613065
+  - iniEfbA300#11
+  - iniEfbA300#-11153303
+  - iniEfbA300#-1638653861
+  - iniEfbA300#16424961
+  - iniEfbA300#-346213558
+  - iniEfbA300#1554924940
+  - iniEfbA300#-345805416
+  - iniEfbA300#-963554942
+  - iniEfbA300#-1242388164
+  - iniEfbA300#pb_left
+  - iniEfbA300#-51988221
+  - iniEfbA300#1757955009
+  - iniEfbA300#pb_stop
+  - iniEfbA300#-1112730047
+  - iniEfbA300#1757955028
+  - iniEfbA300#pb_right
+  - iniEfbA300#1207212646
+  - iniEfbA300#-11153311
+  - iniEfbA300#-1638653863
+  - iniEfbA300#1757955010
+  - iniEfbA300#pb_aft
+  - iniEfbA300#892386832
+  - iniEfbA300#-1638653825
+  - iniEfbA300#-1638653847
+  - iniEfbA300#16424962
+  - iniEfbA300#lighting_title
+  - iniEfbA300#-346213557
+  - iniEfbA300#1554924941
+  - iniEfbA300#-2140965272
+  - iniEfbA300#lights_cargo
+  - iniEfbA300#1935445164
+  - iniEfbA300#16424963
+  - iniEfbA300#-346213556
+  - iniEfbA300#1554924942
+  - iniEfbA300#-1593086402
+  - iniEfbA300#armAll
+  - iniEfbA300#closeAll
+  - iniEfbA300#-1404421281
+  - iniEfbA300#weights-bg
+  - iniEfbA300#weights
+  - iniEfbA300#page1
+  - iniEfbA300#switcher_page2
+  - iniEfbA300#-13057519
+  - iniEfbA300#-11153317
+  - iniEfbA300#12
+  - iniEfbA300#-1638653850
+  - iniEfbA300#payload_race
+  - iniEfbA300#371452389
+  - iniEfbA300#15
+  - iniEfbA300#16
+  - iniEfbA300#17
+  - iniEfbA300#1023848842
+  - iniEfbA300#-1638653837
+  - iniEfbA300#payload_aero
+  - iniEfbA300#735211553
+  - iniEfbA300#18
+  - iniEfbA300#19
+  - iniEfbA300#20
+  - iniEfbA300#1023848843
+  - iniEfbA300#-1638653824
+  - iniEfbA300#payload_horse
+  - iniEfbA300#2045463486
+  - iniEfbA300#21
+  - iniEfbA300#22
+  - iniEfbA300#23
+  - iniEfbA300#1023848844
+  - iniEfbA300#-1638653809
+  - iniEfbA300#payload_human
+  - iniEfbA300#-961159252
+  - iniEfbA300#24
+  - iniEfbA300#25
+  - iniEfbA300#27
+  - iniEfbA300#1023848845
+  - iniEfbA300#-1638653796
+  - iniEfbA300#payload_post
+  - iniEfbA300#1659802634
+  - iniEfbA300#28
+  - iniEfbA300#29
+  - iniEfbA300#30
+  - iniEfbA300#1023848846
+  - iniEfbA300#-1638653783
+  - iniEfbA300#payload_cargo
+  - iniEfbA300#-1891727869
+  - iniEfbA300#31
+  - iniEfbA300#32
+  - iniEfbA300#33
+  - iniEfbA300#1023848847
+  - iniEfbA300#-1638653770
+  - iniEfbA300#payload_cargo_sb
+  - iniEfbA300#-1891727868
+  - iniEfbA300#34
+  - iniEfbA300#35
+  - iniEfbA300#36
+  - iniEfbA300#1023848848
+  - iniEfbA300#page2
+  - iniEfbA300#switcher_page1
+  - iniEfbA300#-1557606968
+  - iniEfbA300#-11153316
+  - iniEfbA300#741337757
+  - iniEfbA300#-345916890
+  - iniEfbA300#payload-name
+  - iniEfbA300#-346213559
+  - iniEfbA300#1325090002
+  - iniEfbA300#-627970898
+  - iniEfbA300#weight_freight_fwd_box
+  - iniEfbA300#weight_freight_mid_box
+  - iniEfbA300#weight_freight_aft_box
+  - iniEfbA300#-963487653
+  - iniEfbA300#104967990
+  - iniEfbA300#-963559743
+  - iniEfbA300#-1638653862
+  - iniEfbA300#-963577045
+  - iniEfbA300#-1055748406
+  - iniEfbA300#-1638653838
+  - iniEfbA300#input_pax
+  - iniEfbA300#-1638653844
+  - iniEfbA300#-963577044
+  - iniEfbA300#-1055748405
+  - iniEfbA300#-1638653836
+  - iniEfbA300#-1135037391
+  - iniEfbA300#input_payload
+  - iniEfbA300#1225000249
+  - iniEfbA300#-1638653823
+  - iniEfbA300#-963577043
+  - iniEfbA300#-1055748404
+  - iniEfbA300#-1638653835
+  - iniEfbA300#-1135037390
+  - iniEfbA300#weight_fuel
+  - iniEfbA300#1225000250
+  - iniEfbA300#-963559729
+  - iniEfbA300#-1638653860
+  - iniEfbA300#-963577042
+  - iniEfbA300#-1086768213
+  - iniEfbA300#-1638653834
+  - iniEfbA300#-1135037389
+  - iniEfbA300#weight_freight_fwd
+  - iniEfbA300#1225000251
+  - iniEfbA300#-1638653843
+  - iniEfbA300#-963577041
+  - iniEfbA300#-1086768212
+  - iniEfbA300#-1638653833
+  - iniEfbA300#-1135037388
+  - iniEfbA300#weight_freight_mid
+  - iniEfbA300#1225000252
+  - iniEfbA300#-1638653822
+  - iniEfbA300#-963577040
+  - iniEfbA300#-1086768211
+  - iniEfbA300#-1638653832
+  - iniEfbA300#-1135037387
+  - iniEfbA300#weight_freight_aft
+  - iniEfbA300#1225000253
+  - iniEfbA300#1679720733
+  - iniEfbA300#-1638653859
+  - iniEfbA300#update_from_simbrief
+  - iniEfbA300#-1638653842
+  - iniEfbA300#weight_freight_apply
+  - iniEfbA300#-963559690
+  - iniEfbA300#-1638653858
+  - iniEfbA300#-963577039
+  - iniEfbA300#-993708792
+  - iniEfbA300#-1638653840
+  - iniEfbA300#output_maczfw
+  - iniEfbA300#-963577025
+  - iniEfbA300#-993708791
+  - iniEfbA300#-1638653839
+  - iniEfbA300#output_maccg
+  - iniEfbA300#-1638653841
+  - iniEfbA300#-963577038
+  - iniEfbA300#-993708790
+  - iniEfbA300#-1638653831
+  - iniEfbA300#output_zfw
+  - iniEfbA300#-963577024
+  - iniEfbA300#-993708789
+  - iniEfbA300#-1638653830
+  - iniEfbA300#output_tow
+  - iniEfbA300#-1638653821
+  - iniEfbA300#-963577037
+  - iniEfbA300#-993708788
+  - iniEfbA300#-1638653829
+  - iniEfbA300#output_payload
+  - iniEfbA300#-963577023
+  - iniEfbA300#-993708787
+  - iniEfbA300#-1638653828
+  - iniEfbA300#output_blkfuel
+  - iniEfbA300#-1404421272
+  - iniEfbA300#flight-bg
+  - iniEfbA300#flight
+  - iniEfbA300#checklist_viewer
+  - iniEfbA300#checklist
+  - iniEfbA300#close_checklist_viewer
+  - iniEfbA300#-11153318
+  - iniEfbA300#741337758
+  - iniEfbA300#-11153328
+  - iniEfbA300#741337759
+  - iniEfbA300#848101676
+  - iniEfbA300#-11153327
+  - iniEfbA300#-1638653864
+  - iniEfbA300#dep_icao
+  - iniEfbA300#depcit
+  - iniEfbA300#1547722862
+  - iniEfbA300#acicon
+  - iniEfbA300#progress-bar
+  - iniEfbA300#-1638653827
+  - iniEfbA300#arr_icao
+  - iniEfbA300#arrcit
+  - iniEfbA300#-1488737798
+  - iniEfbA300#refreshMetar
+  - iniEfbA300#-1048575741
+  - iniEfbA300#-11167741
+  - iniEfbA300#1272729236
+  - iniEfbA300#37
+  - iniEfbA300#dep_metar_icao
+  - iniEfbA300#depmet
+  - iniEfbA300#-11167727
+  - iniEfbA300#1272729237
+  - iniEfbA300#38
+  - iniEfbA300#arr_metar_icao
+  - iniEfbA300#arrmet
+  - iniEfbA300#-1638653820
+  - iniEfbA300#-1344368280
+  - iniEfbA300#39
+  - iniEfbA300#deptime
+  - iniEfbA300#-82568528
+  - iniEfbA300#40
+  - iniEfbA300#arrtime
+  - iniEfbA300#-963559718
+  - iniEfbA300#-11167755
+  - iniEfbA300#-454415726
+  - iniEfbA300#41
+  - iniEfbA300#route
+  - iniEfbA300#1768024447
+  - iniEfbA300#open_checklist_viewer
+  - iniEfbA300#btn_simbrief
+  - iniEfbA300#-1404421263
+  - iniEfbA300#settings-bg
+  - iniEfbA300#settings
+  - iniEfbA300#settings_page1
+  - iniEfbA300#settings_switcher_page2
+  - iniEfbA300#-13057518
+  - iniEfbA300#-11153315
+  - iniEfbA300#741337760
+  - iniEfbA300#38330447
+  - iniEfbA300#-963559730
+  - iniEfbA300#741337761
+  - iniEfbA300#-346213573
+  - iniEfbA300#1325090003
+  - iniEfbA300#1329425679
+  - iniEfbA300#-11153310
+  - iniEfbA300#-1638653857
+  - iniEfbA300#-1209162085
+  - iniEfbA300#-11153309
+  - iniEfbA300#-11167754
+  - iniEfbA300#581355354
+  - iniEfbA300#simbrief
+  - iniEfbA300#-1638653826
+  - iniEfbA300#-1209162084
+  - iniEfbA300#-11153308
+  - iniEfbA300#-11167753
+  - iniEfbA300#581355355
+  - iniEfbA300#hoppie
+  - iniEfbA300#-1638653819
+  - iniEfbA300#-1209162083
+  - iniEfbA300#-11153307
+  - iniEfbA300#-11167752
+  - iniEfbA300#581355356
+  - iniEfbA300#ng_reset
+  - iniEfbA300#344903523
+  - iniEfbA300#1325090004
+  - iniEfbA300#-1373225640
+  - iniEfbA300#-11153306
+  - iniEfbA300#1853805216
+  - iniEfbA300#-1209162082
+  - iniEfbA300#-11153305
+  - iniEfbA300#-11167751
+  - iniEfbA300#581355357
+  - iniEfbA300#-739151855
+  - iniEfbA300#opt_irs1
+  - iniEfbA300#-715730502
+  - iniEfbA300#opt_irs2
+  - iniEfbA300#-385964693
+  - iniEfbA300#opt_irs3
+  - iniEfbA300#-56198884
+  - iniEfbA300#-1209162045
+  - iniEfbA300#-11153269
+  - iniEfbA300#-11167750
+  - iniEfbA300#581355358
+  - iniEfbA300#-739151854
+  - iniEfbA300#opt_til1
+  - iniEfbA300#-648728147
+  - iniEfbA300#opt_til2
+  - iniEfbA300#-318962338
+  - iniEfbA300#-1209162005
+  - iniEfbA300#-11153229
+  - iniEfbA300#-11167749
+  - iniEfbA300#581355359
+  - iniEfbA300#-739151853
+  - iniEfbA300#opt_lnk1
+  - iniEfbA300#-1407720869
+  - iniEfbA300#opt_lnk2
+  - iniEfbA300#-1077955060
+  - iniEfbA300#opt_lnk3
+  - iniEfbA300#-748189251
+  - iniEfbA300#1853805235
+  - iniEfbA300#-1209162081
+  - iniEfbA300#-11153304
+  - iniEfbA300#-11167748
+  - iniEfbA300#581355360
+  - iniEfbA300#-739151852
+  - iniEfbA300#opt_rudd1
+  - iniEfbA300#1251470709
+  - iniEfbA300#opt_rudd2
+  - iniEfbA300#1581236518
+  - iniEfbA300#-1209162044
+  - iniEfbA300#-11153268
+  - iniEfbA300#-11167747
+  - iniEfbA300#581355361
+  - iniEfbA300#-739151851
+  - iniEfbA300#opt_tra1
+  - iniEfbA300#-1143920607
+  - iniEfbA300#opt_tra2
+  - iniEfbA300#-814154798
+  - iniEfbA300#-1209162004
+  - iniEfbA300#-11153228
+  - iniEfbA300#-11167746
+  - iniEfbA300#581355362
+  - iniEfbA300#brake_reset
+  - iniEfbA300#344903539
+  - iniEfbA300#1325090005
+  - iniEfbA300#1329425680
+  - iniEfbA300#-11153302
+  - iniEfbA300#1796546914
+  - iniEfbA300#-1209162080
+  - iniEfbA300#-11153301
+  - iniEfbA300#-11167745
+  - iniEfbA300#581355363
+  - iniEfbA300#-739151850
+  - iniEfbA300#opt_wgt1
+  - iniEfbA300#1463941824
+  - iniEfbA300#opt_wgt2
+  - iniEfbA300#1793707633
+  - iniEfbA300#1796546933
+  - iniEfbA300#-1209162079
+  - iniEfbA300#-11153300
+  - iniEfbA300#-11167744
+  - iniEfbA300#581355364
+  - iniEfbA300#-739151849
+  - iniEfbA300#opt_alt1
+  - iniEfbA300#-944497701
+  - iniEfbA300#opt_alt2
+  - iniEfbA300#-614731892
+  - iniEfbA300#1796546952
+  - iniEfbA300#-1209162078
+  - iniEfbA300#-11153299
+  - iniEfbA300#-11167743
+  - iniEfbA300#581355365
+  - iniEfbA300#-739151848
+  - iniEfbA300#opt_osk1
+  - iniEfbA300#-1636398787
+  - iniEfbA300#opt_osk2
+  - iniEfbA300#-1306632978
+  - iniEfbA300#settings_page2
+  - iniEfbA300#settings_switcher_page1
+  - iniEfbA300#-1557606967
+  - iniEfbA300#741337768
+  - iniEfbA300#38330448
+  - iniEfbA300#-963559733
+  - iniEfbA300#741337762
+  - iniEfbA300#-346213572
+  - iniEfbA300#1325090006
+  - iniEfbA300#-1464189793
+  - iniEfbA300#maint_state
+  - iniEfbA300#1329425696
+  - iniEfbA300#-11153295
+  - iniEfbA300#-1638653856
+  - iniEfbA300#-11153326
+  - iniEfbA300#-11167742
+  - iniEfbA300#581355366
+  - iniEfbA300#maint_disabled
+  - iniEfbA300#42
+  - iniEfbA300#-1638653845
+  - iniEfbA300#-11153325
+  - iniEfbA300#-11167740
+  - iniEfbA300#581355367
+  - iniEfbA300#maint_real
+  - iniEfbA300#43
+  - iniEfbA300#-1638653818
+  - iniEfbA300#-11153324
+  - iniEfbA300#-11167739
+  - iniEfbA300#581355368
+  - iniEfbA300#maint_fast
+  - iniEfbA300#44
+  - iniEfbA300#344903520
+  - iniEfbA300#1325090007
+  - iniEfbA300#1329425681
+  - iniEfbA300#-11153312
+  - iniEfbA300#1767917763
+  - iniEfbA300#-1209162077
+  - iniEfbA300#-11153298
+  - iniEfbA300#-11167738
+  - iniEfbA300#581355369
+  - iniEfbA300#-739151847
+  - iniEfbA300#opt_idc1
+  - iniEfbA300#-1038122437
+  - iniEfbA300#opt_idc2
+  - iniEfbA300#-708356630
+  - iniEfbA300#45
+  - iniEfbA300#1767917781
+  - iniEfbA300#-1209162076
+  - iniEfbA300#-11153297
+  - iniEfbA300#-11167737
+  - iniEfbA300#581355370
+  - iniEfbA300#-739151846
+  - iniEfbA300#opt_vlsd1
+  - iniEfbA300#874094192
+  - iniEfbA300#opt_vlsd2
+  - iniEfbA300#1203859999
+  - iniEfbA300#46
+  - iniEfbA300#1767917799
+  - iniEfbA300#-1209162075
+  - iniEfbA300#-11153296
+  - iniEfbA300#-11167736
+  - iniEfbA300#581355371
+  - iniEfbA300#-739151845
+  - iniEfbA300#opt_arm2
+  - iniEfbA300#-400592248
+  - iniEfbA300#opt_arm1
+  - iniEfbA300#-730357963
+  - iniEfbA300#47
+  - iniEfbA300#1767917817
+  - iniEfbA300#-1209162074
+  - iniEfbA300#-11153294
+  - iniEfbA300#-11167735
+  - iniEfbA300#581355372
+  - iniEfbA300#-739151844
+  - iniEfbA300#opt_curve1
+  - iniEfbA300#631668436
+  - iniEfbA300#opt_curve2
+  - iniEfbA300#961434243
+  - iniEfbA300#48
+  - iniEfbA300#344903537
+  - iniEfbA300#1325090008
+  - iniEfbA300#1329425682
+  - iniEfbA300#-1000913194
+  - iniEfbA300#1739288611
+  - iniEfbA300#-1819883226
+  - iniEfbA300#1796546931
+  - iniEfbA300#VOL_MASTER
+  - iniEfbA300#1739288647
+  - iniEfbA300#-1819883225
+  - iniEfbA300#1796546967
+  - iniEfbA300#VOL_EXT_ENG
+  - iniEfbA300#1739288683
+  - iniEfbA300#-1819883224
+  - iniEfbA300#1796547003
+  - iniEfbA300#VOL_INT_ENG
+  - iniEfbA300#1739288719
+  - iniEfbA300#-1819883223
+  - iniEfbA300#1796547039
+  - iniEfbA300#VOL_SYS
+  - iniEfbA300#1739288755
+  - iniEfbA300#-1819883222
+  - iniEfbA300#1796547075
+  - iniEfbA300#VOL_MANIP
+  - iniEfbA300#1739288791
+  - iniEfbA300#-1819883221
+  - iniEfbA300#1796547111
+  - iniEfbA300#VOL_AMB
+  - iniEfbA300#1739288827
+  - iniEfbA300#-1819883220
+  - iniEfbA300#1796547147
+  - iniEfbA300#VOL_PAYLOAD_PAX
+  - iniEfbA300#1739288863
+  - iniEfbA300#-1819883219
+  - iniEfbA300#1796547183
+  - iniEfbA300#VOL_ENV
+  - iniEfbA300#-1404421254
+  - iniEfbA300#perf-bg
+  - iniEfbA300#takeOffPerfViewer
+  - iniEfbA300#runwayPanel
+  - iniEfbA300#-11153323
+  - iniEfbA300#1935445139
+  - iniEfbA300#1656260643
+  - iniEfbA300#356578548
+  - iniEfbA300#-1381906194
+  - iniEfbA300#hide_runway_select
+  - iniEfbA300#runway_opts
+  - iniEfbA300#1922313901
+  - iniEfbA300#-1638653855
+  - iniEfbA300#1745754474
+  - iniEfbA300#conditions
+  - iniEfbA300#696078688
+  - iniEfbA300#syncMetar
+  - iniEfbA300#49
+  - iniEfbA300#-963577015
+  - iniEfbA300#1545267018
+  - iniEfbA300#-1638653817
+  - iniEfbA300#-1198836598
+  - iniEfbA300#show_runway_select
+  - iniEfbA300#-963577000
+  - iniEfbA300#1545267019
+  - iniEfbA300#-1638653816
+  - iniEfbA300#-1198836597
+  - iniEfbA300#output_tora
+  - iniEfbA300#1481464414
+  - iniEfbA300#-963576985
+  - iniEfbA300#1545267020
+  - iniEfbA300#-1638653815
+  - iniEfbA300#-1198836596
+  - iniEfbA300#output_heading
+  - iniEfbA300#1481464415
+  - iniEfbA300#-963576970
+  - iniEfbA300#1545267021
+  - iniEfbA300#-1638653814
+  - iniEfbA300#-1198836595
+  - iniEfbA300#input_surface
+  - iniEfbA300#-963576955
+  - iniEfbA300#1545267022
+  - iniEfbA300#-1638653813
+  - iniEfbA300#-1198836594
+  - iniEfbA300#input_wind
+  - iniEfbA300#-963576940
+  - iniEfbA300#1545267023
+  - iniEfbA300#-1638653812
+  - iniEfbA300#-1198836593
+  - iniEfbA300#input_temp
+  - iniEfbA300#1481464416
+  - iniEfbA300#-963576925
+  - iniEfbA300#1545267024
+  - iniEfbA300#-1638653811
+  - iniEfbA300#-1198836592
+  - iniEfbA300#input_alt
+  - iniEfbA300#1481464417
+  - iniEfbA300#-1638653851
+  - iniEfbA300#1745754475
+  - iniEfbA300#config
+  - iniEfbA300#696078689
+  - iniEfbA300#50
+  - iniEfbA300#-963577014
+  - iniEfbA300#1545267025
+  - iniEfbA300#-1638653810
+  - iniEfbA300#-1198836591
+  - iniEfbA300#input_weight
+  - iniEfbA300#1481464418
+  - iniEfbA300#-963576999
+  - iniEfbA300#1545267026
+  - iniEfbA300#-1638653808
+  - iniEfbA300#-1198836590
+  - iniEfbA300#input_flaps
+  - iniEfbA300#-963576984
+  - iniEfbA300#1545267027
+  - iniEfbA300#-1638653807
+  - iniEfbA300#-1198836589
+  - iniEfbA300#input_aircond
+  - iniEfbA300#-963576969
+  - iniEfbA300#1545267028
+  - iniEfbA300#-1638653806
+  - iniEfbA300#-1198836588
+  - iniEfbA300#input_antiice
+  - iniEfbA300#-963576954
+  - iniEfbA300#1545267029
+  - iniEfbA300#-1638653805
+  - iniEfbA300#-1198836587
+  - iniEfbA300#input_toga
+  - iniEfbA300#-963576939
+  - iniEfbA300#-604568078
+  - iniEfbA300#-1198836599
+  - iniEfbA300#calculate
+  - iniEfbA300#-1638653804
+  - iniEfbA300#1745754476
+  - iniEfbA300#performance
+  - iniEfbA300#696078690
+  - iniEfbA300#51
+  - iniEfbA300#-963577013
+  - iniEfbA300#1545267030
+  - iniEfbA300#-1638653803
+  - iniEfbA300#-1198836586
+  - iniEfbA300#output_flex
+  - iniEfbA300#1481464419
+  - iniEfbA300#-963576998
+  - iniEfbA300#1545267031
+  - iniEfbA300#-1638653802
+  - iniEfbA300#-1198836585
+  - iniEfbA300#output_v1
+  - iniEfbA300#-963576983
+  - iniEfbA300#1545267032
+  - iniEfbA300#-1638653801
+  - iniEfbA300#-1198836584
+  - iniEfbA300#output_vr
+  - iniEfbA300#-963576968
+  - iniEfbA300#1545267033
+  - iniEfbA300#-1638653800
+  - iniEfbA300#-1198836583
+  - iniEfbA300#output_v2
+  - iniEfbA300#-963576953
+  - iniEfbA300#1545267034
+  - iniEfbA300#-1638653799
+  - iniEfbA300#-1198836582
+  - iniEfbA300#output_mtow
+  - iniEfbA300#-963576938
+  - iniEfbA300#1545267035
+  - iniEfbA300#-1638653798
+  - iniEfbA300#-1198836581
+  - iniEfbA300#output_gwcg
+  - iniEfbA300#-963576924
+  - iniEfbA300#1545267036
+  - iniEfbA300#-1638653797
+  - iniEfbA300#-1198836580
+  - iniEfbA300#output_ths
+  - iniEfbA300#-963577021
+  - iniEfbA300#741337763
+  - iniEfbA300#1745754477
+  - iniEfbA300#diagram
+  - iniEfbA300#codes
+  - iniEfbA300#v1
+  - iniEfbA300#v1_stick
+  - iniEfbA300#vr
+  - iniEfbA300#vr_stick
+  - iniEfbA300#v2
+  - iniEfbA300#v2_stick
+  - iniEfbA300#1613655286
+  - iniEfbA300#-1404421245
+  - iniEfbA300#dev-bg
+  - iniEfbA300#dev
+  - iniEfbA300#-11153322
+  - iniEfbA300#741337764
+  - iniEfbA300#-345916889
+  - iniEfbA300#-963559732
+  - iniEfbA300#-1638653854
+  - iniEfbA300#-610305164
+  - iniEfbA300#-11153314
+  - iniEfbA300#-1638653853
+  - iniEfbA300#1832837988
+  - iniEfbA300#fuelload
+  - iniEfbA300#-1638653795
+  - iniEfbA300#1832837989
+  - iniEfbA300#set_fuelload
+  - iniEfbA300#-11153293
+  - iniEfbA300#-1638653852
+  - iniEfbA300#1832837990
+  - iniEfbA300#zfw
+  - iniEfbA300#-1638653794
+  - iniEfbA300#1832837991
+  - iniEfbA300#set_zfw
+  - iniEfbA300#1002291942
+  - iniEfbA300#-963559685
+  - iniEfbA300#-1638653849
+  - iniEfbA300#dposition_percent_1
+  - iniEfbA300#-1638653793
+  - iniEfbA300#dposition_percent_2
+  - iniEfbA300#-963559671
+  - iniEfbA300#-11167734
+  - iniEfbA300#dset_toga
+  - iniEfbA300#-11167733
+  - iniEfbA300#dset_idle
+  - iniEfbA300#-11167723
+  - iniEfbA300#dset_idlerev
+  - iniEfbA300#-11167707
+  - iniEfbA300#dset_maxrev
+  - iniEfbA300#-1638653846
+  - iniEfbA300#1002291897
+  - iniEfbA300#52
+  - iniEfbA300#-11153292
+  - iniEfbA300#-1638653848
+  - iniEfbA300#1832837992
+  - iniEfbA300#towatch
+  - iniEfbA300#-1638653792
+  - iniEfbA300#1832837993
+  - iniEfbA300#towatch_type
+  - iniEfbA300#-11167722
+  - iniEfbA300#watch
+  - iniEfbA300#-963559698
+  - iniEfbA300#watcherList
+  - iniEfbA300#-1404421236
+  - iniEfbA300#navigraph-bg
+  - iniEfbA300#unauthed_content
+  - iniEfbA300#navigraph
+  - iniEfbA300#-11153321
+  - iniEfbA300#741337765
+  - iniEfbA300#-11153320
+  - iniEfbA300#-1238218743
+  - iniEfbA300#-331434508
+  - iniEfbA300#ng_qr_code
+  - iniEfbA300#ng_user_code
+  - iniEfbA300#-610305116
+  - iniEfbA300#authed_content
+  - iniEfbA300#-11153319
+  - iniEfbA300#-1638653791
+  - iniEfbA300#-11153313
+  - iniEfbA300#-1638653790
+  - iniEfbA300#ng_search
+  - iniEfbA300#-1638653789
+  - iniEfbA300#ng_search_button
+  - iniEfbA300#-1632412073
+  - iniEfbA300#-963559731
+  - iniEfbA300#-1638653788
+  - iniEfbA300#dep_button
+  - iniEfbA300#-1638653787
+  - iniEfbA300#arr_button
+  - iniEfbA300#-963559719
+  - iniEfbA300#filter_ref
+  - iniEfbA300#filter_apt
+  - iniEfbA300#filter_dep
+  - iniEfbA300#filter_arr
+  - iniEfbA300#filter_app
+  - iniEfbA300#chart_list
+  - iniEfbA300#-1379930466
+  - iniEfbA300#chart_ctrl_zoom
+  - iniEfbA300#ctrlZoomIn
+  - iniEfbA300#ctrlZoomOut
+  - iniEfbA300#ctrlReset
+  - iniEfbA300#1078047359
+  - iniEfbA300#chart_ctrl_pan
+  - iniEfbA300#ctrlPanUp
+  - iniEfbA300#2065978557
+  - iniEfbA300#ctrlPanLeft
+  - iniEfbA300#1130227113
+  - iniEfbA300#ctrlPanRight
+  - iniEfbA300#682963130
+  - iniEfbA300#ctrlPanDown
+  - iniEfbA300#1129998916
+  - iniEfbA300#chart_image_box
+  - iniEfbA300#plane_icon
+  - iniEfbA300#chart_image
+  - iniEfbA300#-1404421227
+  - iniEfbA300#game-bg
+  - iniEfbA300#game
+  - iniEfbA300#gamespace
+  - iniEfbA300#-11153291
+  - iniEfbA300#741337766
+  - iniEfbA300#-345916888
+  - iniEfbA300#-719039395
+  - iniEfbA300#inputcollect
+  - iniEfbA300#gameSpace
+  - iniEfbA300#2052846830
+  - iniEfbA300#score
+  - iniEfbA300#-1898548713
+  - iniEfbA300#-1404421218
+  - iniEfbA300#fuel-bg
+  - iniEfbA300#fuel
+  - iniEfbA300#fuel-pic
+  - iniEfbA300#fuelLoad
+  - iniEfbA300#fuelButton
+  - iniEfbA300#1918373530
+  - iniEfbA300#left-inner-tank
+  - iniEfbA300#left-outer-tank
+  - iniEfbA300#right-inner-tank
+  - iniEfbA300#right-outer-tank
+  - iniEfbA300#left-trim-tank
+  - iniEfbA300#right-trim-tank
+  - iniEfbA300#centre-tank
+  - iniEfbA300#-1404421209
+  - iniEfbA300#maintenance-bg
+  - iniEfbA300#maintenance
+  - iniEfbA300#-11153290
+  - iniEfbA300#741337767
+  - iniEfbA300#-345916887
+  - iniEfbA300#-963559728
+  - iniEfbA300#-1638653786
+  - iniEfbA300#-11153289
+  - iniEfbA300#741337769
+  - iniEfbA300#613314379
+  - iniEfbA300#maint_replaceTyres
+  - iniEfbA300#741337772
+  - iniEfbA300#613314380
+  - iniEfbA300#maint_replaceBrakes
+  - iniEfbA300#741337788
+  - iniEfbA300#613314381
+  - iniEfbA300#maint_apuOilService
+  - iniEfbA300#-1638653785
+  - iniEfbA300#613314382
+  - iniEfbA300#maint_eng1OilService
+  - iniEfbA300#-1638653784
+  - iniEfbA300#613314383
+  - iniEfbA300#maint_eng2OilService
+  - iniEfbA300#741337836
+  - iniEfbA300#613314384
+  - iniEfbA300#maint_hydraulics
+  - iniEfbA300#741337852
+  - iniEfbA300#613314385
+  - iniEfbA300#maint_slides
+  - iniEfbA300#-963559727
+  - iniEfbA300#741337770
+  - iniEfbA300#-958707603
+  - iniEfbA300#1554924937
+  - iniEfbA300#-620436383
+  - iniEfbA300#-963559726
+  - iniEfbA300#-1638653782
+  - iniEfbA300#fuel_panel
+  - iniEfbA300#-1638653781
+  - iniEfbA300#maint_eng_cowl_l
+  - iniEfbA300#-1638653780
+  - iniEfbA300#maint_eng_cowl_r
+  - iniEfbA300#-1638653779
+  - iniEfbA300#maint_apu_cowl
+  - iniEfbA300#-1638653778
+  - iniEfbA300#maint_stow_rat
+  - iniEfbA300#722699630
+  - iniEfbA300#-1783626378
+  - iniEfbA300#-1658360985
+  - iniEfbA300#1322255972
+  - iniEfbA300#Brake_Wear_Indicator_LFI
+  - iniEfbA300#Brake_Wear_Indicator_LFO
+  - iniEfbA300#Brake_Wear_Indicator_LRI
+  - iniEfbA300#Brake_Wear_Indicator_LRO
+  - iniEfbA300#Brake_Wear_Indicator_RFI
+  - iniEfbA300#Brake_Wear_Indicator_RFO
+  - iniEfbA300#Brake_Wear_Indicator_RRI
+  - iniEfbA300#Brake_Wear_Indicator_RRO
+  - iniEfbA300#INI_TIRE_NG_LEFT_WEAR
+  - iniEfbA300#INI_TIRE_NG_RIGHT_WEAR
+  - iniEfbA300#INI_TIRE_LAI_WEAR
+  - iniEfbA300#INI_TIRE_LAO_WEAR
+  - iniEfbA300#INI_TIRE_RAO_WEAR
+  - iniEfbA300#INI_TIRE_RAI_WEAR
+  - iniEfbA300#INI_TIRE_RFO_WEAR
+  - iniEfbA300#INI_TIRE_RFI_WEAR
+  - iniEfbA300#INI_TIRE_LFI_WEAR
+  - iniEfbA300#INI_TIRE_LFO_WEAR
+  - iniEfbA300#oil-levels
+  - iniEfbA300#-620436382
+  - iniEfbA300#-11153288
+  - iniEfbA300#-1876479670
+  - iniEfbA300#56
+  - iniEfbA300#APU_OIL
+  - iniEfbA300#APU_OIL_val
+  - iniEfbA300#-1876479652
+  - iniEfbA300#57
+  - iniEfbA300#ENG1_OIL
+  - iniEfbA300#ENG1_OIL_val
+  - iniEfbA300#-1876479634
+  - iniEfbA300#58
+  - iniEfbA300#ENG2_OIL
+  - iniEfbA300#ENG2_OIL_val
+  - iniEfbA300#hyd-levels
+  - iniEfbA300#1106499056
+  - iniEfbA300#-11153287
+  - iniEfbA300#-1876479669
+  - iniEfbA300#59
+  - iniEfbA300#HYD_BLU
+  - iniEfbA300#HYD_BLU_val
+  - iniEfbA300#-1876479651
+  - iniEfbA300#60
+  - iniEfbA300#HYD_GRE
+  - iniEfbA300#HYD_GRE_val
+  - iniEfbA300#-1876479633
+  - iniEfbA300#61
+  - iniEfbA300#HYD_YEL
+  - iniEfbA300#HYD_YEL_val
+  - iniEfbA300#-1404421200
+  - iniEfbA300#throttlecalibration-bg
+  - iniEfbA300#throttlecalibration
+  - iniEfbA300#-11153286
+  - iniEfbA300#741337771
+  - iniEfbA300#38330449
+  - iniEfbA300#-11153285
+  - iniEfbA300#-1638653777
+  - iniEfbA300#calibration
+  - iniEfbA300#-963559725
+  - iniEfbA300#741337773
+  - iniEfbA300#613314386
+  - iniEfbA300#tcab_setToga
+  - iniEfbA300#741337774
+  - iniEfbA300#613314387
+  - iniEfbA300#tcab_setIdle
+  - iniEfbA300#741337789
+  - iniEfbA300#613314388
+  - iniEfbA300#tcab_setIdleRev
+  - iniEfbA300#741337804
+  - iniEfbA300#613314389
+  - iniEfbA300#tcab_setMaxRev
+  - iniEfbA300#741337820
+  - iniEfbA300#613314390
+  - iniEfbA300#tcab_start
+  - iniEfbA300#741337837
+  - iniEfbA300#613314391
+  - iniEfbA300#tcab_reset
+  - iniEfbA300#1935445235
+  - iniEfbA300#613314392
+  - iniEfbA300#-610305163
+  - iniEfbA300#-11153284
+  - iniEfbA300#-11167732
+  - iniEfbA300#581355373
+  - iniEfbA300#-739151843
+  - iniEfbA300#opt_roa1
+  - iniEfbA300#-1299029858
+  - iniEfbA300#opt_roa2
+  - iniEfbA300#-969264053
+  - iniEfbA300#-1638653776
+  - iniEfbA300#-11153283
+  - iniEfbA300#975003516
+  - iniEfbA300#l_toga
+  - iniEfbA300#62
+  - iniEfbA300#1055142093
+  - iniEfbA300#l_idle
+  - iniEfbA300#63
+  - iniEfbA300#1055142094
+  - iniEfbA300#l_idle_rev
+  - iniEfbA300#64
+  - iniEfbA300#1055142095
+  - iniEfbA300#l_max_rev
+  - iniEfbA300#66
+  - iniEfbA300#1055142096
+  - iniEfbA300#-1332727498
+  - iniEfbA300#67
+  - iniEfbA300#l_pct
+  - iniEfbA300#l_pct_box
+  - iniEfbA300#-1332727482
+  - iniEfbA300#68
+  - iniEfbA300#r_pct
+  - iniEfbA300#r_pct_box
+  - iniEfbA300#975003564
+  - iniEfbA300#r_toga
+  - iniEfbA300#69
+  - iniEfbA300#1142232886
+  - iniEfbA300#r_idle
+  - iniEfbA300#70
+  - iniEfbA300#1142232887
+  - iniEfbA300#r_idle_rev
+  - iniEfbA300#71
+  - iniEfbA300#1142232888
+  - iniEfbA300#r_max_rev
+  - iniEfbA300#72
+  - iniEfbA300#1142232889
+  - iniEfbA300#inputDisabled
+  - iniEfbA300#1096115399
+  - iniEfbA300#73
+  - iniEfbA300#osk-num
+  - iniEfbA300#788877991
+  - iniEfbA300#691786959
+  - iniEfbA300#691786969
+  - iniEfbA300#691786979
+  - iniEfbA300#691786989
+  - iniEfbA300#691786999
+  - iniEfbA300#691787009
+  - iniEfbA300#691787019
+  - iniEfbA300#691787029
+  - iniEfbA300#691787039
+  - iniEfbA300#691787049
+  - iniEfbA300#691787059
+  - iniEfbA300#691787069
+  - iniEfbA300#1660104557
+  - iniEfbA300#-1557606966
+  - iniEfbA300#-299584075
+  - iniEfbA300#-1848931101
+  - iniEfbA300#osk
+  - iniEfbA300#1867880814
+  - iniEfbA300#691786960
+  - iniEfbA300#691786970
+  - iniEfbA300#691786980
+  - iniEfbA300#691786990
+  - iniEfbA300#691787000
+  - iniEfbA300#691787010
+  - iniEfbA300#691787020
+  - iniEfbA300#691787030
+  - iniEfbA300#691787040
+  - iniEfbA300#691787050
+  - iniEfbA300#1660104537
+  - iniEfbA300#-1557606965
+  - iniEfbA300#-1070567174
+  - iniEfbA300#691786961
+  - iniEfbA300#691786971
+  - iniEfbA300#691786981
+  - iniEfbA300#691786991
+  - iniEfbA300#691787001
+  - iniEfbA300#691787011
+  - iniEfbA300#691787021
+  - iniEfbA300#691787031
+  - iniEfbA300#691787041
+  - iniEfbA300#691787051
+  - iniEfbA300#-1070567164
+  - iniEfbA300#691786962
+  - iniEfbA300#691786972
+  - iniEfbA300#691786982
+  - iniEfbA300#691786992
+  - iniEfbA300#691787002
+  - iniEfbA300#691787012
+  - iniEfbA300#691787022
+  - iniEfbA300#691787032
+  - iniEfbA300#691787042
+  - iniEfbA300#-1070567154
+  - iniEfbA300#691786963
+  - iniEfbA300#691786973
+  - iniEfbA300#691786983
+  - iniEfbA300#691786993
+  - iniEfbA300#691787003
+  - iniEfbA300#691787013
+  - iniEfbA300#691787023
+  - iniEfbA300#691787033
+  - iniEfbA300#1321289495
+  - iniEfbA300#-1848931100
+  - iniEfbA300#vignettage
+  - iniEfbA300#virtualmouse
+  # - H:YCBWasmInstrument#364878079
+  # - H:YCBWasmInstrument#364878081
+  # - H:YCBWasmInstrument#-1096608397
+  # - H:YCBiniEfbA300#timer_complete_1704731868
+  # - H:YCBiniEfbA300#-1504581730
+  # - type: ProgramActionEvent
+  #   event_name: TOGGLE_LAUNCH_BAR_SWITCH
+  #   action: TransferControls
