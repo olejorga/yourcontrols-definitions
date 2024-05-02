@@ -1,4 +1,6 @@
-# Version 4.4.5
+# AIRCRAFT: Flysimware - Learjet 35A v1.2.9
+# CREATOR: olejorga
+# CREDIT: Based on the built-in Cessna 414AW Chancellor profile.
 
 include:
   - definitions/modules/Instruments/AS_GNS530.yaml
