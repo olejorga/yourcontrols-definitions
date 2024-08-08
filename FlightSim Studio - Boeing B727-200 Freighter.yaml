@@ -1,0 +1,3658 @@
+################################################################################
+#                                                                              #
+#  AIRCRAFT:  FLIGHTSIM STUDIO - BOEING B727-200 FREIGHTER (VERSION 1.0.0)     #
+#  AUTHOR:    @olejorga (GitHub)                                               #
+#                                                                              #
+#  UNSYNCED:  * ATTACH/DETACH EXTERNAL POWER (GPU)                             #
+#             * CHOOSEN NAV EQUIPMENT                                          #
+#             * CAPT. & FO. AUTOPILOT DISENGAGE BUTTONS                        # 
+#             * EFB (SETTING SPEED AND EPR BUGS ARE SYNCED)                    #
+#             * FUEL/PAYLOAD LOADING VIA EFB (USE MSFS TOOLBAR MENU INSTEAD)   #
+#             * AUTOPILOT TURN KNOB                                            #
+#             * INTERIOR LIGHT KNOBS                                           #
+#                                                                              #
+#  CAUTION:   ! MAKE SURE TO HAVE EQUAL PANEL STATE PRIOR TO CONNECTION        #
+#             ! CIVA IS SYNCED VIA JS EVENTS - SLOW BUTTON PRESSES             #
+#             ! HAVE FUN - BE READY TO HAND-FLY WHEN IT BREAKS                 #
+#                                                                              #
+################################################################################
+
+
+
+
+include:
+  # - definitions/modules/Instruments/AS_ACD57.yaml
+  # - definitions/modules/Instruments/AS_Aera.yaml
+  # - definitions/modules/Instruments/AS_FES_FCU.yaml
+  # - definitions/modules/Instruments/AS_G3X.yaml
+  # - definitions/modules/Instruments/AS_G3X_Touch.yaml
+  # - definitions/modules/Instruments/AS_G1000.yaml
+  # - definitions/modules/Instruments/AS_G3000.yaml
+  # - definitions/modules/Instruments/AS_GNS430.yaml
+  - definitions/modules/Instruments/AS_GNS530.yaml
+  # - definitions/modules/Instruments/AS_GTN650.yaml
+  # - definitions/modules/Instruments/AS_GTR225.yaml
+  # - definitions/modules/Instruments/AS_GTX330.yaml
+  # - definitions/modules/Instruments/AS_KAP140.yaml
+  # - definitions/modules/Instruments/AS_KR87.yaml
+  # - definitions/modules/Instruments/AS_KT76C.yaml
+  # - definitions/modules/Instruments/AS_KX155A.yaml
+  # - definitions/modules/Instruments/AS_LX8030.yaml
+  # - definitions/modules/Instruments/AS_LX9070.yaml
+  # - definitions/modules/Instruments/AS_TT21.yaml
+  # - definitions/modules/Instruments/AS_TY92.yaml
+  # - definitions/modules/Instruments/AS_V8.yaml
+  # - definitions/modules/Instruments/AS_Vigilus.yaml
+  # - definitions/modules/Instruments/PMS50_GNS.yaml
+  - definitions/modules/Instruments/PMS50_GTN.yaml
+  - definitions/modules/Instruments/TDS_GTNXI.yaml
+  # - definitions/modules/Instruments/WT_G3X_Touch.yaml
+  # - definitions/modules/Instruments/WT_G1000_NXi.yaml
+  # - definitions/modules/Instruments/WT_G3000.yaml
+  # - definitions/modules/Instruments/WT_GNS430.yaml
+  - definitions/modules/Instruments/WT_GNS530.yaml
+  # - definitions/modules/Instruments/WT_PL21.yaml
+  # - definitions/modules/autopilot.yaml
+  # - definitions/modules/commonlvars.yaml
+  # - definitions/modules/controls.yaml
+  # - definitions/modules/controls_rotor.yaml
+  # - definitions/modules/deice.yaml
+  # - definitions/modules/electrical.yaml
+  # - definitions/modules/engines.yaml
+  # - definitions/modules/engines_rotor.yaml
+  # - definitions/modules/fuel.yaml
+  # - definitions/modules/general.yaml
+  # - definitions/modules/glider.yaml
+  # - definitions/modules/handling.yaml
+  # - definitions/modules/lights.yaml
+  # - definitions/modules/magnetos.yaml
+  # - definitions/modules/navigation.yaml
+  # - definitions/modules/physics.yaml
+  # - definitions/modules/physics_rad.yaml
+  # - definitions/modules/pressurization.yaml
+  # - definitions/modules/radios.yaml
+  # - definitions/modules/safety.yaml
+  # - definitions/modules/transponder.yaml
+  # - definitions/modules/trim.yaml
+
+shared:
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT MASTER
+    var_units: Bool
+    var_type: bool
+    event_name: AP_MASTER
+    cancel_h_events: true
+    use_calculator: true
+  - type: NumSet
+    var_name: A:AUTOPILOT DISENGAGED
+    var_units: Bool
+    var_type: i32
+    event_name: AUTOPILOT_DISENGAGE_SET
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT DISENGAGED
+    var_units: Bool
+    var_type: bool
+    event_name: AUTOPILOT_DISENGAGE_TOGGLE
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT HEADING LOCK
+    var_units: Bool
+    var_type: bool
+    event_name: AP_PANEL_HEADING_HOLD
+    cancel_h_events: true
+    use_calculator: true
+  - type: NumSet
+    var_name: A:AUTOPILOT HEADING LOCK DIR:1
+    var_units: Degrees
+    var_type: f64
+    event_name: HEADING_BUG_SET
+    event_param: 1
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT ALTITUDE LOCK
+    var_units: Bool
+    var_type: bool
+    event_name: AP_PANEL_ALTITUDE_HOLD
+    cancel_h_events: true
+    use_calculator: true
+  - type: NumSet
+    var_name: A:AUTOPILOT ALTITUDE LOCK VAR:1
+    var_units: Feet
+    var_type: i32
+    event_name: AP_ALT_VAR_SET_ENGLISH
+    event_param: 1
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT VERTICAL HOLD
+    var_units: Bool
+    var_type: bool
+    event_name: AP_PANEL_VS_HOLD
+    cancel_h_events: true
+    use_calculator: true
+  - type: NumSet
+    var_name: A:AUTOPILOT VERTICAL HOLD VAR:1
+    var_units: Feet per minute
+    var_type: i32
+    event_name: AP_VS_VAR_SET_ENGLISH
+    event_param: 1
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT AIRSPEED HOLD
+    var_units: Bool
+    var_type: bool
+    event_name: AP_PANEL_SPEED_HOLD
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:AUTOPILOT AIRSPEED HOLD VAR:1
+    var_units: Knots
+    var_type: f64
+    event_name: AP_SPD_VAR_SET
+    event_param: 1
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT MANAGED SPEED IN MACH
+    var_units: Bool
+    var_type: bool
+    event_name: AP_MANAGED_SPEED_IN_MACH_TOGGLE
+    cancel_h_events: true
+    use_calculator: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT FLIGHT LEVEL CHANGE
+    var_units: Bool
+    var_type: bool
+    event_name: FLIGHT_LEVEL_CHANGE
+    cancel_h_events: true
+    use_calculator: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT WING LEVELER
+    var_units: Bool
+    var_type: bool
+    event_name: AP_WING_LEVELER
+    cancel_h_events: true
+    use_calculator: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT BACKCOURSE HOLD
+    var_units: Bool
+    var_type: bool
+    event_name: AP_BC_HOLD
+    cancel_h_events: true
+    use_calculator: true
+  - type: var
+    var_name: A:AUTOPILOT PITCH HOLD REF
+    var_units: Degrees
+    var_type: f64
+    unreliable: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_FLIGHT_DIRECTOR
+    event_param: 1
+    cancel_h_events: true
+    use_calculator: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:2
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_FLIGHT_DIRECTOR
+    event_param: 2
+    cancel_h_events: true
+    use_calculator: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT APPROACH HOLD
+    var_units: Bool
+    var_type: bool
+    event_name: AP_APR_HOLD
+    cancel_h_events: true
+    use_calculator: true
+  - type: var
+    var_name: A:AUTOPILOT GLIDESLOPE HOLD
+    var_units: Bool
+    var_type: f64
+    use_calculator: true
+  - type: event
+    event_name: AP_LOC_HOLD
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT THROTTLE ARM
+    var_units: Bool
+    var_type: bool
+    event_name: AUTO_THROTTLE_ARM
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT TAKEOFF POWER ACTIVE
+    var_units: Bool
+    var_type: bool
+    event_name: AUTO_THROTTLE_TO_GA
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT NAV1 LOCK
+    var_units: Bool
+    var_type: bool
+    event_name: AP_NAV1_HOLD
+    cancel_h_events: true
+    use_calculator: true
+  - type: NumSet
+    var_name: A:AUTOPILOT MAX BANK ID
+    var_units: Number
+    var_type: i32
+    event_name: AP_MAX_BANK_SET
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT YAW DAMPER
+    var_units: Bool
+    var_type: bool
+    event_name: YAW_DAMPER_TOGGLE
+    cancel_h_events: true
+    use_calculator: true
+  - type: ToggleSwitch
+    var_name: A:GPS DRIVES NAV1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_GPS_DRIVES_NAV1
+    cancel_h_events: true
+    use_calculator: true
+  - type: NumSet
+    var_name: A:AUTOPILOT NAV SELECTED
+    var_units: Number
+    var_type: i32
+    event_name: AP_NAV_SELECT_SET
+    cancel_h_events: true
+    use_calculator: true
+  - type: ToggleSwitch
+    var_name: A:TACAN DRIVES NAV1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_TACAN_DRIVES_NAV1
+    cancel_h_events: true
+    use_calculator: true
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_OVHD1_ANTI_SKID_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD1_ANTI_SKID_TEST_SWITCH
+  - type: var
+    var_name: L:FSS_B727_OVHD1_AILERON_SYS_A_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD1_AILERON_SYS_B_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD1_SPOILER_SYS_A_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD1_SPOILER_SYS_B_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD1_ELEV_SYS_A_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD1_ELEV_SYS_B_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD1_RUDDER_STBY_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD1_RUDDER_SYS_A_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD1_RUDDER_SYS_B_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD1_AILERON_HYD_SYS_A_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_AILERON_HYD_SYS_B_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_SPOILER_HYD_SYS_A_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_SPOILER_HYD_SYS_B_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_ELEV_HYD_SYS_A_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_ELEV_HYD_SYS_B_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_RUDDER_HYD_STBY_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_RUDDER_HYD_SYS_A_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_RUDDER_HYD_SYS_B_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_FLT_CTRL_WARNING_TEST_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_ANTI_SKID_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD1_SPOILER_HYD_SYS_A_ON
+  - type: var
+    var_name: L:FSS_B727_OVHD1_SPOILER_HYD_SYS_B_ON
+  - type: var
+    var_name: L:FSS_B727_OVHD1_FLT_CTRL_WARNING_TEST_STATE
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_OVHD2_VERTICAL_GYRO_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_OVHD2_AUTO_BRAKE_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_OVHD2_VHF_NAV_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_OVHD2_COMPASS_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_OVHD2_STALL_WARNING_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD2_COMPASS1_FREE_SLAVED_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD2_COMPASS1_SYSTEM_KNOB
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DET_SELECT_FWD_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DET_SELECT_AFT_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DET_SELECT_DISCH
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DET_SELECT_FWD_ARM_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DET_SELECT_AFT_ARM_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD2_STALL_WARNING_OFF_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD2_FLIGHT_REC_ANNUN_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD2_FLIGHT_REC_TEST_BTN_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DETECTOR_FAULT_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD2_CARGO_FIRE_TEST_BTN_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DETECTOR_FAULT
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DET_SELECT_FWD_ARM
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DET_SELECT_FWD
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DET_SELECT_AFT_ARM
+  - type: var
+    var_name: L:FSS_B727_OVHD2_DET_SELECT_AFT
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_OVHD3_EMERG_EXIT_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD3_EMERG_EXIT_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD3_WINDSHIELD_WIPER_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD3_RAIN_REPELLENT1_BTN
+  - type: var
+    var_name: L:FSS_B727_OVHD3_RAIN_REPELLENT2_BTN
+  - type: var
+    var_name: L:FSS_B727_OVHD3_EMERG_EXIT_LIGHT_SW_IsDown
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ENG_START_1_SWITCH
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ENG_START_2_SWITCH
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ENG_START_3_SWITCH
+  - type: var
+    var_name: L:FSS_B727_OVHD4_IGN_SYSTEM_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD4_IGN_SYSTEM_SWITCH
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ENG_START_1_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ENG_START_2_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ENG_START_3_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ALTERNATE_FLAPS_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ALTERNATE_FLAPS_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ALTERNATE_FLAPS_INBD_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ALTERNATE_FLAPS_OUTBD_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD4_COMPASS2_FREE_SLAVED_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD4_COMPASS2_SYSTEM_KNOB
+  - type: var
+    var_name: L:FSS_B727_OVHD4_NO_SMOKING_SWITCH
+  - type: var
+    var_name: L:FSS_B727_OVHD4_FASTEN_SEATBELTS_SWITCH
+  - type: var
+    var_name: L:FSS_B727_OVHD4_PASSENGER_ADDRESS_SWITCH
+  - type: var
+    var_name: L:FSS_B727_OVHD4_MICROPHONE_TEST
+  - type: var
+    var_name: L:FSS_B727_OVHD4_MICROPHONE_ERASE
+  - type: var
+    var_name: L:FSS_B727_OVHD4_FASTEN_SEATBELT_BUTTON
+  - type: var
+    var_name: L:FSS_B727_OVHD4_GROUND_CREW_CALL_BUTTON_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD4_PASSENGER_ADDRESS_BUTTON_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD4_GRD_CREW_CALL_ACT_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ENGINE_ACCESS_DOOR_OPEN_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD4_ENGINE_ACCESS_DOOR_OPEN
+  - type: var
+    var_name: A:TRANSPONDER STATE:1
+    var_units: Enum
+    var_type: i32
+  - type: ToggleSwitch
+    var_name: A:TRANSPONDER IDENT:1
+    var_units: Bool
+    var_type: bool
+    event_name: XPNDR_IDENT_ON
+    off_event_name: XPNDR_IDENT_OFF
+    event_param: 1
+  - type: NumDigitSet
+    var_name: A:TRANSPONDER CODE:1
+    var_units: Number
+    var_type: i32
+    up_event_names:
+      - XPNDR_1_INC
+      - XPNDR_10_INC
+      - XPNDR_100_INC
+      - XPNDR_1000_INC
+    down_event_names:
+      - XPNDR_1_DEC
+      - XPNDR_10_DEC
+      - XPNDR_100_DEC
+      - XPNDR_1000_DEC
+    cancel_h_events: true
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_OVHD5_PROBE_HEATERS_L_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_PROBE_HEATERS_R_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_DUCT_TEMP_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_VALVE_POS_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_1_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_2_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_3_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_4_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_TEST_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_WING_ANTI_ICE_1_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_WING_ANTI_ICE_2_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_ENG_INLET_ANTI_ICE_1_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_ENG_INLET_ANTI_ICE_2_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_ENG_INLET_ANTI_ICE_3_SW
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_LIGHT_L1_GREEN_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_LIGHT_L1_AMBER_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_LIGHT_R1_GREEN_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_LIGHT_R1_AMBER_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_LIGHT_L2_GREEN_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_LIGHT_L2_AMBER_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_LIGHT_R2_GREEN_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_WINDOW_HEAT_LIGHT_R2_AMBER_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_DUCT_OVHEAT_BUTTON_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_WING_VALVE_POS_1_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_WING_VALVE_POS_3_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_ENG_INLET_VLV_POS_1_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_ENG_INLET_VLV_POS_2_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AI_ENG_INLET_VLV_POS_3_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_PITOT_R_BUTTON_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_PITOT_L_BUTTON_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_ELEV_PITOT_R_BUTTON_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_ELEV_PITOT_L_BUTTON_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_STATIC_R_BUTTON_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_STATIC_L_BUTTON_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_TEMP_PROBE_BUTTON_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_OVHD5_AUX_PITOT_BUTTON_SW_IsDown
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_OVHD_LIGHT_OVERRIDE_SW
+  - type: ToggleSwitch
+    var_name: A:LIGHT PANEL:9
+    var_units: Bool
+    var_type: bool
+    event_name: PANEL_LIGHTS_ON
+    off_event_name: PANEL_LIGHTS_OFF
+    event_param: 9
+  - type: ToggleSwitch
+    var_name: A:LIGHT CABIN:1
+    var_units: Bool
+    var_type: bool
+    event_name: CABIN_LIGHTS_ON
+    off_event_name: CABIN_LIGHTS_OFF
+    event_param: 1
+  - type: ToggleSwitch
+    var_name: A:LIGHT LANDING:1
+    var_units: Bool
+    var_type: bool
+    event_name: LANDING_LIGHTS_TOGGLE
+    event_param: 1
+  - type: ToggleSwitch
+    var_name: A:LIGHT LANDING:2
+    var_units: Bool
+    var_type: bool
+    event_name: LANDING_LIGHTS_TOGGLE
+    event_param: 2
+  - type: ToggleSwitch
+    var_name: A:LIGHT LANDING:3
+    var_units: Bool
+    var_type: bool
+    event_name: LANDING_LIGHTS_TOGGLE
+    event_param: 3
+  - type: ToggleSwitch
+    var_name: A:LIGHT LANDING:4
+    var_units: Bool
+    var_type: bool
+    event_name: LANDING_LIGHTS_TOGGLE
+    event_param: 4
+  - type: ToggleSwitch
+    var_name: A:LIGHT TAXI:1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_TAXI_LIGHTS
+    event_param: 1
+  - type: ToggleSwitch
+    var_name: A:LIGHT TAXI:2
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_TAXI_LIGHTS
+    event_param: 2
+  - type: ToggleSwitch
+    var_name: A:LIGHT TAXI:3
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_TAXI_LIGHTS
+    event_param: 3
+  - type: ToggleSwitch
+    var_name: A:LIGHT NAV:1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_NAV_LIGHTS
+    event_param: 1
+  - type: ToggleSwitch
+    var_name: A:LIGHT BEACON:1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_BEACON_LIGHTS
+    event_param: 1
+  - type: ToggleSwitch
+    var_name: A:LIGHT STROBE:1
+    var_units: Bool
+    var_type: bool
+    event_name: STROBES_TOGGLE
+    event_param: 1
+  - type: ToggleSwitch
+    var_name: A:LIGHT RECOGNITION:1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_RECOGNITION_LIGHTS
+    event_param: 1
+  - type: ToggleSwitch
+    var_name: A:LIGHT LOGO:1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_LOGO_LIGHTS
+    event_param: 1
+  - type: ToggleSwitch
+    var_name: A:LIGHT WING:1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_WING_LIGHTS
+    event_param: 1
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_AP_BANK_DEGREE
+  - type: var
+    var_name: L:FSS_B727_AP_ALT_SEL_DIGITS
+    cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_AP_VS
+  - type: var
+    var_name: L:FSS_B727_AP_TURN_KNOB_ZERO
+  - type: var
+    var_name: L:FSS_B727_AP_AIRSPEED_ON
+  - type: var
+    var_name: L:FSS_B727_AP_VS_ON
+  - type: var
+    var_name: L:FSS_B727_AP_PITCH_ON
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT MASTER
+    var_units: Bool
+    var_type: bool
+    event_name: FSS_B727.AP_MASTER_SWITCH_ON
+    off_event_name: FSS_B727.AP_MASTER_SWITCH_OFF
+    # on_condition_value: 1
+    cancel_h_events: true
+    # use_calculator: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT HEADING LOCK
+    var_units: Bool
+    var_type: bool
+    event_name: FSS_B727.AP_HDG_SEL_BUTTON
+    # on_condition_value: 1
+    cancel_h_events: true
+    use_calculator: true
+  - type: ToggleSwitch
+    var_name: A:AUTOPILOT ALTITUDE LOCK VAR:1
+    var_units: Bool
+    var_type: bool
+    event_name: FSS_B727.AP_ALT_SEL_BUTTON
+    cancel_h_events: true
+    # use_calculator: true
+    # condition:
+    #   greater_than:
+    #     F64: 0.0
+
+
+
+
+  - type: NumSet
+    var_name: A:FLAPS HANDLE PERCENT
+    var_units: Position 16k
+    var_type: f64
+    event_name: FLAPS_CONTINUOUS_SET
+    unreliable: true
+  - type: var
+    var_name: A:FLAPS HANDLE INDEX
+    var_units: Number
+    var_type: f64
+  - type: var
+    var_name: L:FSS_B727_SPOILER_LEVER_STATE
+  - type: var
+    var_name: L:FSS_B727_PDSTL_FUEL_CUT_OFF_1
+  - type: var
+    var_name: L:FSS_B727_PDSTL_FUEL_CUT_OFF_2
+  - type: var
+    var_name: L:FSS_B727_PDSTL_FUEL_CUT_OFF_3
+  - type: var
+    var_name: L:FSS_B727_PDSTL_PARK_BRAKE_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PDSTL_PARK_BRAKE_LEVER
+  - type: var
+    var_name: L:FSS_B727_PDSTL_STAB_CRUISE_TRIM_SW
+  - type: var
+    var_name: L:FSS_B727_PDSTL_STAB_TRIM_MAN_ELEC_SW
+  - type: var
+    var_name: L:FSS_B727_PDSTL_STAB_TRIM_AP_CRUISE_SW
+  - type: var
+    var_name: L:FSS_B727_PDSTL_STAB_TRIM_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PDSTL_AUTOPILOT_HDG_ENG_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ARM_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ENG_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PDSTL_TRIM_WHEEL_CLICKED
+  - type: var
+    var_name: L:FSS_B727_PDSTL_RUDDER_TRIM_KNOB
+  - type: var
+    var_name: L:FSS_B727_PDSTL_AILERON_TRIM_KNOB
+  - type: var
+    var_name: L:FSS_B727_PDSTL_PARK_BRAKE_LIGHT_SW
+  - type: var
+    var_name: L:FSS_B727_PDSTL_STAB_TRIM_LIGHT_SW
+  - type: var
+    var_name: L:FSS_B727_PDSTL_AUTOPILOT_HDG_ENG_SW
+  - type: var
+    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ARM_SW
+  - type: var
+    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ENG_SW
+  - type: var
+    var_name: L:FSS_B727_PDSTL_VHF_COMM_LIGHT_1_1
+  - type: var
+    var_name: L:FSS_B727_PDSTL_VHF_COMM_LIGHT_1_2
+  - type: var
+    var_name: L:FSS_B727_PDSTL_VHF_COMM_LIGHT_2_1
+  - type: var
+    var_name: L:FSS_B727_PDSTL_VHF_COMM_LIGHT_2_2
+  - type: var
+    var_name: L:FSS_B727_PDSTL_NAV_LIGHT_1_1
+  - type: var
+    var_name: L:FSS_B727_PDSTL_NAV_LIGHT_1_2
+  - type: var
+    var_name: L:FSS_B727_PDSTL_NAV_LIGHT_2_1
+  - type: var
+    var_name: L:FSS_B727_PDSTL_NAV_LIGHT_2_2
+  - type: var
+    var_name: L:FSS_B727_PDSTL_NAV_LIGHT_3_1
+  - type: var
+    var_name: L:FSS_B727_PDSTL_NAV_LIGHT_3_2
+  - type: var
+    var_name: L:FSS_B727_PDSTL_NAV_LIGHT_4_1
+  - type: var
+    var_name: L:FSS_B727_PDSTL_NAV_LIGHT_4_2
+  - type: var
+    var_name: L:FSS_B727_PDSTL_AUTOPILOT_HDG_ENG
+  - type: var
+    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ARM
+  - type: var
+    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ENG
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_RADIO_ADF2_MODE
+  - type: var
+    var_name: L:FSS_B727_RADIO_NAV1_MODE
+  - type: var
+    var_name: L:FSS_B727_RADIO_ADF1_MODE
+  - type: var
+    var_name: L:FSS_B727_RADIO_NAV2_MODE
+  - type: var
+    var_name: L:FSS_B727_RADIO_COM1_FREQ_1
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_COM1_FREQ_2
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_COM2_FREQ_1
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_COM2_FREQ_2
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_NAV1_FREQ_1
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_NAV1_FREQ_2
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_NAV2_FREQ_1
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_NAV2_FREQ_2
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_ADF1_FREQ_1
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_ADF1_FREQ_2
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_ADF2_FREQ_1
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_RADIO_ADF2_FREQ_2
+    cancel_h_events: true
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_SWITCH_RADIO_ADF2_SEL
+  - type: var
+    var_name: L:FSS_B727_SWITCH_RADIO_NAV2_SEL
+  - type: var
+    var_name: L:FSS_B727_SWITCH_RADIO_COM2_SEL
+  - type: var
+    var_name: L:FSS_B727_SWITCH_RADIO_ADF1_SEL
+  - type: var
+    var_name: L:FSS_B727_SWITCH_RADIO_COM1_SEL
+  - type: var
+    var_name: L:FSS_B727_SWITCH_RADIO_NAV1_SEL
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_ARP_RADIO_MASTER_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_ARP_RADIO_MASTER_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_ADP_VHF1_SWITCH
+  - type: var
+    var_name: L:FSS_B727_ADP_VHF2_SWITCH
+  - type: var
+    var_name: L:FSS_B727_ADP_VHF3_SWITCH
+  - type: NumSet
+    var_name: A:INTERCOM MODE
+    var_units: Enum
+    var_type: i32
+    event_name: INTERCOM_MODE_SET
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:NAV SOUND:1
+    var_units: Bool
+    var_type: bool
+    event_name: RADIO_VOR1_IDENT_TOGGLE
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:NAV SOUND:2
+    var_units: Bool
+    var_type: bool
+    event_name: RADIO_VOR2_IDENT_TOGGLE
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:DME SOUND:1
+    var_units: Bool
+    var_type: bool
+    event_name: RADIO_DME1_IDENT_TOGGLE
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:DME SOUND:2
+    var_units: Bool
+    var_type: bool
+    event_name: RADIO_DME2_IDENT_TOGGLE
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:ADF SOUND:1
+    var_units: Bool
+    var_type: f64
+    event_name: RADIO_ADF_IDENT_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:ADF SOUND:2
+    var_units: Bool
+    var_type: f64
+    event_name: RADIO_ADF2_IDENT_SET
+    cancel_h_events: true
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_AP_MODE_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_FD_PITCH_CMD
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_AP_ALT_HOLD
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_AUTOTHROTTLE_SWITCH
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_BOTTLE_TRANSFER_SWITCH
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_AUTOTHROTTLE_DISENGAGE_PTT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_BELL_CUTOUT_BTN_IsDown
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_BOTTLE_DISCH_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_BOTTLE_DISCH_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_AUTOTHROTTLE_DISENGAGE_PTT_SW
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_BOTTLE_DISCH_1_SW
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_BOTTLE_DISCH_2_SW
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_BOTTLE_DISCH_1
+  - type: var
+    var_name: L:FSS_B727_GSHIELD_BOTTLE_DISCH_2
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_CP_FD_AP_ANNUN_ALTSELECT_SW
+  - type: var
+    var_name: L:FSS_B727_CP_FD_AP_ANNUN_ALT_SW
+  - type: var
+    var_name: L:FSS_B727_CP_FD_AP_ANNUN_VORLOC_2_SW
+  - type: var
+    var_name: L:FSS_B727_CP_FD_AP_ANNUN_GPS_SW
+  - type: var
+    var_name: L:FSS_B727_CP_AIRSPEEED_TEST_SWITCH
+  - type: var
+    var_name: L:FSS_B727_CP_FD_AP_ANNUN_VORLOC_1_SW
+  - type: var
+    var_name: L:FSS_B727_CP_FD_AP_ANNUN_GLDSLP_2_SW
+  - type: var
+    var_name: L:FSS_B727_CP_FD_AP_ANNUN_GLDSLP_1_SW
+  # - type: var
+  #   var_name: L:FSS_B727_CP_AP_DISENGAGE
+  - type: var
+    var_name: L:FSS_B727_CP_AIRSPEEED_MACH_TEST_SWITCH
+  - type: var
+    var_name: L:FSS_B727_CP_FD_AP_ANNUN_HDG_SW
+  - type: var
+    var_name: L:FSS_B727_CP_WINDOW_HANDLE
+  - type: var
+    var_name: L:FSS_B727_CP_KNOB_ALTIMETER_1_2
+  - type: var
+    var_name: L:FSS_B727_CP_KNOB_ALTIMETER_2_2
+  - type: var
+    var_name: L:FSS_B727_CP_STBY_AR_HORIZ_CAGE_IsDown
+  - type: var
+    var_name: L:FSS_B727_CP_RADIO_ALT_TEST_BTN_IsDown
+  - type: var
+    var_name: L:FSS_B727_CP_PULL_UP_BTN_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_CP_BELOW_GS_BTN_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_CP_MDA_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_CP_ALT_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_CP_AIRSPEED_BUG_SET
+  - type: var
+    var_name: L:FSS_B727_CP_AIRSPEED_MARKER_1
+  - type: var
+    var_name: L:FSS_B727_CP_AIRSPEED_MARKER_2
+  - type: var
+    var_name: L:FSS_B727_CP_AIRSPEED_MARKER_3
+  - type: var
+    var_name: L:FSS_B727_CP_INST_COMP_CANCELLED
+  # - type: var
+  #   var_name: L:FSS_B727_CP_ALT1_4DIGIT_MBAR
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_CP_ALT1_4DIGIT_INHG
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_CP_ALT2_4DIGIT_MBAR
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_CP_ALT2_4DIGIT_INHG
+  #   cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_CP_FD_AP_ANNUN_GOARND
+  - type: var
+    var_name: L:FSS_B727_CP_FD_AP_ANNUN_FLARE
+  # - type: var
+  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_MON_PWR_SW
+  # - type: var
+  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_HDG_SW
+  # - type: var
+  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_PITCH_SW
+  # - type: var
+  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_ROLL_SW
+  # - type: var
+  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_GS_SW
+  # - type: var
+  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_LOC_SW
+  # - type: var
+  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_ALT_SW
+  - type: var
+    var_name: L:FSS_B727_CP_RADIO_ALT_BUG_SET
+  - type: var
+    var_name: L:FSS_B727_CP_ALTIMETER_1_BUG_SET
+  - type: var
+    var_name: L:FSS_B727_CP_ALTIMETER_2_BUG_SET
+  - type: var
+    var_name: L:FSS_B727_CP_AIRSPEEED_TEST_SWITCH
+  - type: var
+    var_name: L:FSS_B727_CP_AIRSPEEED_MACH_TEST_SWITCH
+  - type: NumSet
+    var_name: A:AUTOPILOT HEADING LOCK DIR:1
+    var_units: Degrees
+    var_type: f64
+    event_name: HEADING_BUG_SET
+    event_param: 1
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:KOHLSMAN SETTING MB:1
+    var_units: Millibars scaler 16
+    var_type: f64
+    event_name: KOHLSMAN_SET
+    event_param: 1
+  - type: NumSet
+    var_name: A:KOHLSMAN SETTING MB:2
+    var_units: Millibars scaler 16
+    var_type: f64
+    event_name: KOHLSMAN_SET
+    event_param: 2
+  - type: NumSet
+    var_name: A:KOHLSMAN SETTING MB:3
+    var_units: Millibars scaler 16
+    var_type: f64
+    event_name: KOHLSMAN_SET
+    event_param: 3
+  - type: NumSet
+    var_name: A:NAV OBS:1
+    var_units: Degrees
+    var_type: f64
+    event_name: VOR1_SET
+    cancel_h_events: true
+    use_calculator: true
+  - type: NumSet
+    var_name: A:NAV OBS:2
+    var_units: Degrees
+    var_type: f64
+    event_name: VOR2_SET
+    cancel_h_events: true
+    use_calculator: true
+
+
+
+
+  - type: ToggleSwitch
+    var_name: A:GPS DRIVES NAV1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_GPS_DRIVES_NAV1
+    cancel_h_events: true
+    use_calculator: true
+  - type: NumSet
+    var_name: A:MARKER BEACON SENSITIVITY HIGH
+    var_units: Enum
+    var_type: i32
+    event_name: MARKER_BEACON_SENSITIVITY_HIGH
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_PCP_LANDING_GEAR_LEVER
+  - type: var
+    var_name: L:FSS_B727_PCP_UPR_YAW_DAMPER_ENG_SW_CVR
+  - type: var
+    var_name: L:FSS_B727_PCP_LWR_YAW_DAMPER_ENG_SW_CVR
+  - type: var
+    var_name: L:FSS_B727_PCP_UPR_YAW_DAMPER_ENG_SW
+  - type: var
+    var_name: L:FSS_B727_PCP_LWR_YAW_DAMPER_ENG_SW
+  - type: var
+    var_name: L:FSS_B727_PCP_REVERSER_OPERATING_1_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_REVERSER_OPERATING_2_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_REVERSER_OPERATING_3_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_AIRWAYS_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_MIDDLE_MARKER_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_OUTER_MARKER_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_STAB_TRIM_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_ELEV_LOW_PRESS_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_LE_FLAPS_DECAL_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_LE_FLAPS_DECAL_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_MASTER_WARNING_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_LOW_ENG_OIL_PRESS_LIGHT_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_LOW_ENG_OIL_PRESS_LIGHT_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_LOW_ENG_OIL_PRESS_LIGHT_3_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_DOOR_BUTTON_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_NOSE_GEAR_BUTTON_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_NOSE_GEAR_BUTTON_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_LEFT_GEAR_BUTTON_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_LEFT_GEAR_BUTTON_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_RIGHT_GEAR_BUTTON_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_RIGHT_GEAR_BUTTON_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_TAIL_SKID_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_PCP_EPR_BUG1
+  - type: var
+    var_name: L:FSS_B727_PCP_EPR_BUG2
+  - type: var
+    var_name: L:FSS_B727_PCP_EPR_BUG3
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FOP_MASTER_TEST_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FOP_COPIL_FD_AP_ANNUN_ALTSELECT_SW
+  - type: var
+    var_name: L:FSS_B727_FOP_COPIL_FD_AP_ANNUN_ALT_SW
+  - type: var
+    var_name: L:FSS_B727_FOP_COPIL_FD_AP_ANNUN_VORLOC_2_SW
+  - type: var
+    var_name: L:FSS_B727_FOP_COPIL_FD_AP_ANNUN_GPS_SW
+  - type: var
+    var_name: L:FSS_B727_FOP_AIRSPEEED_TEST_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FOP_COPIL_FD_AP_ANNUN_VORLOC_1_SW
+  - type: var
+    var_name: L:FSS_B727_FOP_COPIL_FD_AP_ANNUN_GLDSLP_2_SW
+  - type: var
+    var_name: L:FSS_B727_FOP_COPIL_FD_AP_ANNUN_GLDSLP_1_SW
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_AP_DISENGAGE_COPIL
+  - type: var
+    var_name: L:FSS_B727_FOP_GRD_PROX_SYS_TEST_BTN_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_GPWS_TEST_OFF_LT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_GPWS_FLAP_INHIB_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_FOP_GPWS_FLAP_INHIB_SW
+  - type: var
+    var_name: L:FSS_B727_FOP_FD_AP_ANNUN_HDG_SW
+  - type: var
+    var_name: L:FSS_B727_FOP_WINDOW_HANDLE
+  - type: var
+    var_name: L:FSS_B727_FOP_KNOB_ALTIMETER_1_2
+  - type: var
+    var_name: L:FSS_B727_FOP_KNOB_ALTIMETER_2_2
+  - type: var
+    var_name: L:FSS_B727_FOP_STBY_AR_HORIZ_CAGE_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_RADIO_ALT_TEST_BTN_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_PULL_UP_BUTTON_COPIL_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_BELOW_GS_BUTTON_COPIL_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_MDA_LIGHT_COPIL_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_ALT_LIGHT_COPIL_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_AIRSPEED_BUG_SET
+  - type: var
+    var_name: L:FSS_B727_FOP_AIRSPEED_MARKER_1
+  - type: var
+    var_name: L:FSS_B727_FOP_AIRSPEED_MARKER_2
+  - type: var
+    var_name: L:FSS_B727_FOP_AIRSPEED_MARKER_3
+  - type: var
+    var_name: L:FSS_B727_FOP_INST_COMP_CANCELLED
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_ALT1_4DIGIT_MBAR
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_ALT1_4DIGIT_INHG
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_ALT2_4DIGIT_MBAR
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_ALT2_4DIGIT_INHG
+  #   cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_FOP_FD_AP_ANNUN_GOARND
+  - type: var
+    var_name: L:FSS_B727_FOP_FD_AP_ANNUN_FLARE
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_MON_PWR_SW
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_HDG_SW
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_PITCH_SW
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_ROLL_SW
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_GS_SW
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_LOC_SW
+  # - type: var
+  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_ALT_SW
+  - type: var
+    var_name: L:FSS_B727_FOP_RADIO_ALT_BUG_SET
+  - type: var
+    var_name: L:FSS_B727_FOP_ALTIMETER_1_BUG_SET
+  - type: var
+    var_name: L:FSS_B727_FOP_ALTIMETER_2_BUG_SET
+  - type: var
+    var_name: L:FSS_B727_FOP_AILERON_SYSTEM_A_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_AILERON_SYSTEM_B_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_ELEVATOR_SYSTEM_A_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_ELEVATOR_SYSTEM_B_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_RUDDER_SYSTEM_A_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_RUDDER_SYSTEM_B_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_MARKER_LIGHT_1_COPIL_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_MARKER_LIGHT_2_COPIL_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_MARKER_LIGHT_3_COPIL_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FOP_CARGO_TEST_OFF_LT_SW_IsDown
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_HSI_HDG_2
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_DC_BATT_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_DC_BATT_SWITCH_COVER
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_EXT_POWER_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_ESS_POWER_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_DISC_SWITCH_1_COVER
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_DISC_SWITCH_2_COVER
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_DISC_SWITCH_3_COVER
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_AC_METERS_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_DC_METERS_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_FREQ_KNOB_1
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_FREQ_KNOB_2
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_FREQ_KNOB_3
+  # - type: var
+  #   var_name: L:FSS_B727_FE_ELEC_APU_FREQ_SET
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_SPAWN_APRON
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GALLEY_POWER_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GALLEY_POWER_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_DISC_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_DISC_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_DISC_SWITCH_3
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_TEMP_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_TEMP_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_TEMP_SWITCH_3
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_TIE_BREAKER_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_BREAKER_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_FIELD_BREAKER_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_TIE_BREAKER_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_BREAKER_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_FIELD_BREAKER_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_TIE_BREAKER_SWITCH_3
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_BREAKER_SWITCH_3
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_FIELD_BREAKER_SWITCH_3
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_ESS_POWER_FAIL_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_RESIDUAL_VOLT_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_LOW_PRESS_LIGHT_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_LOW_PRESS_LIGHT_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_LOW_PRESS_LIGHT_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_DRV_LOW_PRESS_LIGHT_3_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_TIE_BREAKER_LIGHT_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_BREAKER_LIGHT_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_FIELD_BREAKER_LIGHT_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_TIE_BREAKER_LIGHT_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_BREAKER_LIGHT_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_FIELD_BREAKER_LIGHT_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_TIE_BREAKER_LIGHT_3_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_BREAKER_LIGHT_3_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN_FIELD_BREAKER_LIGHT_3_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_KVARS_BUTTON
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_OIL_COOLER_CSD_SW
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_AC_PWR_AVAIL
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BATT_IN_USE
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GPU_AVAIL
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GPU_IN_USE
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN1_1AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN1_2AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN1_3AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN2_1AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN2_2AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN2_3AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN3_1AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN3_2AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN3_3AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_APU_1AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_APU_2AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_APU_3AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GPU_1AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GPU_2AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GPU_3AC_CONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_ACC_ESS_BUS_SRC
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN1_DRV_DISCONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN2_DRV_DISCONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN3_DRV_DISCONNECTED
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN1_BREAKER_TRIP
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN2_BREAKER_TRIP
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN3_BREAKER_TRIP
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN1_FIELD_BREAKER_TRIP
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN2_FIELD_BREAKER_TRIP
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN3_FIELD_BREAKER_TRIP
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN1_BUS_TIE_TRIP
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN2_BUS_TIE_TRIP
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_GEN3_BUS_TIE_TRIP
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_1AC_STATE
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_2AC_STATE
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_3AC_STATE
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_ESSAC_STATE
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_1DC_STATE
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_2DC_STATE
+  - type: var
+    var_name: L:FSS_B727_FE_ELEC_BUS_ESSDC_STATE
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_CABIN_TEMP_CTRL_MODE
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PASS_CABIN_TEMP_CTRL_MODE
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PASS_CABIN_TEMP_CTRL_KNOB
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_FLT_GRD_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_MODE_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_APU_BLEED_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_ENGINE_1_BLEED_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_ENGINE_2_BLEED_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_ENGINE_3_BLEED_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_CARGO_HEAT_OUTFLOW_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_GASPER_FAN_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PASS_CABIN_TEMP_CTRL_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_CABIN_TEMP_CTRL_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_CABIN_TEMP_CTRL_KNOB
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_AIR_TEMP_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_DUCT_OVERHEAT_WARN_IND_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_DUCT_OVERHEAT_WARN_IND_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_ALT_HORN_CUTOUT_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_LIGHT_AUTO_FAIL_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_LIGHT_OFF_SCHED_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_LIGHT_STBY_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_LIGHT_MANUAL_SW_IsDown
+  # - type: var
+  #   var_name: L:FSS_B727_FE_PRESS_FLT_ALT_SELECT_KNOB
+  # - type: var
+  #   var_name: L:FSS_B727_FE_PRESS_LAND_ALT_SELECT_KNOB_SMALL
+  # - type: var
+  #   var_name: L:FSS_B727_FE_PRESS_LAND_ALT_SELECT_KNOB
+  # - type: var
+  #   var_name: L:FSS_B727_FE_PRESS_CAB_ALT_SELECT_KNOB_SMALL
+  # - type: var
+  #   var_name: L:FSS_B727_FE_PRESS_CAB_ALT_SELECT_KNOB
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_STANDBY_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OUTFLOW_VLV_MAN_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OXY_DEPLOY_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PACK_TRIP_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PASS_CABIN_ZONE_TEMP_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OXY_DEPLOYED_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_AFT_CABIN_ZONE_TEMP_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OVER_HEAT_LIGHT_1_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OVER_HEAT_LIGHT_2_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OVER_HEAT_LIGHT_3_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OVER_HEAT_TEST_SWITCH_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_WING_AI_TRIP_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_WING_AI_AUTO_TRIPOFF_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PACK_COOLING_DOOR_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PACK_COOLING_DOOR_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PACK_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PACK_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PACK_TRIPOFF_RESET_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_AUTO_PACK_TRIP_ARMED_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PACK_TRIPOFF_SW_1_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PACK_TRIPOFF_SW_2_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PACK_TRIPOFF_SW_3_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_PACK_TRIPOFF_SW_4_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_HIGH_TEMP_WARN_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_ALT_HORN_CUTOUT
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_LIGHT_AUTO_FAIL_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_LIGHT_OFF_SCHED_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_LIGHT_STBY_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_LIGHT_MANUAL_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_FLT_ALT_NUM
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_LAND_ALT_NUM
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_LAND_ALT_INNER_NUM
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_CAB_ALT_NUM
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_CAB_ALT_INNER_NUM
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OXY_DEPLOYED_LIGHT_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_AFT_CABIN_ZONE_TEMP_LIGHT_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OVER_HEAT_LIGHT_1_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OVER_HEAT_LIGHT_2_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OVER_HEAT_LIGHT_3_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_OVER_HEAT_TEST_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_WING_AI_TRIP_LIGHT_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_HIGH_TEMP_WARN_SW
+  - type: var
+    var_name: L:FSS_B727_FE_PRESS_CABIN_TEMP_CTRL_RESET
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_WING_TANK_AFT_BOOST_PUMP_SW_L
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_WING_TANK_FWD_BOOST_PUMP_SW_L
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_WING_TANK_AFT_BOOST_PUMP_SW_R
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_WING_TANK_FWD_BOOST_PUMP_SW_R
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_FWD_BOOST_PUMP_SW_1
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_FWD_BOOST_PUMP_SW_2
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_AFT_BOOST_PUMP_SW_1
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_AFT_BOOST_PUMP_SW_2
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_ENG1_FUEL_SHUTOFF_SW
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_ENG2_FUEL_SHUTOFF_SW
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_ENG3_FUEL_SHUTOFF_SW
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_HEAT_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_HEAT_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_HEAT_SWITCH_3
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_ICING_SW_1_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_ICING_SW_2_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_ICING_SW_3_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_HEAT_VLV_INTRANSIT_SW_1_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_HEAT_VLV_INTRANSIT_SW_2_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_HEAT_VLV_INTRANSIT_SW_3_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_FLOW_RESET_SW
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_FUELQTY_TEST_BTN_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_LEFT_TANK_FUELQTY_TEST_BTN_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_RIGHT_TANK_FUELQTY_TEST_BTN_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_FWD_LOW_PRESS_SW_1_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_FWD_LOW_PRESS_SW_2_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_WING_TANK_AFT_LOW_PRESS_SW_L_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_WING_TANK_AFT_LOW_PRESS_SW_R_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_WING_TANK_FWD_LOW_PRESS_SW_L_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_WING_TANK_FWD_LOW_PRESS_SW_R_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_AFT_LOW_PRESS_SW_1_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_AFT_LOW_PRESS_SW_2_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_XFEED_VLV_TRANSIT_SW_1_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_XFEED_VLV_TRANSIT_SW_2_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_XFEED_VLV_TRANSIT_SW_3_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_ENG_SHUTOFF_VLV_SW_1_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_ENG_SHUTOFF_VLV_SW_2_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_ENG_SHUTOFF_VLV_SW_3_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_XFEED_SELECTOR_1
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_XFEED_SELECTOR_2
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_XFEED_SELECTOR_3
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_SWITCH_2
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_SWITCH_3
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_SWITCH_4
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_SWITCH_5
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_SWITCH_6
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_VLV_INTRANSIT_SW_1_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_VLV_INTRANSIT_SW_2_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_VLV_INTRANSIT_SW_3_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_VLV_INTRANSIT_SW_4_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_NOZZLE_VLV_INTRANSIT_SW_1_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_DUMP_NOZZLE_VLV_INTRANSIT_SW_2_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_FUELQTY_TEST
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_LEFT_TANK_FUELQTY_TEST
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_RIGHT_TANK_FUELQTY_TEST
+  - type: var
+    var_name: L:FSS_B727_FE_FUEL_MAIN_TANK_FUELQTY_TEST_SW
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_A_PUMP_1_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_A_PUMP_2_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_B_PUMP_1_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_B_PUMP_2_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_INTERCONNECT_GRD_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_A_FLUID_SHUTOFF_SW1_CVR
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_A_FLUID_SHUTOFF_SW1
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_A_FLUID_SHUTOFF_SW2_CVR
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_A_FLUID_SHUTOFF_SW2
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_A_PUMP_1_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_A_PUMP_2_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_A_OVERHEAT_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_B_PUMP_1_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_B_PUMP_2_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_STBY_OVERHEAT_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_STBY_ON_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_SYS_B_OVERHEAT_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_BRAKE_INTERCONNECT_SWITCH_CVR
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_BRAKE_INTERCONNECT_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_BRAKE_INTERCONNECT_ANNUN_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_ELEV_FEEL_DIFF_PRESS_LT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_RUDDER_LOAD_LIMITER_LT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_HYD_INTERCONNECT_GRD_STATE
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FE_ENG_BLEED_START_VALVE_1_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ENG_BLEED_START_VALVE_2_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ENG_BLEED_START_VALVE_3_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ENG_VIBRATION_PICKUP_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_ENG_VIBRATION_FILTER_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_ENG_VIB_TEST_BUTTON_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ENG_OIL_QTY_TEST_BUTTON_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ENGINE_FIRE_UPPER_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_ENGINE_FIRE_UPPER_SWITCH_2
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FE_FS_TEST_SW
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FE_PDSTL_AT_DISC_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_PDSTL_AT_DISC_SWITCH_3
+  - type: var
+    var_name: L:FSS_B727_FE_PDSTL_FINGER_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_PDSTL_FINGER_SWITCH_3
+  - type: var
+    var_name: L:FSS_B727_FE_PDSTL_PALM_SWITCH_1
+  - type: var
+    var_name: L:FSS_B727_FE_PDSTL_PALM_SWITCH_3
+  - type: var
+    var_name: L:FSS_B727_FE_PDSTL_GEAR_HORN_CUTOUT
+  - type: var
+    var_name: L:FSS_B727_FE_PDSTL_AT_DISC_SWITCH_2
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FE_LIGHT_NO_EQ_COOLING_LT_SW_IsDown
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FE_ANNUN_LIGHT_TEST_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_ANNUN_APU_LIGHT_TEST_SW_IsDown
+
+
+
+
+  - type: var
+    var_name: L:FSS_P32T_CABIN_AIR_DIST_LEVER
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_FE_APU_MASTER_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_APU_GENERATOR_CONTROL_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_APU_FIELD_CONTROL_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_APU_FIRE_TEST_SWITCH_3ST
+  - type: var
+    var_name: L:FSS_B727_FE_APU_FIRE_PULL_BUTTON
+  - type: var
+    var_name: L:FSS_B727_FE_APU_FIRE_SHUTDOWN_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_APU_FIRE_SHUTDOWN_SWITCH_COVER
+  - type: var
+    var_name: L:FSS_B727_FE_APU_CIRC_OPEN_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_APU_FIELD_LIGHT_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_APU_BOTTLE_DISC_BTN
+  - type: var
+    var_name: L:FSS_B727_FE_APU_LIGHT_APU_BLEED_SW_IsDown
+  - type: var
+    var_name: L:FSS_B727_FE_APU_FIRE_TEST_SWITCH
+  - type: var
+    var_name: L:FSS_B727_FE_APU_MASTER_CMD
+  - type: var
+    var_name: L:FSS_B727_FE_APU_SHUTDOWN_CMD
+  - type: var
+    var_name: L:FSS_B727_FE_APU_STARTUP_CMD
+  - type: var
+    var_name: L:FSS_B727_FE_APU_NOT_STARTED
+  - type: var
+    var_name: L:FSS_B727_FE_APU_START_TO_ON
+  - type: var
+    var_name: L:FSS_B727_FE_APU_GEN_CONNECTED
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_ENG_FIRE_BELL
+
+
+
+
+  # - type: var
+  #   var_name: L:FSS_727_IPHONE_STORED
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_EFB_COVER_ENGINE_VISIBLE
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_EFB_CONES_VISIBLE
+    cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_EFB_CHOCKS_VISIBLE
+    cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_EFB
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_EFB_SEATING_POSITION
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_EFB_NAV_EQUIP
+  #   cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_EFB_AUTOTHROTTLE_VISIBLE
+    cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_EFB_APPLY_PANEL_STATE
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_EFB_AUTODESCENT_ACTIVE
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_EFB_AUTODESCENT_FPM
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_EFB_LANDING_FLAPS
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_EFB_TAKEOFF_FLAPS
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_EFB_TAKEOFF_EPR
+  #   cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_EFB_TAKEOFF_TRIM
+  #   cancel_h_events: true
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_CC_PROC_PREFLIGHT_CHECK
+  - type: var
+    var_name: L:FSS_B727_CC_PROC_BEFORE_START
+  - type: var
+    var_name: L:FSS_B727_CC_PROC_AFTER_START
+  - type: var
+    var_name: L:FSS_B727_CC_PROC_TAXI
+  - type: var
+    var_name: L:FSS_B727_CC_PROC_BEFORE_TAKEOFF
+  - type: var
+    var_name: L:FSS_B727_CC_PROC_AFTER_TAKEOFF
+  - type: var
+    var_name: L:FSS_B727_CC_PROC_DESCENT
+  - type: var
+    var_name: L:FSS_B727_CC_PROC_LANDING
+  - type: var
+    var_name: L:FSS_B727_CC_PROC_AFTER_LANDING
+  - type: var
+    var_name: L:FSS_B727_CC_PROC_SECURE_COCKPIT
+  - type: var
+    var_name: L:FSS_B727_CC_MON_FUEL_HEAT
+  - type: var
+    var_name: L:FSS_B727_CC_MON_PACK_TEMPERATURE
+  - type: var
+    var_name: L:FSS_B727_CC_MON_AIRSPEED_BUG
+  - type: var
+    var_name: L:FSS_B727_CC_MON_EPR_LIMITS
+  - type: var
+    var_name: L:FSS_B727_CC_MON_FUEL_FEED
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_CIVA_EMISSIVE_BTN_REMOTE
+  - type: var
+    var_name: L:FSS_B727_CIVA_MODE_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_CIVA_EMISSIVE_LAMP_READY
+  - type: var
+    var_name: L:FSS_B727_CIVA_EMISSIVE_LAMP_BAT_MSU
+  - type: var
+    var_name: L:FSS_B727_CIVA_EMISSIVE_BTN_HOLD
+  - type: var
+    var_name: L:FSS_B727_CIVA_EMISSIVE_BTN_INSERT
+  - type: var
+    var_name: L:FSS_B727_CIVA_EMISSIVE_LAMP_ALERT
+  - type: var
+    var_name: L:FSS_B727_CIVA_EMISSIVE_LAMP_BAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_EMISSIVE_LAMP_WARN
+  - type: var
+    var_name: L:FSS_B727_CIVA_EMISSIVE_BTN_WAYPOINT
+  - type: var
+    var_name: L:FSS_B727_CIVA_OPERATION_MODE
+  - type: var
+    var_name: L:FSS_B727_CIVA_FROM
+  - type: var
+    var_name: L:FSS_B727_CIVA_TO
+  - type: var
+    var_name: L:FSS_B727_CIVA_DSRTK_BEARING
+  - type: var
+    var_name: L:FSS_B727_CIVA_XTK_DISTANCE
+  - type: var
+    var_name: L:FSS_B727_CIVA_DIST_TO_DST
+  - type: var
+    var_name: L:FSS_B727_CIVA_TIME_TO_DST
+  - type: var
+    var_name: L:FSS_B727_CIVA_ALERT
+  # - type: var
+  #   var_name: L:FSS_B727_CIVA_SIM_LAT
+  # - type: var
+  #   var_name: L:FSS_B727_CIVA_SIM_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_0_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_1_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_2_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_3_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_4_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_5_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_6_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_7_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_8_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_9_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_0_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_1_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_2_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_3_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_4_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_5_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_6_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_7_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_8_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_9_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_INDEX
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_ERR_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_ERR_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_ALIGN_MODE
+  - type: var
+    var_name: L:FSS_B727_CIVA_POS_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_POS_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_MODE
+  - type: var
+    var_name: L:FSS_B727_CIVA_WP_CHANGE
+  - type: var
+    var_name: L:FSS_B727_CIVA_FROM_TO_EDIT
+  - type: var
+    var_name: L:FSS_B727_CIVA_HOLD_BUTTON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_0_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_0_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_1_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_1_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_2_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_2_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_3_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_3_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_4_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_4_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_5_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_5_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_6_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_6_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_7_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_7_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_8_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_8_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_9_LAT
+  - type: var
+    var_name: L:FSS_B727_CIVA_DME_9_LON
+  - type: var
+    var_name: L:FSS_B727_CIVA_ACC_INDEX
+  - type: var
+    var_name: L:CIVA_ScreenLuminosity
+  - type: var
+    var_name: L:CIVA_State
+  - type: var
+    var_name: L:CIVAScreen1_ScreenLuminosity
+  - type: var
+    var_name: L:CIVAScreen1_State
+  - type: var
+    var_name: L:CIVAScreen2_ScreenLuminosity
+  - type: var
+    var_name: L:CIVAScreen2_State
+  - type: var
+    var_name: L:CIVAScreen3_ScreenLuminosity
+  - type: var
+    var_name: L:CIVAScreen3_State
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_IE_CIVA_AUTO_MAN_PUSH
+  - type: var
+    var_name: L:FSS_B727_IE_CIVA_WAYPOINT_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_IE_CIVA_DATA_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_IE_CIVA_DIMMER
+  - type: var
+    var_name: L:FSS_B727_IE_CIVA_AUTO_MAN
+  - type: var
+    var_name: L:FSS_B727_IE_CIVA_MODE_SELECTOR
+  - type: var
+    var_name: L:FSS_B727_IE_WASM_SYNC
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_CDP_MASTER_POWER_SWITCH
+  - type: var
+    var_name: L:FSS_B727_CDP_FLOOD_LIGHT_SWITCH
+  - type: var
+    var_name: L:FSS_B727_CDP_CARGO_DOOR_SWITCH
+  - type: var
+    var_name: L:FSS_B727_CDP_MASTER_POWER_COVER_SWITCH
+  - type: var
+    var_name: L:FSS_B727_CDP_IND_DOOR_WARNING
+  - type: var
+    var_name: L:FSS_B727_CDP_IND_VENT_DOOR
+  - type: var
+    var_name: L:FSS_B727_CDP_IND_LATCH_LOCK
+  - type: var
+    var_name: L:FSS_B727_CDP_IND_LATCH_UNLOCK
+  - type: var
+    var_name: L:FSS_B727_CDP_IND_HOOKS_UNLOCK
+  - type: var
+    var_name: L:FSS_B727_CDP_IND_DOOR_NOT_CLOSED
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_CABIN_DOOR
+  - type: var
+    var_name: L:FSS_B727_CABIN_PANEL_STORED
+  - type: var
+    var_name: L:FSS_B727_CABIN_CARGO_PANEL_STORED
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_COCKPIT_DOOR
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_CARGO_DOOR
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_CD_AFT_STAIR_LEVER
+  - type: var
+    var_name: L:FSS_B727_CD_IND_STAIR_LEVER
+
+
+
+
+  - type: var
+    var_name: L:FSS_B727_YOKE_TRIM_SWITCH_PILOT
+  - type: var
+    var_name: L:FSS_B727_YOKE_TRIM_SWITCH_COPILOT
+
+
+
+
+  - type: ToggleSwitch
+    var_name: A:INTERACTIVE POINT GOAL:0
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_AIRCRAFT_EXIT_FAST
+    event_param: 1
+  - type: ToggleSwitch
+    var_name: A:INTERACTIVE POINT GOAL:1
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_AIRCRAFT_EXIT_FAST
+    event_param: 2
+  - type: ToggleSwitch
+    var_name: A:INTERACTIVE POINT GOAL:2
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_AIRCRAFT_EXIT_FAST
+    event_param: 3
+  - type: ToggleSwitch
+    var_name: A:INTERACTIVE POINT GOAL:3
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_AIRCRAFT_EXIT_FAST
+    event_param: 4
+  - type: ToggleSwitch
+    var_name: A:INTERACTIVE POINT GOAL:4
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_AIRCRAFT_EXIT_FAST
+    event_param: 5
+
+
+
+
+  - type: NumSet
+    var_name: A:BRAKE LEFT POSITION EX1
+    var_units: Position 32k
+    var_type: i32
+    add_by: -16384
+    event_name: AXIS_LEFT_BRAKE_SET
+    unreliable: true
+  - type: NumSet
+    var_name: A:BRAKE RIGHT POSITION EX1
+    var_units: Position 32k
+    var_type: i32
+    add_by: -16384
+    event_name: AXIS_RIGHT_BRAKE_SET
+    unreliable: true
+  
+
+
+
+  - type: NumSet
+    var_name: A:RUDDER TRIM PCT
+    var_units: Percent scaler 16k
+    var_type: f64
+    event_name: RUDDER_TRIM_SET_EX1
+    unreliable: true
+  - type: NumSet
+    var_name: A:RUDDER TRIM DISABLED
+    var_units: Bool
+    var_type: i32
+    event_name: RUDDER_TRIM_DISABLED_SET
+  - type: NumSet
+    var_name: A:ELEVATOR TRIM PCT
+    var_units: Percent scaler 16k
+    var_type: f64
+    event_name: ELEVATOR_TRIM_SET
+    condition:
+      var:
+        var_name: A:AUTOPILOT MASTER
+        var_units: Bool
+        var_type: bool
+      equals:
+        Bool: false
+    unreliable: true
+  - type: NumSet
+    var_name: A:ELEVATOR TRIM DISABLED
+    var_units: Bool
+    var_type: i32
+    event_name: ELEVATOR_TRIM_DISABLED_SET
+  - type: NumSet
+    var_name: A:AILERON TRIM PCT
+    var_units: Percent scaler 16k
+    var_type: f64
+    event_name: AILERON_TRIM_SET_EX1
+    unreliable: true
+  - type: NumSet
+    var_name: A:AILERON TRIM DISABLED
+    var_units: Bool
+    var_type: i32
+    event_name: AILERON_TRIM_DISABLED_SET
+
+
+
+
+master:
+  - type: NumSet
+    var_name: A:GENERAL ENG THROTTLE LEVER POSITION:1
+    var_units: Position 16k
+    var_type: f64
+    event_name: THROTTLE1_SET
+    unreliable: true
+  - type: NumSet
+    var_name: A:GENERAL ENG THROTTLE LEVER POSITION:2
+    var_units: Position 16k
+    var_type: f64
+    event_name: THROTTLE2_SET
+    unreliable: true
+  - type: NumSet
+    var_name: A:GENERAL ENG THROTTLE LEVER POSITION:3
+    var_units: Position 16k
+    var_type: f64
+    event_name: THROTTLE3_SET
+    unreliable: true
+  - type: NumSet
+    var_name: A:AILERON POSITION
+    var_units: Position 16k
+    var_type: f64
+    multiply_by: -1
+    event_name: AXIS_AILERONS_SET
+    unreliable: true
+  - type: NumSet
+    var_name: A:ELEVATOR POSITION
+    var_units: Position 16k
+    var_type: f64
+    multiply_by: -1
+    event_name: AXIS_ELEVATOR_SET
+    unreliable: true
+  - type: NumSet
+    var_name: A:RUDDER POSITION
+    var_units: Position 16k
+    var_type: f64
+    multiply_by: -1
+    event_name: AXIS_RUDDER_SET
+    unreliable: true
+
+
+
+
+  - type: var
+    var_name: A:PLANE LATITUDE
+    var_units: Radians
+    var_type: f64
+    interpolate: DefaultConstant
+  - type: var
+    var_name: A:PLANE LONGITUDE
+    var_units: Radians
+    var_type: f64
+    interpolate: DefaultConstant
+  - type: var
+    var_name: A:PLANE ALTITUDE
+    var_units: Feet
+    var_type: f64
+    interpolate: DefaultConstant
+  - type: var
+    var_name: A:PLANE PITCH DEGREES
+    var_units: Radians
+    var_type: f64
+    interpolate: Wrap180
+  - type: var
+    var_name: A:PLANE BANK DEGREES
+    var_units: Radians
+    var_type: f64
+    interpolate: Wrap90
+  - type: var
+    var_name: A:PLANE HEADING DEGREES GYRO
+    var_units: Degrees
+    var_type: f64
+    interpolate: Wrap360
+  - type: var
+    var_name: A:PLANE HEADING DEGREES TRUE
+    var_units: Degrees
+    var_type: f64
+    interpolate: Wrap360
+  - type: var
+    var_name: A:VERTICAL SPEED
+    var_units: Feet per second
+    var_type: f64
+    interpolate: DefaultConstant
+  - type: var
+    var_name: A:G FORCE
+    var_units: Gforce
+    var_type: f64
+    interpolate: DefaultConstant
+  - type: var
+    var_name: A:VELOCITY BODY Y
+    var_units: Feet per second
+    var_type: f64
+    interpolate: DefaultConstant
+  - type: var
+    var_name: A:VELOCITY BODY Z
+    var_units: Feet per second
+    var_type: f64
+    interpolate: DefaultConstant
+  - type: var
+    var_name: A:VELOCITY WORLD X
+    var_units: Feet per second
+    var_type: f64
+    interpolate: DefaultConstant
+  - type: var
+    var_name: A:VELOCITY WORLD Z
+    var_units: Feet per second
+    var_type: f64
+    interpolate: DefaultConstant
+
+server:
+  - type: var
+    var_name: A:FUEL TANK CENTER LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  - type: var
+    var_name: A:FUEL TANK CENTER2 LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  - type: var
+    var_name: A:FUEL TANK CENTER3 LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  - type: var
+    var_name: A:FUEL TANK EXTERNAL1 LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  - type: var
+    var_name: A:FUEL TANK EXTERNAL2 LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  - type: var
+    var_name: A:FUEL TANK LEFT MAIN LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  - type: var
+    var_name: A:FUEL TANK LEFT AUX LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  - type: var
+    var_name: A:FUEL TANK LEFT TIP LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  - type: var
+    var_name: A:FUEL TANK RIGHT MAIN LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  - type: var
+    var_name: A:FUEL TANK RIGHT AUX LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  - type: var
+    var_name: A:FUEL TANK RIGHT TIP LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:1
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:2
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:3
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:4
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:5
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:6
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:7
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:8
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:9
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:10
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:11
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:12
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:13
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:14
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:15
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:16
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:17
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:18
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:19
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:20
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:21
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:22
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:23
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:24
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:25
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:26
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:27
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:28
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:29
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:30
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:31
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:32
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:33
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+
+# init:
+
+ignore:
+  # [...document.querySelectorAll("[id]")].map(e => "  - EFBPreflight#" + e.id).join("\n")
+
+  - EFBAircraft#-1862093
+  - EFBAircraft#0
+  - EFBAircraft#4
+  - EFBAircraft#1635439527
+  - EFBAircraft#1592820500
+  - EFBAircraft#-362401279
+  - EFBAircraft#1297939872
+  - EFBAircraft#556444496
+  - EFBAircraft#33119274
+  - EFBAircraft#58395407
+  - EFBAircraft#keyframe-stylesheet
+  - EFBAircraft#-824988475
+  - EFBAircraft#957245454
+  - EFBAircraft#997323095
+  - EFBAircraft#729690493
+  - EFBAircraft#765951800
+  - EFBAircraft#597645657
+  - EFBAircraft#-578820432
+  - EFBAircraft#-220726681
+  - EFBAircraft#-140837876
+  - EFBAircraft#-410892655
+  - EFBAircraft#1406112000
+  - EFBAircraft#1316021081
+  - EFBAircraft#-1479848711
+  - EFBAircraft#-1658670625
+  - EFBAircraft#-1429371963
+  - EFBAircraft#-1309778251
+  - EFBAircraft#-1883528409
+  - EFBAircraft#-222705096
+  - EFBAircraft#1802456064
+  - EFBAircraft#-1091418785
+  - EFBAircraft#EFBAircraft
+  - EFBAircraft#1076487168
+  - EFBAircraft#-300760276
+  - EFBAircraft#310125330
+  - EFBAircraft#EFBMessage
+  - EFBAircraft#-773696036
+  - EFBAircraft#1223060756
+  - EFBAircraft#712477183
+  - EFBAircraft#1502648813
+  - EFBAircraft#1598409100
+  - EFBAircraft#-131856083
+  - EFBAircraft#-1886826665
+  - EFBAircraft#panel
+  - EFBAircraft#-754915213
+  - EFBAircraft#-345753331
+  - EFBAircraft#-1852425217
+  - EFBAircraft#723884107
+  - EFBAircraft#1526776859
+  - EFBAircraft#9996917
+  - EFBAircraft#1408585953
+  - EFBAircraft#-4317054
+  - EFBAircraft#-4331493
+  - EFBAircraft#-153059922
+  - EFBAircraft#-1641291269
+  - EFBAircraft#147927093
+  - EFBAircraft#537262915
+  - EFBAircraft#-1641291251
+  - EFBAircraft#147927094
+  - EFBAircraft#1051629930
+  - EFBAircraft#-1641291233
+  - EFBAircraft#147927095
+  - EFBAircraft#468539705
+  - EFBAircraft#-1641291215
+  - EFBAircraft#147927096
+  - EFBAircraft#194153085
+  - EFBAircraft#-1641291197
+  - EFBAircraft#147927097
+  - EFBAircraft#-359425392
+  - EFBAircraft#-4331477
+  - EFBAircraft#-1087958524
+  - EFBAircraft#-1641291268
+  - EFBAircraft#147927098
+  - EFBAircraft#262614018
+  - EFBAircraft#-1641291250
+  - EFBAircraft#147927099
+  - EFBAircraft#-1127927971
+  - EFBAircraft#-1641291232
+  - EFBAircraft#147927100
+  - EFBAircraft#-552554403
+  - EFBAircraft#-1641291214
+  - EFBAircraft#147927101
+  - EFBAircraft#-1173296422
+  - EFBAircraft#-4331466
+  - EFBAircraft#-1087958525
+  - EFBAircraft#-1641291272
+  - EFBAircraft#147927092
+  - EFBAircraft#1590914870
+  - EFBAircraft#724532412
+  - EFBAircraft#1824257618
+  - EFBAircraft#-1641291256
+  - EFBAircraft#147927102
+  - EFBAircraft#-1672841719
+  - EFBAircraft#-2046649382
+  - EFBAircraft#-1641291240
+  - EFBAircraft#147927103
+  - EFBAircraft#-845391863
+  - EFBAircraft#-1199788886
+  - EFBAircraft#-1641291224
+  - EFBAircraft#-1729319881
+  - EFBAircraft#1749027437
+  - EFBAircraft#-4331452
+  - EFBAircraft#-153059923
+  - EFBAircraft#-1641291271
+  - EFBAircraft#147927104
+  - EFBAircraft#986902215
+  - EFBAircraft#-401657109
+  - EFBAircraft#-1641291255
+  - EFBAircraft#147927105
+  - EFBAircraft#590112861
+  - EFBAircraft#501707918
+  - EFBAircraft#-1641291239
+  - EFBAircraft#147927106
+  - EFBAircraft#666458272
+  - EFBAircraft#-1454977999
+  - EFBAircraft#543583229
+  - EFBAircraft#-1430989828
+  - EFBAircraft#-603428734
+  - EFBAircraft#-57991856
+  - EFBAircraft#-1525895047
+  - EFBAircraft#1992985168
+  - EFBAircraft#vignettage
+  - EFBAircraft#virtualmouse
+  - EFBAircraft#1901788388
+
+
+
+
+  - EFBPreflight#-1862093
+  - EFBPreflight#0
+  - EFBPreflight#4
+  - EFBPreflight#1635439527
+  - EFBPreflight#1592820500
+  - EFBPreflight#-362401279
+  - EFBPreflight#1297939872
+  - EFBPreflight#556444496
+  - EFBPreflight#33119274
+  - EFBPreflight#58395407
+  - EFBPreflight#keyframe-stylesheet
+  - EFBPreflight#-824988475
+  - EFBPreflight#957245454
+  - EFBPreflight#997323095
+  - EFBPreflight#729690493
+  - EFBPreflight#765951800
+  - EFBPreflight#597645657
+  - EFBPreflight#-578820432
+  - EFBPreflight#-220726681
+  - EFBPreflight#-140837876
+  - EFBPreflight#-410892655
+  - EFBPreflight#435027727
+  - EFBPreflight#1316021081
+  - EFBPreflight#629766600
+  - EFBPreflight#-1479848707
+  - EFBPreflight#-1658670621
+  - EFBPreflight#-1429371959
+  - EFBPreflight#-1883528409
+  - EFBPreflight#-222705096
+  - EFBPreflight#1802456064
+  - EFBPreflight#-1429984418
+  - EFBPreflight#-395707455
+  - EFBPreflight#-599499559
+  - EFBPreflight#EFBPreflight
+  - EFBPreflight#1076487176
+  - EFBPreflight#-300760268
+  - EFBPreflight#310125338
+  - EFBPreflight#EFBMessage
+  - EFBPreflight#-1851476885
+  - EFBPreflight#1223060764
+  - EFBPreflight#712477191
+  - EFBPreflight#1502648821
+  - EFBPreflight#1265829421
+  - EFBPreflight#-131856075
+  - EFBPreflight#-1886826665
+  - EFBPreflight#panel
+  - EFBPreflight#802408594
+  - EFBPreflight#1
+  - EFBPreflight#-345753325
+  - EFBPreflight#-1852425217
+  - EFBPreflight#723884107
+  - EFBPreflight#1526776859
+  - EFBPreflight#9996917
+  - EFBPreflight#1408585953
+  - EFBPreflight#-1815950043
+  - EFBPreflight#simbrief-id
+  - EFBPreflight#68125392
+  - EFBPreflight#-681971017
+  - EFBPreflight#-1304809854
+  - EFBPreflight#686399910
+  - EFBPreflight#-4331452
+  - EFBPreflight#-1087958525
+  - EFBPreflight#-1641291272
+  - EFBPreflight#147927092
+  - EFBPreflight#text-load-cockpit
+  - EFBPreflight#-1801254762
+  - EFBPreflight#range-load-cockpit
+  - EFBPreflight#-1641291256
+  - EFBPreflight#147927093
+  - EFBPreflight#text-load-cargo
+  - EFBPreflight#-1801254761
+  - EFBPreflight#range-load-cargo
+  - EFBPreflight#-1641291240
+  - EFBPreflight#147927094
+  - EFBPreflight#-1949809976
+  - EFBPreflight#-343002038
+  - EFBPreflight#-1231547590
+  - EFBPreflight#-1218871363
+  - EFBPreflight#-1026541817
+  - EFBPreflight#-1579593303
+  - EFBPreflight#-412345843
+  - EFBPreflight#-1279625692
+  - EFBPreflight#781799372
+  - EFBPreflight#-343001998
+  - EFBPreflight#1331320333
+  - EFBPreflight#-868079239
+  - EFBPreflight#-4331438
+  - EFBPreflight#-1087958524
+  - EFBPreflight#-1641291271
+  - EFBPreflight#147927095
+  - EFBPreflight#text-fuel-left
+  - EFBPreflight#-1801254760
+  - EFBPreflight#range-fuel-left
+  - EFBPreflight#-1641291255
+  - EFBPreflight#147927096
+  - EFBPreflight#text-fuel-center
+  - EFBPreflight#-1801254759
+  - EFBPreflight#range-fuel-center
+  - EFBPreflight#-1641291239
+  - EFBPreflight#147927097
+  - EFBPreflight#text-fuel-right
+  - EFBPreflight#-1801254758
+  - EFBPreflight#range-fuel-right
+  - EFBPreflight#-1641291224
+  - EFBPreflight#147927098
+  - EFBPreflight#216865606
+  - EFBPreflight#-343002037
+  - EFBPreflight#-1231547589
+  - EFBPreflight#-1218871362
+  - EFBPreflight#-1026541816
+  - EFBPreflight#-1579593302
+  - EFBPreflight#-412345842
+  - EFBPreflight#-1279625691
+  - EFBPreflight#781799373
+  - EFBPreflight#-343001997
+  - EFBPreflight#1331320334
+  - EFBPreflight#-868079238
+  - EFBPreflight#-4331424
+  - EFBPreflight#-1087958523
+  - EFBPreflight#load-state
+  - EFBPreflight#-1641291270
+  - EFBPreflight#147927099
+  - EFBPreflight#info-empty
+  - EFBPreflight#-1801254757
+  - EFBPreflight#-1641291254
+  - EFBPreflight#147927100
+  - EFBPreflight#info-load
+  - EFBPreflight#-1801254756
+  - EFBPreflight#-1641291238
+  - EFBPreflight#147927101
+  - EFBPreflight#info-cargo
+  - EFBPreflight#-1801254755
+  - EFBPreflight#-1641291223
+  - EFBPreflight#147927102
+  - EFBPreflight#info-zfw
+  - EFBPreflight#-1801254754
+  - EFBPreflight#-1641291208
+  - EFBPreflight#147927103
+  - EFBPreflight#info-fuel
+  - EFBPreflight#-1801254753
+  - EFBPreflight#-1641291192
+  - EFBPreflight#147927104
+  - EFBPreflight#info-gross
+  - EFBPreflight#-1801254752
+  - EFBPreflight#vignettage
+  - EFBPreflight#virtualmouse
+
+
+
+
+  - EFBTakeoff#-1862093
+  - EFBTakeoff#0
+  - EFBTakeoff#4
+  - EFBTakeoff#1635439527
+  - EFBTakeoff#1592820500
+  - EFBTakeoff#-362401279
+  - EFBTakeoff#1297939872
+  - EFBTakeoff#556444496
+  - EFBTakeoff#33119274
+  - EFBTakeoff#58395407
+  - EFBTakeoff#keyframe-stylesheet
+  - EFBTakeoff#-824988475
+  - EFBTakeoff#957245454
+  - EFBTakeoff#997323095
+  - EFBTakeoff#729690493
+  - EFBTakeoff#765951800
+  - EFBTakeoff#597645657
+  - EFBTakeoff#-578820432
+  - EFBTakeoff#-220726681
+  - EFBTakeoff#-140837876
+  - EFBTakeoff#-410892655
+  - EFBTakeoff#-1489693382
+  - EFBTakeoff#1316021081
+  - EFBTakeoff#-1942592451
+  - EFBTakeoff#-1479848707
+  - EFBTakeoff#-1658670621
+  - EFBTakeoff#-1429371959
+  - EFBTakeoff#-1883528409
+  - EFBTakeoff#-222705096
+  - EFBTakeoff#1802456064
+  - EFBTakeoff#-1957881655
+  - EFBTakeoff#-1011478121
+  - EFBTakeoff#-1169643323
+  - EFBTakeoff#-659220355
+  - EFBTakeoff#1201007822
+  - EFBTakeoff#1270481369
+  - EFBTakeoff#362614727
+  - EFBTakeoff#474141546
+  - EFBTakeoff#-173439289
+  - EFBTakeoff#1071325196
+  - EFBTakeoff#-395707419
+  - EFBTakeoff#-599499523
+  - EFBTakeoff#-1578833045
+  - EFBTakeoff#1619870403
+  - EFBTakeoff#-220956761
+  - EFBTakeoff#-930405134
+  - EFBTakeoff#EFBTakeoff
+  - EFBTakeoff#1076487228
+  - EFBTakeoff#-300760216
+  - EFBTakeoff#310125390
+  - EFBTakeoff#EFBMessage
+  - EFBTakeoff#-1851476833
+  - EFBTakeoff#544131644
+  - EFBTakeoff#-1516130234
+  - EFBTakeoff#FSSSelect
+  - EFBTakeoff#1223060828
+  - EFBTakeoff#712477255
+  - EFBTakeoff#1502648885
+  - EFBTakeoff#-223896872
+  - EFBTakeoff#1691903788
+  - EFBTakeoff#-541343244
+  - EFBTakeoff#-57437710
+  - EFBTakeoff#-206192509
+  - EFBTakeoff#1254181934
+  - EFBTakeoff#-1506955594
+  - EFBTakeoff#441842649
+  - EFBTakeoff#-1416426570
+  - EFBTakeoff#-723324869
+  - EFBTakeoff#-1381785812
+  - EFBTakeoff#1373761143
+  - EFBTakeoff#-131855967
+  - EFBTakeoff#-488730765
+  - EFBTakeoff#-1886826665
+  - EFBTakeoff#panel
+  - EFBTakeoff#1620740595
+  - EFBTakeoff#1
+  - EFBTakeoff#-345753325
+  - EFBTakeoff#-1852425217
+  - EFBTakeoff#723884107
+  - EFBTakeoff#1526776859
+  - EFBTakeoff#9996917
+  - EFBTakeoff#1408585953
+  - EFBTakeoff#-153059910
+  - EFBTakeoff#755428241
+  - EFBTakeoff#1136535249
+  - EFBTakeoff#-1641291287
+  - EFBTakeoff#-1554757126
+  - EFBTakeoff#text-icao
+  - EFBTakeoff#-1641291269
+  - EFBTakeoff#-1554757125
+  - EFBTakeoff#select-runway
+  - EFBTakeoff#-308065019
+  - EFBTakeoff#-1291852712
+  - EFBTakeoff#-1582816394
+  - EFBTakeoff#-334869380
+  - EFBTakeoff#464749180
+  - EFBTakeoff#739311308
+  - EFBTakeoff#263728945
+  - EFBTakeoff#538291073
+  - EFBTakeoff#-1270891246
+  - EFBTakeoff#-1545453350
+  - EFBTakeoff#-1641291251
+  - EFBTakeoff#-1554757124
+  - EFBTakeoff#text-tora
+  - EFBTakeoff#1669189985
+  - EFBTakeoff#-1641291233
+  - EFBTakeoff#-1554757123
+  - EFBTakeoff#select-flaps
+  - EFBTakeoff#231603630
+  - EFBTakeoff#-1410222441
+  - EFBTakeoff#-1410222393
+  - EFBTakeoff#-1410222366
+  - EFBTakeoff#-308064931
+  - EFBTakeoff#-1291852711
+  - EFBTakeoff#-1582816393
+  - EFBTakeoff#-334869292
+  - EFBTakeoff#-1519634735
+  - EFBTakeoff#-1545453398
+  - EFBTakeoff#1007338332
+  - EFBTakeoff#672304579
+  - EFBTakeoff#1136535266
+  - EFBTakeoff#-1641291286
+  - EFBTakeoff#-1554757122
+  - EFBTakeoff#text-wind
+  - EFBTakeoff#-1641291268
+  - EFBTakeoff#-1554757121
+  - EFBTakeoff#text-qnh
+  - EFBTakeoff#-1641291250
+  - EFBTakeoff#-1554757120
+  - EFBTakeoff#text-temp
+  - EFBTakeoff#883660431
+  - EFBTakeoff#-1712564697
+  - EFBTakeoff#-818388188
+  - EFBTakeoff#1427163869
+  - EFBTakeoff#-1641291288
+  - EFBTakeoff#-1554757127
+  - EFBTakeoff#text-rwy
+  - EFBTakeoff#-1686288402
+  - EFBTakeoff#-1641291272
+  - EFBTakeoff#-1554757119
+  - EFBTakeoff#text-min
+  - EFBTakeoff#1669189980
+  - EFBTakeoff#-4316998
+  - EFBTakeoff#-4331493
+  - EFBTakeoff#-153059922
+  - EFBTakeoff#-146282228
+  - EFBTakeoff#-1554757118
+  - EFBTakeoff#text-to-epr
+  - EFBTakeoff#-146282210
+  - EFBTakeoff#-1554757117
+  - EFBTakeoff#text-to-n1
+  - EFBTakeoff#-146282192
+  - EFBTakeoff#-1554757116
+  - EFBTakeoff#text-to-trim
+  - EFBTakeoff#-146282174
+  - EFBTakeoff#button-to
+  - EFBTakeoff#-4331477
+  - EFBTakeoff#-153059921
+  - EFBTakeoff#-146282227
+  - EFBTakeoff#-1554757115
+  - EFBTakeoff#text-v1
+  - EFBTakeoff#-146282209
+  - EFBTakeoff#-1554757114
+  - EFBTakeoff#text-vr
+  - EFBTakeoff#-146282191
+  - EFBTakeoff#-1554757113
+  - EFBTakeoff#text-v2
+  - EFBTakeoff#-146282173
+  - EFBTakeoff#-1554757112
+  - EFBTakeoff#button-speeds
+  - EFBTakeoff#vignettage
+  - EFBTakeoff#virtualmouse
+
+
+
+
+  - EFBFlight#-1862093
+  - EFBFlight#0
+  - EFBFlight#4
+  - EFBFlight#1635439527
+  - EFBFlight#1592820500
+  - EFBFlight#-362401279
+  - EFBFlight#1297939872
+  - EFBFlight#556444496
+  - EFBFlight#33119274
+  - EFBFlight#58395407
+  - EFBFlight#keyframe-stylesheet
+  - EFBFlight#-824988475
+  - EFBFlight#957245454
+  - EFBFlight#997323095
+  - EFBFlight#729690493
+  - EFBFlight#765951800
+  - EFBFlight#597645657
+  - EFBFlight#-578820432
+  - EFBFlight#-220726681
+  - EFBFlight#-140837876
+  - EFBFlight#-410892655
+  - EFBFlight#1902315238
+  - EFBFlight#1316021081
+  - EFBFlight#408042733
+  - EFBFlight#-1479848707
+  - EFBFlight#-1658670621
+  - EFBFlight#-1429371959
+  - EFBFlight#1076487148
+  - EFBFlight#-1883528405
+  - EFBFlight#-222705092
+  - EFBFlight#1802456068
+  - EFBFlight#-1323146295
+  - EFBFlight#-1971516445
+  - EFBFlight#-24202437
+  - EFBFlight#EFBFlight
+  - EFBFlight#-300760268
+  - EFBFlight#310125338
+  - EFBFlight#EFBMessage
+  - EFBFlight#1778390372
+  - EFBFlight#-922126162
+  - EFBFlight#FSSScroll
+  - EFBFlight#1223060772
+  - EFBFlight#712477199
+  - EFBFlight#1502648829
+  - EFBFlight#495646786
+  - EFBFlight#-131856067
+  - EFBFlight#-1959436369
+  - EFBFlight#-1886826665
+  - EFBFlight#panel
+  - EFBFlight#-135140990
+  - EFBFlight#-345753331
+  - EFBFlight#-1852425217
+  - EFBFlight#723884107
+  - EFBFlight#1526776859
+  - EFBFlight#9996917
+  - EFBFlight#1408585953
+  - EFBFlight#-153059910
+  - EFBFlight#-1832277429
+  - EFBFlight#-1905782881
+  - EFBFlight#96391840
+  - EFBFlight#8
+  - EFBFlight#text-current
+  - EFBFlight#96391855
+  - EFBFlight#9
+  - EFBFlight#text-target
+  - EFBFlight#96391870
+  - EFBFlight#10
+  - EFBFlight#button-start
+  - EFBFlight#-360008640
+  - EFBFlight#96391885
+  - EFBFlight#1061213361
+  - EFBFlight#218965195
+  - EFBFlight#text-dist
+  - EFBFlight#1061213377
+  - EFBFlight#218965196
+  - EFBFlight#text-vs
+  - EFBFlight#-522780268
+  - EFBFlight#-333698290
+  - EFBFlight#11
+  - EFBFlight#12
+  - EFBFlight#13
+  - EFBFlight#2093986520
+  - EFBFlight#50
+  - EFBFlight#27
+  - EFBFlight#14
+  - EFBFlight#30
+  - EFBFlight#51
+  - EFBFlight#70
+  - EFBFlight#90
+  - EFBFlight#-1521672996
+  - EFBFlight#-2066376552
+  - EFBFlight#1
+  - EFBFlight#15
+  - EFBFlight#909546289
+  - EFBFlight#714860943
+  - EFBFlight#vignettage
+  - EFBFlight#virtualmouse
+
+
+
+
+  - EFBLanding#-1862093
+  - EFBLanding#0
+  - EFBLanding#4
+  - EFBLanding#1635439527
+  - EFBLanding#1592820500
+  - EFBLanding#-362401279
+  - EFBLanding#1297939872
+  - EFBLanding#556444496
+  - EFBLanding#33119274
+  - EFBLanding#58395407
+  - EFBLanding#keyframe-stylesheet
+  - EFBLanding#-824988475
+  - EFBLanding#957245454
+  - EFBLanding#997323095
+  - EFBLanding#729690493
+  - EFBLanding#765951800
+  - EFBLanding#597645657
+  - EFBLanding#-578820432
+  - EFBLanding#-220726681
+  - EFBLanding#-140837876
+  - EFBLanding#-410892655
+  - EFBLanding#666362571
+  - EFBLanding#1316021081
+  - EFBLanding#-2115608308
+  - EFBLanding#-1479848707
+  - EFBLanding#-1658670621
+  - EFBLanding#-1429371959
+  - EFBLanding#1076487148
+  - EFBLanding#-1229122192
+  - EFBLanding#-1883528401
+  - EFBLanding#-222705088
+  - EFBLanding#1802456072
+  - EFBLanding#-162347486
+  - EFBLanding#-1169643319
+  - EFBLanding#732839191
+  - EFBLanding#1270481369
+  - EFBLanding#362614727
+  - EFBLanding#-1311927582
+  - EFBLanding#-1378934331
+  - EFBLanding#-395707423
+  - EFBLanding#-599499527
+  - EFBLanding#-1578833049
+  - EFBLanding#1619870399
+  - EFBLanding#EFBLanding
+  - EFBLanding#-300760232
+  - EFBLanding#310125374
+  - EFBLanding#EFBMessage
+  - EFBLanding#-1851476849
+  - EFBLanding#544131628
+  - EFBLanding#-1516130250
+  - EFBLanding#FSSSelect
+  - EFBLanding#-722522511
+  - EFBLanding#1223060816
+  - EFBLanding#712477243
+  - EFBLanding#1502648873
+  - EFBLanding#-1731180707
+  - EFBLanding#-541343260
+  - EFBLanding#381193688
+  - EFBLanding#1254181914
+  - EFBLanding#-1506955614
+  - EFBLanding#1880002077
+  - EFBLanding#1891318208
+  - EFBLanding#-131855999
+  - EFBLanding#-488730797
+  - EFBLanding#-1886826665
+  - EFBLanding#panel
+  - EFBLanding#1653853717
+  - EFBLanding#1
+  - EFBLanding#-345753325
+  - EFBLanding#-1852425217
+  - EFBLanding#723884107
+  - EFBLanding#1526776859
+  - EFBLanding#9996917
+  - EFBLanding#1408585953
+  - EFBLanding#-153059910
+  - EFBLanding#755428241
+  - EFBLanding#1136535249
+  - EFBLanding#-1641291287
+  - EFBLanding#-1554757126
+  - EFBLanding#text-gw
+  - EFBLanding#-1686288397
+  - EFBLanding#-1641291269
+  - EFBLanding#-1554757125
+  - EFBLanding#select-flaps
+  - EFBLanding#-1410222406
+  - EFBLanding#-1410222353
+  - EFBLanding#-308064975
+  - EFBLanding#-1291852712
+  - EFBLanding#-1582816394
+  - EFBLanding#-334869336
+  - EFBLanding#-1069871035
+  - EFBLanding#1147886930
+  - EFBLanding#1136535266
+  - EFBLanding#-1641291286
+  - EFBLanding#-1554757124
+  - EFBLanding#text-wind
+  - EFBLanding#-1641291268
+  - EFBLanding#-1554757123
+  - EFBLanding#text-qnh
+  - EFBLanding#-1641291251
+  - EFBLanding#-1554757122
+  - EFBLanding#text-temp
+  - EFBLanding#883660431
+  - EFBLanding#-1712564697
+  - EFBLanding#-818388188
+  - EFBLanding#1427163869
+  - EFBLanding#-1641291288
+  - EFBLanding#-1554757127
+  - EFBLanding#text-min
+  - EFBLanding#1669189980
+  - EFBLanding#-4316998
+  - EFBLanding#-4331493
+  - EFBLanding#-153059922
+  - EFBLanding#-146282228
+  - EFBLanding#-1554757121
+  - EFBLanding#text-ga-epr
+  - EFBLanding#-146282210
+  - EFBLanding#-1554757120
+  - EFBLanding#text-ga-n1
+  - EFBLanding#-146282192
+  - EFBLanding#-1554757119
+  - EFBLanding#button-epr
+  - EFBLanding#-4331477
+  - EFBLanding#-153059921
+  - EFBLanding#-146282227
+  - EFBLanding#-1554757118
+  - EFBLanding#text-vref
+  - EFBLanding#-146282209
+  - EFBLanding#-1554757117
+  - EFBLanding#text-vapp
+  - EFBLanding#-146282191
+  - EFBLanding#-1554757116
+  - EFBLanding#button-speeds
+  - EFBLanding#vignettage
+  - EFBLanding#virtualmouse
+
+
+
+
+  - EFBCharts#-1862093
+  - EFBCharts#0
+  - EFBCharts#4
+  - EFBCharts#1635439527
+  - EFBCharts#1592820500
+  - EFBCharts#-362401279
+  - EFBCharts#1297939872
+  - EFBCharts#556444496
+  - EFBCharts#33119274
+  - EFBCharts#58395407
+  - EFBCharts#keyframe-stylesheet
+  - EFBCharts#-824988475
+  - EFBCharts#957245454
+  - EFBCharts#997323095
+  - EFBCharts#729690493
+  - EFBCharts#765951800
+  - EFBCharts#597645657
+  - EFBCharts#-578820432
+  - EFBCharts#-220726681
+  - EFBCharts#-140837876
+  - EFBCharts#-410892655
+  - EFBCharts#-1738080159
+  - EFBCharts#1316021081
+  - EFBCharts#1144800590
+  - EFBCharts#-2083074074
+  - EFBCharts#1802456048
+  - EFBCharts#655223408
+  - EFBCharts#-395707471
+  - EFBCharts#-599499575
+  - EFBCharts#EFBCharts
+  - EFBCharts#1502648777
+  - EFBCharts#-1851476913
+  - EFBCharts#-155645283
+  - EFBCharts#-1429371931
+  - EFBCharts#534737032
+  - EFBCharts#1980487136
+  - EFBCharts#1808873220
+  - EFBCharts#-1933881942
+  - EFBCharts#1037465330
+  - EFBCharts#536664120
+  - EFBCharts#1686558803
+  - EFBCharts#1783014123
+  - EFBCharts#-220956769
+  - EFBCharts#-311809075
+  - EFBCharts#815339567
+  - EFBCharts#1529275074
+  - EFBCharts#-1745811666
+  - EFBCharts#FSSNavigraph
+  - EFBCharts#1744415631
+  - EFBCharts#-1938017805
+  - EFBCharts#FSSNavPageSearch
+  - EFBCharts#-96403779
+  - EFBCharts#297607089
+  - EFBCharts#815339603
+  - EFBCharts#-576108526
+  - EFBCharts#-1700628950
+  - EFBCharts#FSSNavPageChart
+  - EFBCharts#545275823
+  - EFBCharts#1079408804
+  - EFBCharts#75777660
+  - EFBCharts#-1745811610
+  - EFBCharts#667713723
+  - EFBCharts#FSSNavLogin
+  - EFBCharts#-1682112072
+  - EFBCharts#-1355814238
+  - EFBCharts#FSSNavMessageBox
+  - EFBCharts#1985676637
+  - EFBCharts#1533448181
+  - EFBCharts#-1745811578
+  - EFBCharts#-1599571653
+  - EFBCharts#1292072769
+  - EFBCharts#FSSNavChartImage
+  - EFBCharts#1583826733
+  - EFBCharts#1334439362
+  - EFBCharts#1937861180
+  - EFBCharts#FSSNavLoading
+  - EFBCharts#1076487344
+  - EFBCharts#-1381785776
+  - EFBCharts#-2044402370
+  - EFBCharts#-1873078438
+  - EFBCharts#1132093683
+  - EFBCharts#-1972535207
+  - EFBCharts#1399664540
+  - EFBCharts#-1451736404
+  - EFBCharts#-432315599
+  - EFBCharts#-923345975
+  - EFBCharts#2116102590
+  - EFBCharts#-1290708573
+  - EFBCharts#-842451538
+  - EFBCharts#465871383
+  - EFBCharts#-1886826665
+  - EFBCharts#panel
+  - EFBCharts#-1081805830
+  - EFBCharts#1
+  - EFBCharts#-345753325
+  - EFBCharts#-1852425217
+  - EFBCharts#723884107
+  - EFBCharts#1526776859
+  - EFBCharts#9996917
+  - EFBCharts#1408585953
+  - EFBCharts#-1110731947
+  - EFBCharts#temp-tab-item
+  - EFBCharts#-1852425216
+  - EFBCharts#299850598
+  - EFBCharts#-345707597
+  - EFBCharts#1178276543
+  - EFBCharts#1165614305
+  - EFBCharts#1149999257
+  - EFBCharts#13
+  - EFBCharts#354266762
+  - EFBCharts#12
+  - EFBCharts#723884126
+  - EFBCharts#fss-nav-btn-show-menu
+  - EFBCharts#-1434384258
+  - EFBCharts#-2108292176
+  - EFBCharts#fss-navigraph-page-chart-list-item
+  - EFBCharts#-2049264325
+  - EFBCharts#1172064340
+  - EFBCharts#775661032
+  - EFBCharts#-300687524
+  - EFBCharts#-1366310763
+  - EFBCharts#-77045625
+  - EFBCharts#-1502631141
+  - EFBCharts#1971970618
+  - EFBCharts#1002097749
+  - EFBCharts#1971987743
+  - EFBCharts#1971986688
+  - EFBCharts#-77275714
+  - EFBCharts#-793907116
+  - EFBCharts#284872238
+  - EFBCharts#-1260515607
+  - EFBCharts#-2141535056
+  - EFBCharts#382166666
+  - EFBCharts#-2870999
+  - EFBCharts#-1591935715
+  - EFBCharts#2060063360
+  - EFBCharts#1963292460
+  - EFBCharts#-937692777
+  - EFBCharts#-963587463
+  - EFBCharts#2097315387
+  - EFBCharts#643262274
+  - EFBCharts#768958825
+  - EFBCharts#-157134912
+  - EFBCharts#-468301895
+  - EFBCharts#569086343
+  - EFBCharts#-1968262590
+  - EFBCharts#-1067554580
+  - EFBCharts#2070206556
+  - EFBCharts#1517765933
+  - EFBCharts#vignettage
+  - EFBCharts#virtualmouse
+  - EFBCharts#-1595921642
+  - EFBCharts#-2008842071
+  - EFBCharts#-1595921642
+  - EFBCharts#-2008842071
+  - EFBCharts#1971970618
+  - EFBCharts#1002097749
+  - EFBCharts#1971987743
+  - EFBCharts#1971986688
+  - EFBCharts#-1502631141
+  - EFBCharts#1002097749
+  - EFBCharts#1971987743
+  - EFBCharts#1971986688
+  - EFBCharts#-157134912
+  - EFBCharts#-468301895
+  - EFBCharts#569086343
+  - EFBCharts#-1968262590
+  - EFBCharts#1963292460
+  - EFBCharts#1165614306
+  - EFBCharts#569086343
+  - EFBCharts#569086343
+  - EFBCharts#1165614306
+  - EFBCharts#14
+  - EFBCharts#15
+  - EFBCharts#-1595921642
+  - EFBCharts#-1595921642
+  - EFBCharts#-2049264325
+  - EFBCharts#-2008842071
+  - EFBCharts#237369142
+  - EFBCharts#fss-nav-input-search
+  - EFBCharts#-2088374222
+
+
+
+
+  - CrewCoordination#-650012606
+  - CrewCoordination#0
+  - CrewCoordination#4
+  - CrewCoordination#1635439527
+  - CrewCoordination#1592820500
+  - CrewCoordination#-362401279
+  - CrewCoordination#1297939872
+  - CrewCoordination#556444496
+  - CrewCoordination#33119274
+  - CrewCoordination#58395407
+  - CrewCoordination#keyframe-stylesheet
+  - CrewCoordination#-824988475
+  - CrewCoordination#957245454
+  - CrewCoordination#997323095
+  - CrewCoordination#729690493
+  - CrewCoordination#765951800
+  - CrewCoordination#597645657
+  - CrewCoordination#-578820432
+  - CrewCoordination#-220726681
+  - CrewCoordination#-140837876
+  - CrewCoordination#-410892655
+  - CrewCoordination#-1102849510
+  - CrewCoordination#780221045
+  - CrewCoordination#-1429371971
+  - CrewCoordination#1957762497
+  - CrewCoordination#-958204925
+  - CrewCoordination#-270165591
+  - CrewCoordination#-1971516465
+  - CrewCoordination#-24202457
+  - CrewCoordination#CrewCoordination
+  - CrewCoordination#1076487160
+  - CrewCoordination#-1932163902
+  - CrewCoordination#-1357468596
+  - CrewCoordination#CCToggle
+  - CrewCoordination#1778390356
+  - CrewCoordination#-922126178
+  - CrewCoordination#FSSScroll
+  - CrewCoordination#888427482
+  - CrewCoordination#-1943638493
+  - CrewCoordination#-1959436397
+  - CrewCoordination#-1886826665
+  - CrewCoordination#panel
+  - CrewCoordination#-960876005
+  - CrewCoordination#-345753331
+  - CrewCoordination#-1527346786
+  - CrewCoordination#-1999963836
+  - CrewCoordination#-153059896
+  - CrewCoordination#1993727334
+  - CrewCoordination#1143151649
+  - CrewCoordination#468956899
+  - CrewCoordination#1851727674
+  - CrewCoordination#23723386
+  - CrewCoordination#-2132041787
+  - CrewCoordination#1224425354
+  - CrewCoordination#-2132041786
+  - CrewCoordination#-1752217445
+  - CrewCoordination#-2132041785
+  - CrewCoordination#1917157266
+  - CrewCoordination#-2132041784
+  - CrewCoordination#2011626330
+  - CrewCoordination#-2132041783
+  - CrewCoordination#1851727690
+  - CrewCoordination#1906098257
+  - CrewCoordination#-2132041782
+  - CrewCoordination#697091470
+  - CrewCoordination#-2132041781
+  - CrewCoordination#280443555
+  - CrewCoordination#-2132041780
+  - CrewCoordination#-232813032
+  - CrewCoordination#-2132041779
+  - CrewCoordination#-129030461
+  - CrewCoordination#-2132041778
+  - CrewCoordination#-153059868
+  - CrewCoordination#1842306603
+  - CrewCoordination#-1376092773
+  - CrewCoordination#782548237
+  - CrewCoordination#-2045223204
+  - CrewCoordination#-1494867962
+  - CrewCoordination#782581935
+  - CrewCoordination#422349361
+  - CrewCoordination#1927173302
+  - CrewCoordination#1929521221
+  - CrewCoordination#-1120148264
+  - CrewCoordination#782548246
+  - CrewCoordination#-2045223203
+  - CrewCoordination#-1494867961
+  - CrewCoordination#782581936
+  - CrewCoordination#422349362
+  - CrewCoordination#-1242327513
+  - CrewCoordination#1929521222
+  - CrewCoordination#-1120148263
+  - CrewCoordination#782548255
+  - CrewCoordination#-2045223202
+  - CrewCoordination#-1494867960
+  - CrewCoordination#782581937
+  - CrewCoordination#422349363
+  - CrewCoordination#-23852725
+  - CrewCoordination#1929521223
+  - CrewCoordination#-1120148262
+  - CrewCoordination#782548264
+  - CrewCoordination#-2045223201
+  - CrewCoordination#-1494867959
+  - CrewCoordination#782581938
+  - CrewCoordination#422349364
+  - CrewCoordination#578295497
+  - CrewCoordination#1929521224
+  - CrewCoordination#-1120148261
+  - CrewCoordination#782548273
+  - CrewCoordination#-2045223200
+  - CrewCoordination#-1494867958
+  - CrewCoordination#782581939
+  - CrewCoordination#422349365
+  - CrewCoordination#-243243673
+  - CrewCoordination#1929521225
+  - CrewCoordination#-1120148260
+  - CrewCoordination#909546321
+  - CrewCoordination#-1742127691
+  - CrewCoordination#vignettage
+  - CrewCoordination#virtualmouse
