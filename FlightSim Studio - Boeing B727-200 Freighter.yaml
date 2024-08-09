@@ -1,19 +1,30 @@
 ################################################################################
 #                                                                              #
 #  AIRCRAFT:  FLIGHTSIM STUDIO - BOEING B727-200 FREIGHTER (VERSION 1.0.0)     #
-#  AUTHOR:    @olejorga (GitHub)                                               #
+#  AUTHOR:    olejorga                                                         #
+#  TESTER:    KranzeKake                                                       #
 #                                                                              #
 #  UNSYNCED:  * ATTACH/DETACH EXTERNAL POWER (GPU)                             #
 #             * CHOOSEN NAV EQUIPMENT                                          #
-#             * CAPT. & FO. AUTOPILOT DISENGAGE BUTTONS                        # 
+#             * CAPT. & FO. AUTOPILOT DISENGAGE BUTTONS                        #
 #             * EFB (SETTING SPEED AND EPR BUGS ARE SYNCED)                    #
-#             * FUEL/PAYLOAD LOADING VIA EFB (USE MSFS TOOLBAR MENU INSTEAD)   #
-#             * AUTOPILOT TURN KNOB                                            #
+#             * FUEL/PAYLOAD LOADING VIA EFB - USE MSFS TOOLBAR MENU INSTEAD   #
 #             * INTERIOR LIGHT KNOBS                                           #
+#             * AUTOPILOT TURN KNOB                                            #
+#             * AUTOPILOT PITCH SELECTOR (MSFS STATE IS SYNCED)                #
+#             * AUTOPILOT NAV SELECTOR (MSFS STATE IS SYNCED)                  #
+#             * AUTOPILOT DISENGAGE SWITCH (ENGAGE WORKS)                      #
+#             * ALTITUDE SELECTOR MODE SWITCH - keep to increments of 1000     #
 #                                                                              #
 #  CAUTION:   ! MAKE SURE TO HAVE EQUAL PANEL STATE PRIOR TO CONNECTION        #
 #             ! CIVA IS SYNCED VIA JS EVENTS - SLOW BUTTON PRESSES             #
+#             ! ONLY PILOT FLYING SHOULD OPERATE THE AUTOPILOT DUE TO THE      #
+#               UNSYNCED PARTS OF THE AUTOPILOT OUTLINED ABOVE                 #
+#             ! NEW AIRCRAFT VERSIONS MAY BREAK THIS PROFILE                   #
 #             ! HAVE FUN - BE READY TO HAND-FLY WHEN IT BREAKS                 #
+#             ! SELECTED ALTITUDE MAY UNSYNC - FLICK IT BABY ONE MORE TIME     #
+#                                                                              #
+#  BUGS:      ? REPORT THEM IN THE YOUR CONTROLS DISCORD (TAG @olejorga)       #
 #                                                                              #
 ################################################################################
 
@@ -93,34 +104,34 @@ shared:
     var_units: Bool
     var_type: bool
     event_name: AUTOPILOT_DISENGAGE_TOGGLE
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT HEADING LOCK
-    var_units: Bool
-    var_type: bool
-    event_name: AP_PANEL_HEADING_HOLD
-    cancel_h_events: true
-    use_calculator: true
-  - type: NumSet
-    var_name: A:AUTOPILOT HEADING LOCK DIR:1
-    var_units: Degrees
-    var_type: f64
-    event_name: HEADING_BUG_SET
-    event_param: 1
-    cancel_h_events: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT ALTITUDE LOCK
-    var_units: Bool
-    var_type: bool
-    event_name: AP_PANEL_ALTITUDE_HOLD
-    cancel_h_events: true
-    use_calculator: true
-  - type: NumSet
-    var_name: A:AUTOPILOT ALTITUDE LOCK VAR:1
-    var_units: Feet
-    var_type: i32
-    event_name: AP_ALT_VAR_SET_ENGLISH
-    event_param: 1
-    cancel_h_events: true
+  # - type: ToggleSwitch
+  #   var_name: A:AUTOPILOT HEADING LOCK
+  #   var_units: Bool
+  #   var_type: bool
+  #   event_name: AP_PANEL_HEADING_HOLD
+  #   cancel_h_events: true
+  #   use_calculator: true
+  # - type: NumSet
+  #   var_name: A:AUTOPILOT HEADING LOCK DIR:1
+  #   var_units: Degrees
+  #   var_type: f64
+  #   event_name: HEADING_BUG_SET
+  #   event_param: 1
+  #   cancel_h_events: true
+  # - type: ToggleSwitch
+  #   var_name: A:AUTOPILOT ALTITUDE LOCK
+  #   var_units: Bool
+  #   var_type: bool
+  #   event_name: AP_PANEL_ALTITUDE_HOLD
+  #   cancel_h_events: true
+  #   use_calculator: true
+  # - type: NumSet
+  #   var_name: A:AUTOPILOT ALTITUDE LOCK VAR:1
+  #   var_units: Feet
+  #   var_type: i32
+  #   event_name: AP_ALT_VAR_SET_ENGLISH
+  #   event_param: 1
+  #   cancel_h_events: true
   - type: ToggleSwitch
     var_name: A:AUTOPILOT VERTICAL HOLD
     var_units: Bool
@@ -639,9 +650,9 @@ shared:
 
   - type: var
     var_name: L:FSS_B727_AP_BANK_DEGREE
-  - type: var
-    var_name: L:FSS_B727_AP_ALT_SEL_DIGITS
-    cancel_h_events: true
+  # - type: var
+  #   var_name: L:FSS_B727_AP_ALT_SEL_DIGITS
+  #   cancel_h_events: true
   # - type: var
   #   var_name: L:FSS_B727_AP_VS
   - type: var
@@ -658,15 +669,15 @@ shared:
     var_type: bool
     event_name: FSS_B727.AP_MASTER_SWITCH_ON
     off_event_name: FSS_B727.AP_MASTER_SWITCH_OFF
-    # on_condition_value: 1
+    on_condition_value: 1
     cancel_h_events: true
-    # use_calculator: true
+    use_calculator: true
   - type: ToggleSwitch
     var_name: A:AUTOPILOT HEADING LOCK
     var_units: Bool
     var_type: bool
     event_name: FSS_B727.AP_HDG_SEL_BUTTON
-    # on_condition_value: 1
+    on_condition_value: 1
     cancel_h_events: true
     use_calculator: true
   - type: ToggleSwitch
@@ -674,11 +685,19 @@ shared:
     var_units: Bool
     var_type: bool
     event_name: FSS_B727.AP_ALT_SEL_BUTTON
+    on_condition_value: 1
     cancel_h_events: true
-    # use_calculator: true
-    # condition:
-    #   greater_than:
-    #     F64: 0.0
+    use_calculator: true
+  - type: NumIncrement
+    var_name: L:FSS_B727_AP_ALT_SEL_DIGITS
+    var_units: Number
+    var_type: f64
+    up_event_name: FSS_B727.PCP_ALT_KNOB_CW
+    up_event_param: 0
+    down_event_name: FSS_B727.PCP_ALT_KNOB_CCW
+    down_event_param: 0
+    increment_by: 10
+    use_calculator: true
 
 
 
@@ -725,10 +744,6 @@ shared:
     var_name: L:FSS_B727_PDSTL_RUDDER_TRIM_KNOB
   - type: var
     var_name: L:FSS_B727_PDSTL_AILERON_TRIM_KNOB
-  - type: var
-    var_name: L:FSS_B727_PDSTL_PARK_BRAKE_LIGHT_SW
-  - type: var
-    var_name: L:FSS_B727_PDSTL_STAB_TRIM_LIGHT_SW
   - type: var
     var_name: L:FSS_B727_PDSTL_AUTOPILOT_HDG_ENG_SW
   - type: var
