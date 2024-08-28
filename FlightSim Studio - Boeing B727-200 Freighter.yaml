@@ -1,30 +1,33 @@
 ################################################################################
 #                                                                              #
-#  AIRCRAFT:  FLIGHTSIM STUDIO - BOEING B727-200 FREIGHTER (VERSION 1.0.0)     #
-#  AUTHOR:    olejorga                                                         #
-#  TESTER:    KranzeKake                                                       #
+#  AIRCRAFT:  FLIGHTSIM STUDIO - BOEING B727-200 FREIGHTER (VERSION 1.0.2)     #
+#  AUTHOR:    @olejorga                                                        #
+#  TESTER:    @KranzeKake                                                      #
+#  REVISION:  1                                                                #
 #                                                                              #
 #  UNSYNCED:  * ATTACH/DETACH EXTERNAL POWER (GPU)                             #
 #             * CHOOSEN NAV EQUIPMENT                                          #
+#             * CALLOUT TOGGLE                                                 #
+#             * SEATING POSITION                                               #
 #             * CAPT. & FO. AUTOPILOT DISENGAGE BUTTONS                        #
 #             * EFB (SETTING SPEED AND EPR BUGS ARE SYNCED)                    #
 #             * FUEL/PAYLOAD LOADING VIA EFB - USE MSFS TOOLBAR MENU INSTEAD   #
 #             * INTERIOR LIGHT KNOBS                                           #
-#             * AUTOPILOT TURN KNOB                                            #
-#             * AUTOPILOT PITCH SELECTOR (MSFS STATE IS SYNCED)                #
-#             * AUTOPILOT NAV SELECTOR (MSFS STATE IS SYNCED)                  #
-#             * AUTOPILOT DISENGAGE SWITCH (ENGAGE WORKS)                      #
+#             * AUTOPILOT (SEE NOTE BELOW)                                     #
 #             * ALTITUDE SELECTOR MODE SWITCH - keep to increments of 1000     #
 #                                                                              #
 #  CAUTION:   ! MAKE SURE TO HAVE EQUAL PANEL STATE PRIOR TO CONNECTION        #
 #             ! CIVA IS SYNCED VIA JS EVENTS - SLOW BUTTON PRESSES             #
-#             ! ONLY PILOT FLYING SHOULD OPERATE THE AUTOPILOT DUE TO THE      #
-#               UNSYNCED PARTS OF THE AUTOPILOT OUTLINED ABOVE                 #
+#             ! ONLY PILOT FLYING SHOULD OPERATE THE AUTOPILOT BUT BOTH PILOTS #
+#               CAN OPERATE THE CIVA AND NAV RADIOS.                           #
 #             ! NEW AIRCRAFT VERSIONS MAY BREAK THIS PROFILE                   #
-#             ! HAVE FUN - BE READY TO HAND-FLY WHEN IT BREAKS                 #
+#             ! HAVE FUN - BUT BE READY TO HAND-FLY WHEN IT BREAKS             #
 #             ! SELECTED ALTITUDE MAY UNSYNC - FLICK IT BABY ONE MORE TIME     #
 #                                                                              #
-#  BUGS:      ? REPORT THEM IN THE YOUR CONTROLS DISCORD (TAG @olejorga)       #
+#  ISSUES:    ~ COM & NAV RADIOS DON'T ALWAYS SYNC - UNDER INVESTIGATION       #
+#                                                                              #
+#  CHANGES:   REVISION 1                                                       #
+#             + INITIAL REVISION                                               #
 #                                                                              #
 ################################################################################
 
@@ -87,195 +90,6 @@ include:
   # - definitions/modules/trim.yaml
 
 shared:
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT MASTER
-    var_units: Bool
-    var_type: bool
-    event_name: AP_MASTER
-    cancel_h_events: true
-    use_calculator: true
-  - type: NumSet
-    var_name: A:AUTOPILOT DISENGAGED
-    var_units: Bool
-    var_type: i32
-    event_name: AUTOPILOT_DISENGAGE_SET
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT DISENGAGED
-    var_units: Bool
-    var_type: bool
-    event_name: AUTOPILOT_DISENGAGE_TOGGLE
-  # - type: ToggleSwitch
-  #   var_name: A:AUTOPILOT HEADING LOCK
-  #   var_units: Bool
-  #   var_type: bool
-  #   event_name: AP_PANEL_HEADING_HOLD
-  #   cancel_h_events: true
-  #   use_calculator: true
-  # - type: NumSet
-  #   var_name: A:AUTOPILOT HEADING LOCK DIR:1
-  #   var_units: Degrees
-  #   var_type: f64
-  #   event_name: HEADING_BUG_SET
-  #   event_param: 1
-  #   cancel_h_events: true
-  # - type: ToggleSwitch
-  #   var_name: A:AUTOPILOT ALTITUDE LOCK
-  #   var_units: Bool
-  #   var_type: bool
-  #   event_name: AP_PANEL_ALTITUDE_HOLD
-  #   cancel_h_events: true
-  #   use_calculator: true
-  # - type: NumSet
-  #   var_name: A:AUTOPILOT ALTITUDE LOCK VAR:1
-  #   var_units: Feet
-  #   var_type: i32
-  #   event_name: AP_ALT_VAR_SET_ENGLISH
-  #   event_param: 1
-  #   cancel_h_events: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT VERTICAL HOLD
-    var_units: Bool
-    var_type: bool
-    event_name: AP_PANEL_VS_HOLD
-    cancel_h_events: true
-    use_calculator: true
-  - type: NumSet
-    var_name: A:AUTOPILOT VERTICAL HOLD VAR:1
-    var_units: Feet per minute
-    var_type: i32
-    event_name: AP_VS_VAR_SET_ENGLISH
-    event_param: 1
-    cancel_h_events: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT AIRSPEED HOLD
-    var_units: Bool
-    var_type: bool
-    event_name: AP_PANEL_SPEED_HOLD
-    cancel_h_events: true
-  - type: NumSet
-    var_name: A:AUTOPILOT AIRSPEED HOLD VAR:1
-    var_units: Knots
-    var_type: f64
-    event_name: AP_SPD_VAR_SET
-    event_param: 1
-    cancel_h_events: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT MANAGED SPEED IN MACH
-    var_units: Bool
-    var_type: bool
-    event_name: AP_MANAGED_SPEED_IN_MACH_TOGGLE
-    cancel_h_events: true
-    use_calculator: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT FLIGHT LEVEL CHANGE
-    var_units: Bool
-    var_type: bool
-    event_name: FLIGHT_LEVEL_CHANGE
-    cancel_h_events: true
-    use_calculator: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT WING LEVELER
-    var_units: Bool
-    var_type: bool
-    event_name: AP_WING_LEVELER
-    cancel_h_events: true
-    use_calculator: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT BACKCOURSE HOLD
-    var_units: Bool
-    var_type: bool
-    event_name: AP_BC_HOLD
-    cancel_h_events: true
-    use_calculator: true
-  - type: var
-    var_name: A:AUTOPILOT PITCH HOLD REF
-    var_units: Degrees
-    var_type: f64
-    unreliable: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:1
-    var_units: Bool
-    var_type: bool
-    event_name: TOGGLE_FLIGHT_DIRECTOR
-    event_param: 1
-    cancel_h_events: true
-    use_calculator: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:2
-    var_units: Bool
-    var_type: bool
-    event_name: TOGGLE_FLIGHT_DIRECTOR
-    event_param: 2
-    cancel_h_events: true
-    use_calculator: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT APPROACH HOLD
-    var_units: Bool
-    var_type: bool
-    event_name: AP_APR_HOLD
-    cancel_h_events: true
-    use_calculator: true
-  - type: var
-    var_name: A:AUTOPILOT GLIDESLOPE HOLD
-    var_units: Bool
-    var_type: f64
-    use_calculator: true
-  - type: event
-    event_name: AP_LOC_HOLD
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT THROTTLE ARM
-    var_units: Bool
-    var_type: bool
-    event_name: AUTO_THROTTLE_ARM
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT TAKEOFF POWER ACTIVE
-    var_units: Bool
-    var_type: bool
-    event_name: AUTO_THROTTLE_TO_GA
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT NAV1 LOCK
-    var_units: Bool
-    var_type: bool
-    event_name: AP_NAV1_HOLD
-    cancel_h_events: true
-    use_calculator: true
-  - type: NumSet
-    var_name: A:AUTOPILOT MAX BANK ID
-    var_units: Number
-    var_type: i32
-    event_name: AP_MAX_BANK_SET
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT YAW DAMPER
-    var_units: Bool
-    var_type: bool
-    event_name: YAW_DAMPER_TOGGLE
-    cancel_h_events: true
-    use_calculator: true
-  - type: ToggleSwitch
-    var_name: A:GPS DRIVES NAV1
-    var_units: Bool
-    var_type: bool
-    event_name: TOGGLE_GPS_DRIVES_NAV1
-    cancel_h_events: true
-    use_calculator: true
-  - type: NumSet
-    var_name: A:AUTOPILOT NAV SELECTED
-    var_units: Number
-    var_type: i32
-    event_name: AP_NAV_SELECT_SET
-    cancel_h_events: true
-    use_calculator: true
-  - type: ToggleSwitch
-    var_name: A:TACAN DRIVES NAV1
-    var_units: Bool
-    var_type: bool
-    event_name: TOGGLE_TACAN_DRIVES_NAV1
-    cancel_h_events: true
-    use_calculator: true
-
-
-
-
   - type: var
     var_name: L:FSS_B727_OVHD1_ANTI_SKID_SW_COVER
   - type: var
@@ -648,60 +462,6 @@ shared:
 
 
 
-  - type: var
-    var_name: L:FSS_B727_AP_BANK_DEGREE
-  # - type: var
-  #   var_name: L:FSS_B727_AP_ALT_SEL_DIGITS
-  #   cancel_h_events: true
-  # - type: var
-  #   var_name: L:FSS_B727_AP_VS
-  - type: var
-    var_name: L:FSS_B727_AP_TURN_KNOB_ZERO
-  - type: var
-    var_name: L:FSS_B727_AP_AIRSPEED_ON
-  - type: var
-    var_name: L:FSS_B727_AP_VS_ON
-  - type: var
-    var_name: L:FSS_B727_AP_PITCH_ON
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT MASTER
-    var_units: Bool
-    var_type: bool
-    event_name: FSS_B727.AP_MASTER_SWITCH_ON
-    off_event_name: FSS_B727.AP_MASTER_SWITCH_OFF
-    on_condition_value: 1
-    cancel_h_events: true
-    use_calculator: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT HEADING LOCK
-    var_units: Bool
-    var_type: bool
-    event_name: FSS_B727.AP_HDG_SEL_BUTTON
-    on_condition_value: 1
-    cancel_h_events: true
-    use_calculator: true
-  - type: ToggleSwitch
-    var_name: A:AUTOPILOT ALTITUDE LOCK VAR:1
-    var_units: Bool
-    var_type: bool
-    event_name: FSS_B727.AP_ALT_SEL_BUTTON
-    on_condition_value: 1
-    cancel_h_events: true
-    use_calculator: true
-  - type: NumIncrement
-    var_name: L:FSS_B727_AP_ALT_SEL_DIGITS
-    var_units: Number
-    var_type: f64
-    up_event_name: FSS_B727.PCP_ALT_KNOB_CW
-    up_event_param: 0
-    down_event_name: FSS_B727.PCP_ALT_KNOB_CCW
-    down_event_param: 0
-    increment_by: 10
-    use_calculator: true
-
-
-
-
   - type: NumSet
     var_name: A:FLAPS HANDLE PERCENT
     var_units: Position 16k
@@ -906,10 +666,10 @@ shared:
 
   - type: var
     var_name: L:FSS_B727_GSHIELD_AP_MODE_SELECTOR
-  - type: var
-    var_name: L:FSS_B727_GSHIELD_FD_PITCH_CMD
-  - type: var
-    var_name: L:FSS_B727_GSHIELD_AP_ALT_HOLD
+  # - type: var
+  #   var_name: L:FSS_B727_GSHIELD_FD_PITCH_CMD
+  # - type: var
+  #   var_name: L:FSS_B727_GSHIELD_AP_ALT_HOLD
   - type: var
     var_name: L:FSS_B727_GSHIELD_AUTOTHROTTLE_SWITCH
   - type: var
@@ -952,8 +712,6 @@ shared:
     var_name: L:FSS_B727_CP_FD_AP_ANNUN_GLDSLP_2_SW
   - type: var
     var_name: L:FSS_B727_CP_FD_AP_ANNUN_GLDSLP_1_SW
-  # - type: var
-  #   var_name: L:FSS_B727_CP_AP_DISENGAGE
   - type: var
     var_name: L:FSS_B727_CP_AIRSPEEED_MACH_TEST_SWITCH
   - type: var
@@ -986,36 +744,10 @@ shared:
     var_name: L:FSS_B727_CP_AIRSPEED_MARKER_3
   - type: var
     var_name: L:FSS_B727_CP_INST_COMP_CANCELLED
-  # - type: var
-  #   var_name: L:FSS_B727_CP_ALT1_4DIGIT_MBAR
-  #   cancel_h_events: true
-  # - type: var
-  #   var_name: L:FSS_B727_CP_ALT1_4DIGIT_INHG
-  #   cancel_h_events: true
-  # - type: var
-  #   var_name: L:FSS_B727_CP_ALT2_4DIGIT_MBAR
-  #   cancel_h_events: true
-  # - type: var
-  #   var_name: L:FSS_B727_CP_ALT2_4DIGIT_INHG
-  #   cancel_h_events: true
   - type: var
     var_name: L:FSS_B727_CP_FD_AP_ANNUN_GOARND
   - type: var
     var_name: L:FSS_B727_CP_FD_AP_ANNUN_FLARE
-  # - type: var
-  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_MON_PWR_SW
-  # - type: var
-  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_HDG_SW
-  # - type: var
-  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_PITCH_SW
-  # - type: var
-  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_ROLL_SW
-  # - type: var
-  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_GS_SW
-  # - type: var
-  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_LOC_SW
-  # - type: var
-  #   var_name: L:FSS_B727_CP_PILOT_INST_COMP_LIGHT_ALT_SW
   - type: var
     var_name: L:FSS_B727_CP_RADIO_ALT_BUG_SET
   - type: var
@@ -1164,8 +896,6 @@ shared:
     var_name: L:FSS_B727_FOP_COPIL_FD_AP_ANNUN_GLDSLP_2_SW
   - type: var
     var_name: L:FSS_B727_FOP_COPIL_FD_AP_ANNUN_GLDSLP_1_SW
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_AP_DISENGAGE_COPIL
   - type: var
     var_name: L:FSS_B727_FOP_GRD_PROX_SYS_TEST_BTN_IsDown
   - type: var
@@ -1204,36 +934,10 @@ shared:
     var_name: L:FSS_B727_FOP_AIRSPEED_MARKER_3
   - type: var
     var_name: L:FSS_B727_FOP_INST_COMP_CANCELLED
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_ALT1_4DIGIT_MBAR
-  #   cancel_h_events: true
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_ALT1_4DIGIT_INHG
-  #   cancel_h_events: true
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_ALT2_4DIGIT_MBAR
-  #   cancel_h_events: true
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_ALT2_4DIGIT_INHG
-  #   cancel_h_events: true
   - type: var
     var_name: L:FSS_B727_FOP_FD_AP_ANNUN_GOARND
   - type: var
     var_name: L:FSS_B727_FOP_FD_AP_ANNUN_FLARE
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_MON_PWR_SW
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_HDG_SW
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_PITCH_SW
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_ROLL_SW
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_GS_SW
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_LOC_SW
-  # - type: var
-  #   var_name: L:FSS_B727_FOP_PILOT_INST_COMP_LIGHT_ALT_SW
   - type: var
     var_name: L:FSS_B727_FOP_RADIO_ALT_BUG_SET
   - type: var
@@ -1294,8 +998,6 @@ shared:
     var_name: L:FSS_B727_FE_ELEC_FREQ_KNOB_2
   - type: var
     var_name: L:FSS_B727_FE_ELEC_FREQ_KNOB_3
-  # - type: var
-  #   var_name: L:FSS_B727_FE_ELEC_APU_FREQ_SET
   - type: var
     var_name: L:FSS_B727_FE_ELEC_SPAWN_APRON
   - type: var
@@ -1492,16 +1194,6 @@ shared:
     var_name: L:FSS_B727_FE_PRESS_LIGHT_STBY_SW_IsDown
   - type: var
     var_name: L:FSS_B727_FE_PRESS_LIGHT_MANUAL_SW_IsDown
-  # - type: var
-  #   var_name: L:FSS_B727_FE_PRESS_FLT_ALT_SELECT_KNOB
-  # - type: var
-  #   var_name: L:FSS_B727_FE_PRESS_LAND_ALT_SELECT_KNOB_SMALL
-  # - type: var
-  #   var_name: L:FSS_B727_FE_PRESS_LAND_ALT_SELECT_KNOB
-  # - type: var
-  #   var_name: L:FSS_B727_FE_PRESS_CAB_ALT_SELECT_KNOB_SMALL
-  # - type: var
-  #   var_name: L:FSS_B727_FE_PRESS_CAB_ALT_SELECT_KNOB
   - type: var
     var_name: L:FSS_B727_FE_PRESS_STANDBY_SELECTOR
   - type: var
@@ -1900,9 +1592,9 @@ shared:
   # - type: var
   #   var_name: L:FSS_B727_EFB_SEATING_POSITION
   #   cancel_h_events: true
-  # - type: var
-  #   var_name: L:FSS_B727_EFB_NAV_EQUIP
-  #   cancel_h_events: true
+  - type: var
+    var_name: L:FSS_B727_EFB_NAV_EQUIP
+    cancel_h_events: true
   - type: var
     var_name: L:FSS_B727_EFB_AUTOTHROTTLE_VISIBLE
     cancel_h_events: true
@@ -2413,6 +2105,9 @@ master:
     var_type: f64
     interpolate: DefaultConstant
 
+
+
+
 server:
   - type: var
     var_name: A:FUEL TANK CENTER LEVEL
@@ -2668,7 +2363,8 @@ server:
     var_type: f64
     unreliable: true
 
-# init:
+
+
 
 ignore:
   # [...document.querySelectorAll("[id]")].map(e => "  - EFBPreflight#" + e.id).join("\n")
@@ -2797,6 +2493,16 @@ ignore:
   - EFBAircraft#vignettage
   - EFBAircraft#virtualmouse
   - EFBAircraft#1901788388
+  # - EFBAircraft#-2081745597
+  - EFBAircraft#-269161131
+  - EFBAircraft#1607097926
+  - EFBAircraft#1187712
+
+
+
+
+  - FSS_B727_EFB_CONFIG_UNITS_IMPERIAL
+  - FSS_B727_EFB_CONFIG_UNITS_METRIC
 
 
 
