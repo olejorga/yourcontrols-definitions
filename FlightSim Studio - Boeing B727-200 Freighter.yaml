@@ -18,16 +18,20 @@
 #                                                                              #
 #  CAUTION:   ! MAKE SURE TO HAVE EQUAL PANEL STATE PRIOR TO CONNECTION        #
 #             ! CIVA IS SYNCED VIA JS EVENTS - SLOW BUTTON PRESSES             #
-#             ! ONLY PILOT FLYING SHOULD OPERATE THE AUTOPILOT BUT BOTH PILOTS #
-#               CAN OPERATE THE CIVA AND NAV RADIOS.                           #
+#             ! ONLY PILOT FLYING SHOULD OPERATE THE AUTOPILOT BUT ALL         #
+#               CREW CAN OPERATE THE CIVA AND NAV RADIOS.                      #
 #             ! NEW AIRCRAFT VERSIONS MAY BREAK THIS PROFILE                   #
 #             ! HAVE FUN - BUT BE READY TO HAND-FLY WHEN IT BREAKS             #
 #             ! SELECTED ALTITUDE MAY UNSYNC - FLICK IT BABY ONE MORE TIME     #
+#             ! THREE DECIMAL COM FREQ MUST BE SET VIA VPILOT BY ALL CREW      #
 #                                                                              #
-#  ISSUES:    ~ COM & NAV RADIOS DON'T ALWAYS SYNC - UNDER INVESTIGATION       #
+#  ISSUES:    ~ NONE                                                           #
 #                                                                              #
 #  CHANGES:   REVISION 1                                                       #
 #             + INITIAL REVISION                                               #
+#                                                                              #
+#             REVISION 2                                                       #
+#             + FIXED RADIOS NOT BEING SYNCED (CHECK CAUTION FOR LIMITATIONS)  #
 #                                                                              #
 ################################################################################
 
@@ -540,10 +544,6 @@ shared:
     var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ARM
   - type: var
     var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ENG
-
-
-
-
   - type: var
     var_name: L:FSS_B727_RADIO_ADF2_MODE
   - type: var
@@ -588,10 +588,6 @@ shared:
   - type: var
     var_name: L:FSS_B727_RADIO_ADF2_FREQ_2
     cancel_h_events: true
-
-
-
-
   - type: var
     var_name: L:FSS_B727_SWITCH_RADIO_ADF2_SEL
   - type: var
@@ -604,6 +600,214 @@ shared:
     var_name: L:FSS_B727_SWITCH_RADIO_COM1_SEL
   - type: var
     var_name: L:FSS_B727_SWITCH_RADIO_NAV1_SEL
+  - type: NumSet
+    var_name: A:ADF ACTIVE FREQUENCY:1
+    var_units: Frequency ADF BCD32
+    var_type: i32
+    event_name: ADF_ACTIVE_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:ADF ACTIVE FREQUENCY:2
+    var_units: Frequency ADF BCD32
+    var_type: i32
+    event_name: ADF2_ACTIVE_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:ADF STANDBY FREQUENCY:1
+    var_units: Frequency ADF BCD32
+    var_type: i32
+    event_name: ADF_STBY_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:ADF STANDBY FREQUENCY:2
+    var_units: Frequency ADF BCD32
+    var_type: i32
+    event_name: ADF2_STBY_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:ADF SOUND:1
+    var_units: Bool
+    var_type: f64
+    event_name: RADIO_ADF_IDENT_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:ADF SOUND:2
+    var_units: Bool
+    var_type: f64
+    event_name: RADIO_ADF2_IDENT_SET
+    cancel_h_events: true
+  - type: NumIncrement
+    var_name: A:ADF VOLUME:1
+    var_units: Percent
+    var_type: i32
+    up_event_name: ADF_VOLUME_INC
+    down_event_name: ADF_VOLUME_DEC
+    increment_by: 2
+    cancel_h_events: true
+  - type: NumIncrement
+    var_name: A:ADF VOLUME:2
+    var_units: Percent
+    var_type: i32
+    up_event_name: ADF2_VOLUME_INC
+    down_event_name: ADF2_VOLUME_DEC
+    increment_by: 2
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM ACTIVE FREQUENCY:1
+    var_units: Hz
+    var_type: i32
+    event_name: COM_RADIO_SET_HZ
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM ACTIVE FREQUENCY:2
+    var_units: Hz
+    var_type: i32
+    event_name: COM2_RADIO_SET_HZ
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM ACTIVE FREQUENCY:3
+    var_units: Hz
+    var_type: i32
+    event_name: COM3_RADIO_SET_HZ
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM STANDBY FREQUENCY:1
+    var_units: Hz
+    var_type: i32
+    event_name: COM_STBY_RADIO_SET_HZ
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM STANDBY FREQUENCY:2
+    var_units: Hz
+    var_type: i32
+    event_name: COM2_STBY_RADIO_SET_HZ
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM STANDBY FREQUENCY:3
+    var_units: Hz
+    var_type: i32
+    event_name: COM3_STBY_RADIO_SET_HZ
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM1 STORED FREQUENCY
+    var_units: Hz
+    var_type: i32
+    event_name: COM1_STORED_FREQUENCY_SET_HZ
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM2 STORED FREQUENCY
+    var_units: Hz
+    var_type: i32
+    event_name: COM2_STORED_FREQUENCY_SET_HZ
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM3 STORED FREQUENCY
+    var_units: Hz
+    var_type: i32
+    event_name: COM3_STORED_FREQUENCY_SET_HZ
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM VOLUME:1
+    var_units: Percent
+    var_type: i32
+    event_name: COM1_VOLUME_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM VOLUME:2
+    var_units: Percent
+    var_type: i32
+    event_name: COM2_VOLUME_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM VOLUME:3
+    var_units: Percent
+    var_type: i32
+    event_name: COM3_VOLUME_SET
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:COM TEST:1
+    var_units: Bool
+    var_type: bool
+    event_name: RADIO_COMMNAV1_TEST_TOGGLE
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:COM TEST:2
+    var_units: Bool
+    var_type: bool
+    event_name: RADIO_COMMNAV2_TEST_TOGGLE
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:COM TEST:3
+    var_units: Bool
+    var_type: bool
+    event_name: RADIO_COMMNAV3_TEST_TOGGLE
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM SPACING MODE:1
+    var_units: Enum
+    var_type: i32
+    event_name: COM_1_SPACING_MODE_SWITCH
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM SPACING MODE:2
+    var_units: Enum
+    var_type: i32
+    event_name: COM_2_SPACING_MODE_SWITCH
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM SPACING MODE:3
+    var_units: Enum
+    var_type: i32
+    event_name: COM_3_SPACING_MODE_SWITCH
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM RECEIVE ALL
+    var_units: Bool
+    var_type: f64
+    event_name: COM_RECEIVE_ALL_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM RECEIVE EX1:1
+    var_units: Bool
+    var_type: f64
+    event_name: COM1_RECEIVE_SELECT
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM RECEIVE EX1:2
+    var_units: Bool
+    var_type: f64
+    event_name: COM2_RECEIVE_SELECT
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COM RECEIVE EX1:3
+    var_units: Bool
+    var_type: f64
+    event_name: COM3_RECEIVE_SELECT
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:DME SOUND:1
+    var_units: Bool
+    var_type: f64
+    event_name: RADIO_DME1_IDENT_SET
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:DME SOUND:1
+    var_units: Bool
+    var_type: bool
+    event_name: RADIO_DME1_IDENT_TOGGLE
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:DME SOUND:2
+    var_units: Bool
+    var_type: f64
+    event_name: RADIO_DME2_IDENT_SET
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:DME SOUND:2
+    var_units: Bool
+    var_type: bool
+    event_name: RADIO_DME2_IDENT_TOGGLE
+    cancel_h_events: true
 
 
 
@@ -659,6 +863,62 @@ shared:
     var_units: Bool
     var_type: f64
     event_name: RADIO_ADF2_IDENT_SET
+    cancel_h_events: true
+  - type: NumIncrement
+    var_name: A:AUDIO PANEL VOLUME
+    var_units: Percent
+    var_type: i32
+    up_event_name: AUDIO_PANEL_VOLUME_INC
+    down_event_name: AUDIO_PANEL_VOLUME_DEC
+    increment_by: 1
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:PILOT TRANSMITTER TYPE
+    var_units: Enum
+    var_type: i32
+    event_name: PILOT_TRANSMITTER_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:COPILOT TRANSMITTER TYPE
+    var_units: Enum
+    var_type: i32
+    event_name: COPILOT_TRANSMITTER_SET
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:SPEAKER ACTIVE
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_SPEAKER
+    cancel_h_events: true
+  - type: ToggleSwitch
+    var_name: A:INTERCOM SYSTEM ACTIVE
+    var_units: Bool
+    var_type: bool
+    event_name: TOGGLE_ICS
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:INTERCOM MODE
+    var_units: Enum
+    var_type: i32
+    event_name: INTERCOM_MODE_SET
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:MARKER SOUND:1
+    var_units: Bool
+    var_type: f64
+    event_name: MARKER_SOUND_TOGGLE
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:MARKER BEACON TEST MUTE
+    var_units: Enum
+    var_type: i32
+    event_name: MARKER_BEACON_TEST_MUTE
+    cancel_h_events: true
+  - type: NumSet
+    var_name: A:MARKER BEACON SENSITIVITY HIGH
+    var_units: Enum
+    var_type: i32
+    event_name: MARKER_BEACON_SENSITIVITY_HIGH
     cancel_h_events: true
 
 
