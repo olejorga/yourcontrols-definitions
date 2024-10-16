@@ -1,9 +1,9 @@
 ################################################################################
 #                                                                              #
-#  AIRCRAFT:  FLIGHTSIM STUDIO - BOEING B727-200 FREIGHTER (VERSION 1.0.2)     #
+#  AIRCRAFT:  FSS - BOEING B727-200 FREIGHTER (VERSION 1.0.4+patch1)           #
 #  AUTHOR:    @olejorga                                                        #
 #  TESTER:    @KranzeKake                                                      #
-#  REVISION:  2                                                                #
+#  REVISION:  3                                                                #
 #                                                                              #
 #  UNSYNCED:  * ATTACH/DETACH EXTERNAL POWER (GPU)                             #
 #             * CHOOSEN NAV EQUIPMENT                                          #
@@ -23,7 +23,7 @@
 #             ! NEW AIRCRAFT VERSIONS MAY BREAK THIS PROFILE                   #
 #             ! HAVE FUN - BUT BE READY TO HAND-FLY WHEN IT BREAKS             #
 #             ! SELECTED ALTITUDE MAY UNSYNC - FLICK IT BABY ONE MORE TIME     #
-#             ! THREE DECIMAL COM FREQ MUST BE SET VIA VPILOT BY ALL CREW      #
+#             ! 8.33 KHZ SPACED COM FREQ MUST BE SET VIA VPILOT BY ALL CREW    #
 #                                                                              #
 #  ISSUES:    ~ NONE                                                           #
 #                                                                              #
@@ -32,6 +32,10 @@
 #                                                                              #
 #             REVISION 2                                                       #
 #             + FIXED RADIOS NOT BEING SYNCED (CHECK CAUTION FOR LIMITATIONS)  #
+#                                                                              #
+#             REVISION 3                                                       #
+#             + SYNCED NEW FE. MAIN CARGO SMOKE PANEL                          #
+#             + REMOVED LINGERING REFERENCES TO AUTOPILOT                      #
 #                                                                              #
 ################################################################################
 
@@ -496,24 +500,24 @@ shared:
     var_name: L:FSS_B727_PDSTL_STAB_TRIM_AP_CRUISE_SW
   - type: var
     var_name: L:FSS_B727_PDSTL_STAB_TRIM_LIGHT_SW_IsDown
-  - type: var
-    var_name: L:FSS_B727_PDSTL_AUTOPILOT_HDG_ENG_SW_IsDown
-  - type: var
-    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ARM_SW_IsDown
-  - type: var
-    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ENG_SW_IsDown
+  # - type: var
+  #   var_name: L:FSS_B727_PDSTL_AUTOPILOT_HDG_ENG_SW_IsDown
+  # - type: var
+  #   var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ARM_SW_IsDown
+  # - type: var
+  #   var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ENG_SW_IsDown
   - type: var
     var_name: L:FSS_B727_PDSTL_TRIM_WHEEL_CLICKED
   - type: var
     var_name: L:FSS_B727_PDSTL_RUDDER_TRIM_KNOB
   - type: var
     var_name: L:FSS_B727_PDSTL_AILERON_TRIM_KNOB
-  - type: var
-    var_name: L:FSS_B727_PDSTL_AUTOPILOT_HDG_ENG_SW
-  - type: var
-    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ARM_SW
-  - type: var
-    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ENG_SW
+  # - type: var
+  #   var_name: L:FSS_B727_PDSTL_AUTOPILOT_HDG_ENG_SW
+  # - type: var
+  #   var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ARM_SW
+  # - type: var
+  #   var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ENG_SW
   - type: var
     var_name: L:FSS_B727_PDSTL_VHF_COMM_LIGHT_1_1
   - type: var
@@ -538,12 +542,12 @@ shared:
     var_name: L:FSS_B727_PDSTL_NAV_LIGHT_4_1
   - type: var
     var_name: L:FSS_B727_PDSTL_NAV_LIGHT_4_2
-  - type: var
-    var_name: L:FSS_B727_PDSTL_AUTOPILOT_HDG_ENG
-  - type: var
-    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ARM
-  - type: var
-    var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ENG
+  # - type: var
+  #   var_name: L:FSS_B727_PDSTL_AUTOPILOT_HDG_ENG
+  # - type: var
+  #   var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ARM
+  # - type: var
+  #   var_name: L:FSS_B727_PDSTL_AUTOPILOT_ALT_ENG
   - type: var
     var_name: L:FSS_B727_RADIO_ADF2_MODE
   - type: var
@@ -1057,6 +1061,8 @@ shared:
     event_name: VOR2_SET
     cancel_h_events: true
     use_calculator: true
+  - type: var
+    var_name: L:FSS_B727_AP_ALT_SEL_DIGITS
 
 
 
@@ -1826,6 +1832,16 @@ shared:
 
 
   - type: var
+    var_name: L:FSS_B727_FE_SMOKE_CTRL_SW_COVER
+  - type: var
+    var_name: L:FSS_B727_FE_SMOKE_CTRL_SW
+  - type: var
+    var_name: L:FSS_B727_FE_SMOKE_TEST_BTN_IsDown
+
+
+
+
+  - type: var
     var_name: L:FSS_B727_ENG_FIRE_BELL
 
 
@@ -2227,13 +2243,13 @@ shared:
     var_units: Percent scaler 16k
     var_type: f64
     event_name: ELEVATOR_TRIM_SET
-    condition:
-      var:
-        var_name: A:AUTOPILOT MASTER
-        var_units: Bool
-        var_type: bool
-      equals:
-        Bool: false
+    # condition:
+    #   var:
+    #     var_name: A:AUTOPILOT MASTER
+    #     var_units: Bool
+    #     var_type: bool
+    #   equals:
+    #     Bool: false
     unreliable: true
   - type: NumSet
     var_name: A:ELEVATOR TRIM DISABLED
